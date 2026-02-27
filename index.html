@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TimberTON</title>
+    <title>TimberTON - Руби деревья за TON</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
 * {
@@ -11,42 +11,51 @@
     padding: 0;
     box-sizing: border-box;
     touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
     -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --bg: #0a0a1a;
+    --bg-card: #151528;
+    --bg-hover: #202040;
+    --primary: #ffd700;
+    --secondary: #00d4ff;
+    --success: #00ff88;
+    --danger: #ff4757;
+    --text: #ffffff;
+    --text-muted: #8b8b9f;
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #0f0f1e;
-    color: white;
-    min-height: 100vh;
-    overflow-x: hidden;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    overflow: hidden;
 }
 
 .hidden { display: none !important; }
 
-.screen {
-    display: none;
-    min-height: 100vh;
-    padding: 80px 16px 20px;
-}
-
-.screen.active { display: block; }
-
+/* Header */
 .header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(15, 15, 30, 0.98);
-    padding: 12px 16px;
+    height: 60px;
+    background: rgba(10, 10, 26, 0.98);
+    backdrop-filter: blur(20px);
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
     z-index: 1000;
-    border-bottom: 1px solid #2a2a4a;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-.balance-display {
+.balances {
     display: flex;
     gap: 16px;
 }
@@ -55,26 +64,52 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 700;
 }
 
-.menu-btn {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    color: white;
+.balance-item.ton { color: var(--primary); }
+.balance-item.rub { color: var(--success); }
+
+.menu-btn, .back-btn {
     width: 40px;
     height: 40px;
     border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: var(--bg-card);
+    color: var(--text);
     font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
-.logo-section {
+/* Screens */
+.screen {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    display: none;
+    padding: 20px;
+    z-index: 100;
+}
+
+.screen.active { 
+    display: block !important;
+    z-index: 200;
+}
+
+/* Main Screen */
+.main-header {
     text-align: center;
-    padding: 40px 20px;
+    padding: 20px 0;
 }
 
-.logo-icon {
+.logo-big {
     font-size: 80px;
     margin-bottom: 10px;
     animation: float 3s ease-in-out infinite;
@@ -85,173 +120,147 @@ body {
     50% { transform: translateY(-10px); }
 }
 
-.logo-section h1 {
+.main-header h1 {
     font-size: 32px;
     font-weight: 800;
-    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    background: linear-gradient(135deg, var(--primary), #ffaa00);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.subtitle {
-    color: #a0a0b0;
-    font-size: 14px;
+.main-header p {
+    color: var(--text-muted);
     margin-top: 8px;
+    font-size: 14px;
 }
 
-.game-preview {
+.preview-area {
+    height: 200px;
     position: relative;
-    height: 180px;
+    margin: 30px 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 20px 0;
 }
 
-.preview-tree {
-    font-size: 100px;
-    position: absolute;
-    animation: sway 4s ease-in-out infinite;
+.tree-anim {
+    font-size: 120px;
+    animation: sway 3s ease-in-out infinite;
+    transform-origin: bottom center;
 }
 
 @keyframes sway {
-    0%, 100% { transform: rotate(-2deg); }
-    50% { transform: rotate(2deg); }
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
 }
 
-.preview-lumberjack {
-    font-size: 50px;
+.axe-anim {
+    font-size: 60px;
     position: absolute;
-    bottom: 20px;
-    right: 25%;
-    animation: chop 1s ease-in-out infinite;
+    bottom: 30px;
+    right: 20%;
+    animation: chopAxe 0.8s ease-in-out infinite;
+    transform-origin: bottom left;
 }
 
-@keyframes chop {
+@keyframes chopAxe {
     0%, 100% { transform: rotate(0deg); }
-    50% { transform: rotate(-20deg); }
+    50% { transform: rotate(-30deg); }
 }
 
-.main-actions {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
+/* Buttons */
 .btn {
+    width: 100%;
+    padding: 18px 24px;
     border: none;
     border-radius: 16px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    padding: 18px 32px;
-    width: 100%;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
+
+.btn:active { transform: scale(0.98); }
 
 .btn-primary {
-    background: linear-gradient(135deg, #ffd700 0%, #e6c200 100%);
+    background: linear-gradient(135deg, var(--primary), #e6c200);
     color: #000;
+    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
     font-size: 18px;
+    padding: 22px;
 }
 
 .btn-secondary {
-    background: #1a1a2e;
-    color: white;
-    border: 1px solid #2a2a4a;
-}
-
-.btn-info {
-    background: transparent;
-    color: #a0a0b0;
-    border: 1px solid #2a2a4a;
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 .btn-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
+    margin: 12px 0;
 }
 
-.btn-row .btn {
-    flex: 1;
-}
-
-.screen-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(15, 15, 30, 0.98);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    z-index: 1000;
-    border-bottom: 1px solid #2a2a4a;
-    padding-top: 60px;
-}
-
-.back-btn {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    color: white;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.bet-container { padding: 20px; }
-
-.section { margin-bottom: 24px; }
-
-.section label {
-    display: block;
-    color: #a0a0b0;
-    font-size: 14px;
+/* Game Menu */
+.section-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
     margin-bottom: 12px;
-}
-
-.currency-tabs {
-    display: flex;
-    gap: 8px;
-    background: #1a1a2e;
-    padding: 4px;
-    border-radius: 12px;
-}
-
-.currency-tab {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: #a0a0b0;
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 16px;
     font-weight: 600;
 }
 
-.currency-tab.active {
-    background: #ffd700;
-    color: #000;
+.currency-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    background: var(--bg-card);
+    padding: 4px;
+    border-radius: 16px;
+    margin-bottom: 20px;
 }
 
-.bet-amount {
-    font-size: 48px;
-    font-weight: 800;
+.currency-tab {
+    padding: 16px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.currency-tab.active {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.3);
+}
+
+.bet-display {
     text-align: center;
-    color: #ffd700;
-    margin: 20px 0;
+    margin: 30px 0;
+}
+
+.bet-amount-big {
+    font-size: 56px;
+    font-weight: 800;
+    color: var(--primary);
+    text-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
 }
 
 .bet-slider {
     width: 100%;
     height: 8px;
     border-radius: 4px;
-    background: #1a1a2e;
+    background: var(--bg-card);
     outline: none;
     -webkit-appearance: none;
     margin: 20px 0;
@@ -262,123 +271,162 @@ body {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: #ffd700;
+    background: var(--primary);
     cursor: pointer;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
 }
 
 .bet-presets {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 8px;
-    flex-wrap: wrap;
+    margin-bottom: 24px;
 }
 
 .bet-presets button {
-    flex: 1;
-    min-width: 60px;
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    color: white;
     padding: 12px;
-    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text);
+    border-radius: 12px;
     font-size: 14px;
     font-weight: 600;
+    cursor: pointer;
 }
 
-.prize-info {
+.bet-presets button:active {
+    background: var(--primary);
+    color: #000;
+}
+
+.info-cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    margin: 24px 0;
+    margin-bottom: 24px;
 }
 
-.prize-card {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
+.info-card {
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 20px;
     text-align: center;
+    border: 1px solid rgba(255,255,255,0.05);
 }
 
-.prize-card.win { border-color: #00ff88; }
+.info-card.highlight {
+    border-color: var(--success);
+    background: rgba(0, 255, 136, 0.05);
+}
 
-.prize-label {
+.info-card .label {
     font-size: 12px;
-    color: #a0a0b0;
+    color: var(--text-muted);
+    text-transform: uppercase;
     margin-bottom: 8px;
 }
 
-.prize-value {
+.info-card .value {
     font-size: 24px;
-    font-weight: 700;
-    color: #ffd700;
+    font-weight: 800;
+    color: var(--primary);
 }
 
-.prize-card.win .prize-value { color: #00ff88; }
+.info-card.highlight .value {
+    color: var(--success);
+}
 
-.rules-box {
-    background: #1a1a2e;
+.rules {
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 20px;
-    margin: 24px 0;
+    margin-bottom: 20px;
 }
 
-.rules-box li {
-    padding: 8px 0;
-    padding-left: 24px;
-    position: relative;
-    color: #a0a0b0;
-    font-size: 14px;
+.rules h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rules ul {
     list-style: none;
 }
 
-.rules-box li:before {
+.rules li {
+    padding: 8px 0;
+    padding-left: 28px;
+    position: relative;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.rules li::before {
     content: "✓";
     position: absolute;
     left: 0;
-    color: #00ff88;
+    color: var(--success);
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    background: rgba(0, 255, 136, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
 }
 
-.time-bar {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
+/* Game Screen */
+.game-screen {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 300;
+}
+
+.timer-bar {
     height: 6px;
-    background: #1a1a2e;
-    z-index: 100;
+    background: var(--bg-card);
+    position: relative;
+    overflow: hidden;
 }
 
-.time-fill {
+.timer-fill {
     height: 100%;
-    background: linear-gradient(90deg, #00ff88 0%, #ffd700 50%, #ff4757 100%);
+    background: linear-gradient(90deg, var(--success), var(--primary), var(--danger));
     width: 100%;
     transition: width 0.1s linear;
 }
 
-.score-board {
+.score-display {
     text-align: center;
-    padding: 40px 20px 20px;
+    padding: 30px 20px;
 }
 
-.current-score {
-    font-size: 72px;
+.score-big {
+    font-size: 80px;
     font-weight: 800;
-    color: #ffd700;
+    background: linear-gradient(135deg, var(--primary), #ffaa00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     line-height: 1;
 }
 
-.target-display {
-    margin-top: 10px;
-    color: #a0a0b0;
+.score-target {
+    color: var(--text-muted);
+    margin-top: 8px;
     font-size: 16px;
 }
 
-.game-area {
+.game-field {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    min-height: 300px;
+    position: relative;
 }
 
 .tree-container {
@@ -393,17 +441,24 @@ body {
 .trunk-section {
     width: 80px;
     height: 60px;
-    background: linear-gradient(90deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+    background: linear-gradient(90deg, #8B4513, #A0522D, #8B4513);
     border: 3px solid #5D3A1A;
     border-radius: 8px;
     position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    animation: dropIn 0.2s ease-out;
+}
+
+@keyframes dropIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .branch {
     position: absolute;
     width: 50px;
     height: 16px;
-    background: linear-gradient(90deg, #228B22 0%, #32CD32 100%);
+    background: linear-gradient(90deg, #228B22, #32CD32);
     border: 2px solid #006400;
     border-radius: 10px;
     top: 50%;
@@ -428,592 +483,421 @@ body {
 .lumberjack-body {
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, #ff6b6b 0%, #c92a2a 100%);
-    border-radius: 12px;
+    background: linear-gradient(180deg, #ff6b6b, #c92a2a);
+    border-radius: 12px 12px 24px 24px;
     position: relative;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 
-.head {
+.lumberjack-head {
     position: absolute;
     top: -30px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 40px;
-}
-
-.axe {
-    position: absolute;
-    right: -25px;
-    top: 20px;
-    font-size: 30px;
-}
-
-.game-controls {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background: linear-gradient(0deg, #0f0f1e6c200 100%);
-    color: #000;
-    font-size: 18px;
-}
-
-.btn-secondary {
-    background: #1a1a2e;
-    color: white;
-    border: 1px solid #2a2a4a;
-}
-
-.btn-info {
-    background: transparent;
-    color: #a0a0b0;
-    border: 1px solid #2a2a4a;
-}
-
-.btn-row {
-    display: flex;
-    gap: 12px;
-}
-
-.btn-row .btn {
-    flex: 1;
-}
-
-.screen-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(15, 15, 30, 0.98);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    z-index: 1000;
-    border-bottom: 1px solid #2a2a4a;
-    padding-top: 60px;
-}
-
-.back-btn {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    color: white;
     width: 44px;
     height: 44px;
-    border-radius: 12px;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.bet-container { padding: 20px; }
-
-.section { margin-bottom: 24px; }
-
-.section label {
-    display: block;
-    color: #a0a0b0;
-    font-size: 14px;
-    margin-bottom: 12px;
-}
-
-.currency-tabs {
-    display: flex;
-    gap: 8px;
-    background: #1a1a2e;
-    padding: 4px;
-    border-radius: 12px;
-}
-
-.currency-tab {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: #a0a0b0;
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.currency-tab.active {
-    background: #ffd700;
-    color: #000;
-}
-
-.bet-amount {
-    font-size: 48px;
-    font-weight: 800;
-    text-align: center;
-    color: #ffd700;
-    margin: 20px 0;
-}
-
-.bet-slider {
-    width: 100%;
-    height: 8px;
-    border-radius: 4px;
-    background: #1a1a2e;
-    outline: none;
-    -webkit-appearance: none;
-    margin: 20px 0;
-}
-
-.bet-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 28px;
-    height: 28px;
+    background: #fdbf60;
     border-radius: 50%;
-    background: #ffd700;
-    cursor: pointer;
+    border: 3px solid #8b4513;
 }
 
-.bet-presets {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.bet-presets button {
-    flex: 1;
-    min-width: 60px;
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    color: white;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.prize-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 24px 0;
-}
-
-.prize-card {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-}
-
-.prize-card.win { border-color: #00ff88; }
-
-.prize-label {
-    font-size: 12px;
-    color: #a0a0b0;
-    margin-bottom: 8px;
-}
-
-.prize-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: #ffd700;
-}
-
-.prize-card.win .prize-value { color: #00ff88; }
-
-.rules-box {
-    background: #1a1a2e;
-    border-radius: 16px;
-    padding: 20px;
-    margin: 24px 0;
-}
-
-.rules-box li {
-    padding: 8px 0;
-    padding-left: 24px;
-    position: relative;
-    color: #a0a0b0;
-    font-size: 14px;
-    list-style: none;
-}
-
-.rules-box li:before {
-    content: "✓";
+.lumberjack-hat {
     position: absolute;
-    left: 0;
-    color: #00ff88;
-}
-
-.time-bar {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: #1a1a2e;
-    z-index: 100;
-}
-
-.time-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #00ff88 0%, #ffd700 50%, #ff4757 100%);
-    width: 100%;
-    transition: width 0.1s linear;
-}
-
-.score-board {
-    text-align: center;
-    padding: 40px 20px 20px;
-}
-
-.current-score {
-    font-size: 72px;
-    font-weight: 800;
-    color: #ffd700;
-    line-height: 1;
-}
-
-.target-display {
-    margin-top: 10px;
-    color: #a0a0b0;
-    font-size: 16px;
-}
-
-.game-area {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    min-height: 300px;
-}
-
-.tree-container {
-    position: relative;
-    width: 120px;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: 4px;
-}
-
-.trunk-section {
-    width: 80px;
-    height: 60px;
-    background: linear-gradient(90deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
-    border: 3px solid #5D3A1A;
-    border-radius: 8px;
-    position: relative;
-}
-
-.branch {
-    position: absolute;
-    width: 50px;
-    height: 16px;
-    background: linear-gradient(90deg, #228B22 0%, #32CD32 100%);
-    border: 2px solid #006400;
-    border-radius: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.branch.left { left: -45px; }
-.branch.right { right: -45px; }
-
-.lumberjack {
-    position: absolute;
-    bottom: -90px;
-    width: 70px;
-    height: 80px;
-    transition: all 0.15s;
-    z-index: 10;
-}
-
-.lumberjack.left { left: -80px; }
-.lumberjack.right { right: -80px; transform: scaleX(-1); }
-
-.lumberjack-body {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, #ff6b6b 0%, #c92a2a 100%);
-    border-radius: 12px;
-    position: relative;
-}
-
-.head {
-    position: absolute;
-    top: -30px;
+    top: -12px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 40px;
+    width: 54px;
+    height: 22px;
+    background: #c92a2a;
+    border-radius: 6px;
 }
 
-.axe {
+.lumberjack-axe {
     position: absolute;
-    right: -25px;
-    top: 20px;
-    font-size: 30px;
+    right: -20px;
+    top: 15px;
+    font-size: 32px;
+    animation: axeChop 0.3s ease-out;
 }
 
-.game-controls {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background: linear-gradient(0deg, #0f0f1e 0%, transparent 100%);
-    display: flex;
+@keyframes axeChop {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(-45deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.chop-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 16px;
-    z-index: 100;
+    padding: 20px;
+    padding-bottom: 40px;
 }
 
 .chop-btn {
-    flex: 1;
-    height: 80px;
+    height: 90px;
     border: none;
     border-radius: 20px;
-    font-size: 36px;
+    font-size: 40px;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 8px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 8px 0 rgba(0,0,0,0.3), 0 16px 32px rgba(0,0,0,0.3);
+    transition: all 0.1s;
+    position: relative;
+    overflow: hidden;
+    -webkit-touch-callout: none;
+}
+
+.chop-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.chop-btn:active {
+    transform: translateY(8px);
+    box-shadow: 0 0 0 rgba( position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 44px;
+    background: #fdbf60;
+    border-radius: 50%;
+    border: 3px solid #8b4513;
+}
+
+.lumberjack-hat {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 54px;
+    height: 22px;
+    background: #c92a2a;
+    border-radius: 6px;
+}
+
+.lumberjack-axe {
+    position: absolute;
+    right: -20px;
+    top: 15px;
+    font-size: 32px;
+    animation: axeChop 0.3s ease-out;
+}
+
+@keyframes axeChop {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(-45deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.chop-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 20px;
+    padding-bottom: 40px;
+}
+
+.chop-btn {
+    height: 90px;
+    border: none;
+    border-radius: 20px;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 8px 0 rgba(0,0,0,0.3), 0 16px 32px rgba(0,0,0,0.3);
+    transition: all 0.1s;
+    position: relative;
+    overflow: hidden;
+    -webkit-touch-callout: none;
+}
+
+.chop-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.chop-btn:active {
+    transform: translateY(8px);
+    box-shadow: 0 0 0 rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2);
 }
 
 .chop-btn.left {
-    background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
+    background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
     color: white;
 }
 
 .chop-btn.right {
-    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+    background: linear-gradient(135deg, #4ecdc4, #44a08d);
     color: white;
 }
 
-#result-screen {
-    display: flex;
+/* Result Screen */
+.result-screen {
+    display: none;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-}
-
-.result-content {
     text-align: center;
-    width: 100%;
-    max-width: 400px;
+    z-index: 400;
+    background: var(--bg);
 }
 
-.result-icon { font-size: 80px; margin-bottom: 20px; }
+.result-screen.active {
+    display: flex !important;
+}
 
-.result-content h2 {
-    font-size: 32px;
+.result-icon {
+    font-size: 100px;
+    margin-bottom: 20px;
+    animation: bounce 0.5s ease-out;
+}
+
+@keyframes bounce {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.result-title {
+    font-size: 36px;
     font-weight: 800;
-    margin-bottom: 24px;
+    margin-bottom: 10px;
 }
 
-.result-content.win h2 { color: #00ff88; }
-.result-content.lose h2 { color: #ff4757; }
+.result-screen.win .result-title { color: var(--success); }
+.result-screen.lose .result-title { color: var(--danger); }
 
 .result-stats {
-    background: #1a1a2e;
-    border-radius: 16px;
+    background: var(--bg-card);
+    border-radius: 20px;
     padding: 24px;
-    margin-bottom: 24px;
+    margin: 24px 0;
 }
 
-.stat {
+.stat-row {
     display: flex;
     justify-content: space-between;
     padding: 12px 0;
-    border-bottom: 1px solid #2a2a4a;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-.stat:last-child { border-bottom: none; }
+.stat-row:last-child { border-bottom: none; }
 
-.stat-label { color: #a0a0b0; }
+.stat-label { color: var(--text-muted); }
 .stat-value { font-weight: 700; font-size: 18px; }
 
-.result-actions {
+.result-message {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    font-size: 16px;
+}
+
+/* Payment Screens */
+.payment-options {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.deposit-options, .withdraw-options {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.option-card {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
+.payment-card {
+    background: var(--bg-card);
     border-radius: 20px;
     padding: 24px;
-    text-align: center;
-}
-
-.option-icon { font-size: 48px; margin-bottom: 12px; }
-
-.option-card h3 { font-size: 20px; margin-bottom: 8px; }
-.option-card p { color: #a0a0b0; font-size: 14px; margin-bottom: 8px; }
-.option-card small { color: #ffd700; font-size: 12px; font-weight: 600; }
-
-.deposit-form, .withdraw-form { padding: 20px; }
-
-.info-box, .bank-card, .payment-id-box {
-    background: #1a1a2e;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.copy-box {
-    background: #0f0f1e;
-    border: 2px dashed #2a2a4a;
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-}
-
-.copy-box code {
-    display: block;
-    font-family: monospace;
-    font-size: 13px;
-    word-break: break-all;
-    color: #ffd700;
-    margin-bottom: 8px;
-}
-
-.copy-hint { font-size: 12px; color: #a0a0b0; }
-
-.copy-box.important {
-    border-color: #ff4757;
-    background: rgba(255, 71, 87, 0.05);
-}
-
-.copy-box.important code {
-    color: #ff4757;
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.bank-card.sbp {
-    background: linear-gradient(135deg, #0057b8 0%, #003d82 100%);
-}
-
-.bank-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.payment-card:active {
+    transform: scale(0.98);
+    border-color: var(--primary);
+}
+
+.payment-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.payment-card.ton .payment-icon { background: rgba(0, 136, 204, 0.2); }
+.payment-card.rub .payment-icon { background: rgba(0, 255, 136, 0.2); }
+
+.payment-info h3 {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.payment-info p {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* Forms */
+.form-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 24px;
     margin-bottom: 16px;
 }
 
-.bank-logo { font-weight: 800; font-size: 20px; }
-
-.sbp-badge {
-    background: white;
-    color: #0057b8;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
+.form-group {
+    margin-bottom: 20px;
 }
-
-.bank-phone {
-    font-size: 22px;
-    font-weight: 700;
-    text-align: center;
-    padding: 12px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 12px;
-}
-
-.form-group { margin-bottom: 20px; }
 
 .form-group label {
     display: block;
     font-size: 14px;
-    color: #a0a0b0;
+    color: var(--text-muted);
     margin-bottom: 8px;
+    font-weight: 500;
 }
 
 .form-group input, .form-group select {
     width: 100%;
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
+    background: var(--bg);
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 12px;
     padding: 16px;
-    color: white;
+    color: var(--text);
     font-size: 16px;
+    outline: none;
 }
 
-.balance-info {
-    background: #1a1a2e;
+.form-group input:focus {
+    border-color: var(--primary);
+}
+
+.copy-box {
+    background: var(--bg);
+    border: 2px dashed rgba(255,255,255,0.2);
     border-radius: 12px;
     padding: 16px;
-    margin-bottom: 20px;
     text-align: center;
-    color: #a0a0b0;
+    word-break: break-all;
+    font-family: monospace;
+    font-size: 14px;
+    color: var(--primary);
 }
 
-.balance-info strong { color: #ffd700; font-size: 20px; }
+.copy-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
 
-.hint {
+.important-box {
+    border-color: var(--danger);
+    background: rgba(255, 71, 87, 0.05);
+    color: var(--danger);
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.hint-text {
     text-align: center;
-    color: #a0a0b0;
+    color: var(--text-muted);
     font-size: 13px;
     margin-top: 16px;
+    line-height: 1.6;
 }
 
+/* History */
 .history-tabs {
     display: flex;
     gap: 8px;
-    padding: 0 20px;
     margin-bottom: 20px;
     overflow-x: auto;
+    padding-bottom: 4px;
 }
 
-.tab-btn {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    color: #a0a0b0;
+.history-tab {
     padding: 12px 20px;
-    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: var(--text-muted);
     font-size: 14px;
     font-weight: 600;
+    cursor: pointer;
     white-space: nowrap;
 }
 
-.tab-btn.active {
-    background: #ffd700;
+.history-tab.active {
+    background: var(--primary);
     color: #000;
-    border-color: #ffd700;
+    border-color: var(--primary);
 }
 
-.history-list { padding: 0 20px; }
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.history-item {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-item .info { flex: 1; }
+.history-item .type { font-weight: 700; margin-bottom: 4px; }
+.history-item .date { font-size: 12px; color: var(--text-muted); }
+.history-item .amount { font-weight: 800; font-size: 18px; }
+.history-item .amount.positive { color: var(--success); }
+.history-item .amount.negative { color: var(--danger); }
 
 .empty-state {
     text-align: center;
     padding: 60px 20px;
-    color: #a0a0b0;
+    color: var(--text-muted);
 }
 
+/* Notification */
 .notification {
     position: fixed;
-    top: 100px;
+    top: 80px;
     left: 50%;
-    transform: translateX(-50%);
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.1);
     padding: 16px 24px;
-    border-radius: 12px;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     z-index: 10000;
-    animation: slideDown 0.3s ease-out;
+    opacity: 0;
+    transition: all 0.3s;
 }
 
-@keyframes slideDown {
-    from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+.notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
 }
 
-.wood-chip {
+/* Wood chips */
+.chip {
     position: absolute;
     width: 8px;
     height: 8px;
@@ -1027,1151 +911,368 @@ body {
     0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
     100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); opacity: 0; }
 }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="balance-display">
-            <div class="balance-item">
-                <span>💎</span>
-                <span id="balance-ton">0.00</span> TON
-            </div>
-            <div class="balance-item">
-                <span>₽</span>
-                <span id="balance-rub">0</span>
-            </div>
-        </div>
-        <button class="menu-btn" onclick="goHome()">🏠</button>
-    </div>
 
-    <div id="main-screen" class="screen active">
-        <div class="logo-section">
-            <div class="logo-icon">🪓</div>
-            <h1>TimberTON</h1>
-            <p class="subtitle">Руби деревья — зарабатывай TON и рубли!</p>
-        </div>
-
-        <div class="game-preview">
-            <div class="preview-tree">🌲</div>
-            <div class="preview-lumberjack">🪓</div>
-        </div>
-
-        <div class="main-actions">
-            <button class="btn btn-primary" onclick="openGameMenu()">🎮 ИГРАТЬ</button>
-            <div class="btn-row">
-                <button class="btn btn-secondary" onclick="openDeposit()">💰 Пополнить</button>
-                <button class="btn btn-secondary" onclick="openWithdraw()">💸 Вывести</button>
-            </div>
-            <button class="btn btn-info" onclick="openHistory()">📊 История игр</button>
-        </div>
-    </div>
-
-    <div id="game-menu-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="goHome()">←</button>
-            <h2>🎮 Новая игра</h2>
-        </div>
-
-        <div class="bet-container">
-            <div class="section">
-                <label>Валюта ставки:</label>
-                <div class="currency-tabs">
-                    <button class="currency-tab active" id="btn-ton" onclick="setCurrency('ton')">💎 TON</button>
-                    <button class="currency-tab" id="btn-rub" onclick="setCurrency('rub')">₽ Рубли</button>
-                </div>
-            </div>
-
-            <div class="section">
-                <label>Сумма ставки:</label>
-                <div class="bet-amount" id="bet-display">0.5 TON</div>
-                <input type="range" class="bet-slider" id="bet-slider" min="0.5" max="10" step="0.5" value="0.5" oninput="updateBet(this.value)">
-                <div class="bet-presets" id="bet-presets">
-                    <button onclick="setBetValue(0.5)">0.5</button>
-                    <button onclick="setBetValue(1)">1</button>
-                    <button onclick="setBetValue(2)">2</button>
-                    <button onclick="setBetValue(5)">5</button>
-                    <button onclick="setBetValue(10)">10</button>
-                </div>
-            </div>
-
-            <div class="prize-info">
-                <div class="prize-card">
-                    <div class="prize-label">🎯 Цель</div>
-                    <div class="prize-value" id="target-score">50</div>
-                    <small>очков за 30 сек</small>
-                </div>
-                <div class="prize-card win">
-                    <div class="prize-label">🏆 Выигрыш</div>
-                    <div class="prize-value" id="prize-amount">1.0 TON</div>
-                    <small>x2 от ставки</small>
-                </div>
-            </div>
-
-            <div class="rules-box">
-                <h4>📋 Правила:</h4>
-                <ul>
-                    <li>Руби дерево кнопками ← →</li>
-                    <li>Избегай веток — иначе проигрыш!</li>
-                    <li>Каждый удар = +1 очко</li>
-                    <li>Набери цель за отведённое время</li>
-                </ul>
-            </div>
-
-            <button class="btn btn-primary" onclick="startGame()">▶️ НАЧАТЬ ИГРУ</button>
-        </div>
-    </div>
-
-    <div id="play-screen" class="screen">
-        <div class="time-bar">
-            <div class="time-fill" id="time-fill"></div>
-        </div>
-
-        <div class="score-board">
-            <div class="current-score" id="current-score">0</div>
-            <div class="target-display">Цель: <span id="game-target">50</span></div>
-        </div>
-
-        <div class="game-area">
-            <div class="tree-container" id="tree">
-                <div class="lumberjack left" id="lumberjack">
-                    <div class="lumberjack-body">
-                        <div class="head">👷</div>
-                        <div class="axe">🪓</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="game-controls">
-            <button class="chop-btn left" ontouchstart="doChop('left'); return false;" onmousedown="doChop('left')">←</button>
-            <button class="chop-btn right" ontouchstart="doChop('right'); return false;" onmousedown="doChop('right')">→</button>
-        </div>
-    </div>
-
-    <div id="result-screen" class="screen">
-        <div class="result-content" id="result-box">
-            <div class="result-icon" id="result-icon">🏆</div>
-            <h2 id="result-title">Победа!</h2>
-            
-            <div class="result-stats">
-                <div class="stat">
-                    <span class="stat-label">Очки:</span>
-                    <span class="stat-value" id="result-score">0</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-label">Результат:</span>
-                    <span class="stat-value" id="result-amount">+1.0 TON</span>
-                </div>
-            </div>
-
-            <div class="result-message" id="result-message">Отличная игра!</div>
-
-            <div class="result-actions">
-                <button class="btn btn-primary" onclick="openGameMenu()">🔄 Играть ещё</button>
-                <button class="btn btn-secondary" onclick="goHome()">🏠 В меню</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="deposit-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="goHome()">←</button>
-            <h2>💰 Пополнение</h2>
-        </div>
-
-        <div class="deposit-options">
-            <div class="option-card" onclick="showScreen('deposit-ton-screen')">
-                <div class="option-icon">💎</div>
-                <h3>Пополнить TON</h3>
-                <p>Отправь TON на адрес проекта</p>
-                <small>Минимум: 1 TON</small>
-            </div>
-
-            <div class="option-card" onclick="showScreen('deposit-rub-screen')">
-                <div class="option-icon">₽</div>
-                <h3>Пополнить рубли</h3>
-                <p>Перевод по СБП на OZON Банк</p>
-                <small>Минимум: 100 ₽</small>
-            </div>
-        </div>
-    </div>
-
-    <div id="deposit-ton-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="showScreen('deposit-screen')">←</button>
-            <h2>💎 Пополнить TON</h2>
-        </div>
-
-        <div class="deposit-form">
-            <div class="info-box">
-                <h4>Адрес для пополнения:</h4>
-                <div class="copy-box" onclick="copyText('UQD-U9iJRqGCZhtJRg7GDvUUP-IwhGu1jAknZXdRmxR3pSOh')">
-                    <code>UQD-U9iJRqGCZhtJRg7GDvUUP-IwhGu1jAknZXdRmxR3pSOh</code>
-                    <span class="copy-hint">📋 Нажми чтобы скопировать</span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Сколько TON отправили:</label>
-                <input type="number" id="dep-ton-amount" step="0.1" min="1" placeholder="Например: 5">
-            </div>
-
-            <div class="form-group">
-                <label>Ваш TON-адрес:</label>
-                <input type="text" id="dep-ton-addr" placeholder="UQ...">
-            </div>
-
-            <button class="btn btn-primary" onclick="submitDepositTon()">✅ Я отправил TON</button>
-            <p class="hint">Баланс будет пополнен после проверки</p>
-        </div>
-    </div>
-
-    <div id="deposit-rub-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="showScreen('deposit-screen')">←</button>
-            <h2>₽ Пополнить рубли</h2>
-        </div>
-
-        <div class="deposit-form">
-            <div class="bank-card sbp">
-                <div class="bank-header">
-                    <span class="bank-logo">OZON</span>
-                    <span class="sbp-badge">СБП</span>
-                </div>
-                <div class="bank-phone" onclick="copyText('+79941402339')">
-                    +7 (994) 140-23-39
-                    <small>📋 Нажми чтобы скопировать</small>
-                </div>
-            </div>
-
-            <div class="payment-id-box">
-                <h4>Ваш ID для перевода:</h4>
-                <div class="copy-box important">
-                    <code id="pay-id">Загрузка...</code>
-                    <span class="copy-hint">⚠️ Укажи в комментарии к переводу!</span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Сумма (₽):</label>
-                <input type="number" id="dep-rub-amount" min="100" step="100" placeholder="Например: 500">
-            </div>
-
-            <button class="btn btn-primary" onclick="submitDepositRub()">✅ Я оплатил</button>
-            <p class="hint">Проверка занимает 5-15 минут</p>
-        </div>
-    </div>
-
-    <div id="withdraw-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="goHome()">←</button>
-            <h2>💸 Вывод средств</h2>
-        </div>
-
-        <div class="withdraw-options">
-            <div class="option-card" onclick="showScreen('withdraw-ton-screen')">
-                <div class="option-icon">💎</div>
-                <h3>Вывести TON</h3>
-                <p>На ваш TON-кошелёк</p>
-                <small>Минимум: 5 TON</small>
-            </div>
-
-            <div class="option-card" onclick="showScreen('withdraw-rub-screen')">
-                <div class="option-icon">₽</div>
-                <h3>Вывести рубли</h3>
-                <p>На карту через СБП</p>
-                <small>Минимум: 500 ₽</small>
-            </div>
-        </div>
-    </div>
-
-    <div id="withdraw-ton-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="showScreen('withdraw-screen')">←</button>
-            <h2>💎 Вывод TON</h2>
-        </div>
-
-        <div class="withdraw-form">
-            <div class="balance-info">
-                Доступно: <strong id="wd-ton-bal">0.00</strong> TON
-            </div>
-
-            <div class="form-group">
-               e6c200 100%);
-    color: #000;
-    font-size: 18px;
-}
-
-.btn-secondary {
-    background: #1a1a2e;
-    color: white;
-    border: 1px solid #2a2a4a;
-}
-
-.btn-info {
-    background: transparent;
-    color: #a0a0b0;
-    border: 1px solid #2a2a4a;
-}
-
-.btn-row {
-    display: flex;
-    gap: 12px;
-}
-
-.btn-row .btn {
-    flex: 1;
-}
-
-.screen-header {
+/* Overlay fix */
+.game-overlay {
     position: fixed;
-    top: 0;
+    top: 60px;
     left: 0;
     right: 0;
-    background: rgba(15, 15, 30, 0.98);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    z-index: 1000;
-    border-bottom: 1px solid #2a2a4a;
-    padding-top: 60px;
-}
-
-.back-btn {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    color: white;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.bet-container { padding: 20px; }
-
-.section { margin-bottom: 24px; }
-
-.section label {
-    display: block;
-    color: #a0a0b0;
-    font-size: 14px;
-    margin-bottom: 12px;
-}
-
-.currency-tabs {
-    display: flex;
-    gap: 8px;
-    background: #1a1a2e;
-    padding: 4px;
-    border-radius: 12px;
-}
-
-.currency-tab {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: #a0a0b0;
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.currency-tab.active {
-    background: #ffd700;
-    color: #000;
-}
-
-.bet-amount {
-    font-size: 48px;
-    font-weight: 800;
-    text-align: center;
-    color: #ffd700;
-    margin: 20px 0;
-}
-
-.bet-slider {
-    width: 100%;
-    height: 8px;
-    border-radius: 4px;
-    background: #1a1a2e;
-    outline: none;
-    -webkit-appearance: none;
-    margin: 20px 0;
-}
-
-.bet-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: #ffd700;
-    cursor: pointer;
-}
-
-.bet-presets {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.bet-presets button {
-    flex: 1;
-    min-width: 60px;
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    color: white;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.prize-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 24px 0;
-}
-
-.prize-card {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-}
-
-.prize-card.win { border-color: #00ff88; }
-
-.prize-label {
-    font-size: 12px;
-    color: #a0a0b0;
-    margin-bottom: 8px;
-}
-
-.prize-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: #ffd700;
-}
-
-.prize-card.win .prize-value { color: #00ff88; }
-
-.rules-box {
-    background: #1a1a2e;
-    border-radius: 16px;
-    padding: 20px;
-    margin: 24px 0;
-}
-
-.rules-box li {
-    padding: 8px 0;
-    padding-left: 24px;
-    position: relative;
-    color: #a0a0b0;
-    font-size: 14px;
-    list-style: none;
-}
-
-.rules-box li:before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: #00ff88;
-}
-
-.time-bar {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: #1a1a2e;
-    z-index: 100;
-}
-
-.time-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #00ff88 0%, #ffd700 50%, #ff4757 100%);
-    width: 100%;
-    transition: width 0.1s linear;
-}
-
-.score-board {
-    text-align: center;
-    padding: 40px 20px 20px;
-}
-
-.current-score {
-    font-size: 72px;
-    font-weight: 800;
-    color: #ffd700;
-    line-height: 1;
-}
-
-.target-display {
-    margin-top: 10px;
-    color: #a0a0b0;
-    font-size: 16px;
-}
-
-.game-area {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    min-height: 300px;
-}
-
-.tree-container {
-    position: relative;
-    width: 120px;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: 4px;
-}
-
-.trunk-section {
-    width: 80px;
-    height: 60px;
-    background: linear-gradient(90deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
-    border: 3px solid #5D3A1A;
-    border-radius: 8px;
-    position: relative;
-}
-
-.branch {
-    position: absolute;
-    width: 50px;
-    height: 16px;
-    background: linear-gradient(90deg, #228B22 0%, #32CD32 100%);
-    border: 2px solid #006400;
-    border-radius: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.branch.left { left: -45px; }
-.branch.right { right: -45px; }
-
-.lumberjack {
-    position: absolute;
-    bottom: -90px;
-    width: 70px;
-    height: 80px;
-    transition: all 0.15s;
-    z-index: 10;
-}
-
-.lumberjack.left { left: -80px; }
-.lumberjack.right { right: -80px; transform: scaleX(-1); }
-
-.lumberjack-body {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, #ff6b6b 0%, #c92a2a 100%);
-    border-radius: 12px;
-    position: relative;
-}
-
-.head {
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 40px;
-}
-
-.axe {
-    position: absolute;
-    right: -25px;
-    top: 20px;
-    font-size: 30px;
-}
-
-.game-controls {
-    position: fixed;
     bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background: linear-gradient(0deg, #0f0f1e 0%, transparent 100%);
-    display: flex;
-    gap: 16px;
-    z-index: 100;
+    background: var(--bg);
+    z-index: 350;
+    display: none;
 }
 
-.chop-btn {
-    flex: 1;
-    height: 80px;
-    border: none;
-    border-radius: 20px;
-    font-size: 36px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 8px 0 rgba(0,0,0,0.3);
-}
-
-.chop-btn.left {
-    background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
-    color: white;
-}
-
-.chop-btn.right {
-    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-    color: white;
-}
-
-#result-screen {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.result-content {
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-}
-
-.result-icon { font-size: 80px; margin-bottom: 20px; }
-
-.result-content h2 {
-    font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 24px;
-}
-
-.result-content.win h2 { color: #00ff88; }
-.result-content.lose h2 { color: #ff4757; }
-
-.result-stats {
-    background: #1a1a2e;
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 24px;
-}
-
-.stat {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #2a2a4a;
-}
-
-.stat:last-child { border-bottom: none; }
-
-.stat-label { color: #a0a0b0; }
-.stat-value { font-weight: 700; font-size: 18px; }
-
-.result-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.deposit-options, .withdraw-options {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.option-card {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    border-radius: 20px;
-    padding: 24px;
-    text-align: center;
-}
-
-.option-icon { font-size: 48px; margin-bottom: 12px; }
-
-.option-card h3 { font-size: 20px; margin-bottom: 8px; }
-.option-card p { color: #a0a0b0; font-size: 14px; margin-bottom: 8px; }
-.option-card small { color: #ffd700; font-size: 12px; font-weight: 600; }
-
-.deposit-form, .withdraw-form { padding: 20px; }
-
-.info-box, .bank-card, .payment-id-box {
-    background: #1a1a2e;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.copy-box {
-    background: #0f0f1e;
-    border: 2px dashed #2a2a4a;
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-}
-
-.copy-box code {
+.game-overlay.active {
     display: block;
-    font-family: monospace;
-    font-size: 13px;
-    word-break: break-all;
-    color: #ffd700;
-    margin-bottom: 8px;
-}
-
-.copy-hint { font-size: 12px; color: #a0a0b0; }
-
-.copy-box.important {
-    border-color: #ff4757;
-    background: rgba(255, 71, 87, 0.05);
-}
-
-.copy-box.important code {
-    color: #ff4757;
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.bank-card.sbp {
-    background: linear-gradient(135deg, #0057b8 0%, #003d82 100%);
-}
-
-.bank-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
-.bank-logo { font-weight: 800; font-size: 20px; }
-
-.sbp-badge {
-    background: white;
-    color: #0057b8;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.bank-phone {
-    font-size: 22px;
-    font-weight: 700;
-    text-align: center;
-    padding: 12px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 12px;
-}
-
-.form-group { margin-bottom: 20px; }
-
-.form-group label {
-    display: block;
-    font-size: 14px;
-    color: #a0a0b0;
-    margin-bottom: 8px;
-}
-
-.form-group input, .form-group select {
-    width: 100%;
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    border-radius: 12px;
-    padding: 16px;
-    color: white;
-    font-size: 16px;
-}
-
-.balance-info {
-    background: #1a1a2e;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #a0a0b0;
-}
-
-.balance-info strong { color: #ffd700; font-size: 20px; }
-
-.hint {
-    text-align: center;
-    color: #a0a0b0;
-    font-size: 13px;
-    margin-top: 16px;
-}
-
-.history-tabs {
-    display: flex;
-    gap: 8px;
-    padding: 0 20px;
-    margin-bottom: 20px;
-    overflow-x: auto;
-}
-
-.tab-btn {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    color: #a0a0b0;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.tab-btn.active {
-    background: #ffd700;
-    color: #000;
-    border-color: #ffd700;
-}
-
-.history-list { padding: 0 20px; }
-
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: #a0a0b0;
-}
-
-.notification {
-    position: fixed;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    padding: 16px 24px;
-    border-radius: 12px;
-    z-index: 10000;
-    animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-    from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
-}
-
-.wood-chip {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: #DEB887;
-    border-radius: 2px;
-    pointer-events: none;
-    animation: chipFly 0.5s ease-out forwards;
-}
-
-@keyframes chipFly {
-    0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
-    100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); opacity: 0; }
 }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <div class="header">
-        <div class="balance-display">
-            <div class="balance-item">
+        <div class="balances">
+            <div class="balance-item ton">
                 <span>💎</span>
-                <span id="balance-ton">0.00</span> TON
+                <span id="bal-ton">0.00</span>
             </div>
-            <div class="balance-item">
+            <div class="balance-item rub">
                 <span>₽</span>
-                <span id="balance-rub">0</span>
+                <span id="bal-rub">0</span>
             </div>
         </div>
         <button class="menu-btn" onclick="goHome()">🏠</button>
     </div>
 
-    <div id="main-screen" class="screen active">
-        <div class="logo-section">
-            <div class="logo-icon">🪓</div>
+    <!-- Main Screen -->
+    <div id="screen-main" class="screen active">
+        <div class="main-header">
+            <div class="logo-big">🪓</div>
             <h1>TimberTON</h1>
-            <p class="subtitle">Руби деревья — зарабатывай TON и рубли!</p>
+            <p>Руби деревья — зарабатывай TON и рубли!</p>
         </div>
 
-        <div class="game-preview">
-            <div class="preview-tree">🌲</div>
-            <div class="preview-lumberjack">🪓</div>
+        <div class="preview-area">
+            <div class="tree-anim">🌲</div>
+            <div class="axe-anim">🪓</div>
         </div>
 
-        <div class="main-actions">
-            <button class="btn btn-primary" onclick="openGameMenu()">🎮 ИГРАТЬ</button>
-            <div class="btn-row">
-                <button class="btn btn-secondary" onclick="openDeposit()">💰 Пополнить</button>
-                <button class="btn btn-secondary" onclick="openWithdraw()">💸 Вывести</button>
-            </div>
-            <button class="btn btn-info" onclick="openHistory()">📊 История игр</button>
+        <button class="btn btn-primary" onclick="openGameMenu()">
+            🎮 НАЧАТЬ ИГРУ
+        </button>
+        
+        <div class="btn-row">
+            <button class="btn btn-secondary" onclick="openDeposit()">
+                💰 Пополнить
+            </button>
+            <button class="btn btn-secondary" onclick="openWithdraw()">
+                💸 Вывести
+            </button>
         </div>
+        
+        <button class="btn btn-secondary" onclick="openHistory()" style="margin-top: 12px;">
+            📊 История
+        </button>
     </div>
 
-    <div id="game-menu-screen" class="screen">
-        <div class="screen-header">
+    <!-- Game Menu Screen -->
+    <div id="screen-gamemenu" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
             <button class="back-btn" onclick="goHome()">←</button>
-            <h2>🎮 Новая игра</h2>
+            <h2 style="font-size: 20px;">Новая игра</h2>
         </div>
 
-        <div class="bet-container">
-            <div class="section">
-                <label>Валюта ставки:</label>
-                <div class="currency-tabs">
-                    <button class="currency-tab active" id="btn-ton" onclick="setCurrency('ton')">💎 TON</button>
-                    <button class="currency-tab" id="btn-rub" onclick="setCurrency('rub')">₽ Рубли</button>
-                </div>
-            </div>
-
-            <div class="section">
-                <label>Сумма ставки:</label>
-                <div class="bet-amount" id="bet-display">0.5 TON</div>
-                <input type="range" class="bet-slider" id="bet-slider" min="0.5" max="10" step="0.5" value="0.5" oninput="updateBet(this.value)">
-                <div class="bet-presets" id="bet-presets">
-                    <button onclick="setBetValue(0.5)">0.5</button>
-                    <button onclick="setBetValue(1)">1</button>
-                    <button onclick="setBetValue(2)">2</button>
-                    <button onclick="setBetValue(5)">5</button>
-                    <button onclick="setBetValue(10)">10</button>
-                </div>
-            </div>
-
-            <div class="prize-info">
-                <div class="prize-card">
-                    <div class="prize-label">🎯 Цель</div>
-                    <div class="prize-value" id="target-score">50</div>
-                    <small>очков за 30 сек</small>
-                </div>
-                <div class="prize-card win">
-                    <div class="prize-label">🏆 Выигрыш</div>
-                    <div class="prize-value" id="prize-amount">1.0 TON</div>
-                    <small>x2 от ставки</small>
-                </div>
-            </div>
-
-            <div class="rules-box">
-                <h4>📋 Правила:</h4>
-                <ul>
-                    <li>Руби дерево кнопками ← →</li>
-                    <li>Избегай веток — иначе проигрыш!</li>
-                    <li>Каждый удар = +1 очко</li>
-                    <li>Набери цель за отведённое время</li>
-                </ul>
-            </div>
-
-            <button class="btn btn-primary" onclick="startGame()">▶️ НАЧАТЬ ИГРУ</button>
+        <div class="section-title">Выберите валюту</div>
+        <div class="currency-tabs">
+            <button class="currency-tab active" id="tab-ton" onclick="setCurrency('ton')">
+                💎 TON
+            </button>
+            <button class="currency-tab" id="tab-rub" onclick="setCurrency('rub')">
+                ₽ Рубли
+            </button>
         </div>
+
+        <div class="section-title">Размер ставки</div>
+        <div class="bet-display">
+            <div class="bet-amount-big" id="bet-display">0.5 TON</div>
+        </div>
+        
+        <input type="range" class="bet-slider" id="bet-slider" min="0.5" max="10" step="0.5" value="0.5" oninput="updateBet(this.value)">
+        
+        <div class="bet-presets" id="bet-presets">
+            <button onclick="setBet(0.5)">0.5</button>
+            <button onclick="setBet(1)">1</button>
+            <button onclick="setBet(2)">2</button>
+            <button onclick="setBet(5)">5</button>
+            <button onclick="setBet(10)">10</button>
+        </div>
+
+        <div class="info-cards">
+            <div class="info-card">
+                <div class="label">🎯 Цель</div>
+                <div class="value" id="target-display">50</div>
+            </div>
+            <div class="info-card highlight">
+                <div class="label">🏆 Выигрыш</div>
+                <div class="value" id="prize-display">1.0 TON</div>
+            </div>
+        </div>
+
+        <div class="rules">
+            <h3>📋 Правила</h3>
+            <ul>
+                <li>Руби дерево кнопками ← →</li>
+                <li>Избегай веток — иначе проигрыш!</li>
+                <li>Каждый удар = +1 очко</li>
+                <li>Набери цель за 30 секунд</li>
+            </ul>
+        </div>
+
+        <button class="btn btn-primary" onclick="startGame()">
+            ▶️ ИГРАТЬ
+        </button>
     </div>
 
-    <div id="play-screen" class="screen">
-        <div class="time-bar">
-            <div class="time-fill" id="time-fill"></div>
+    <!-- Game Screen -->
+    <div id="screen-game" class="screen game-screen">
+        <div class="timer-bar">
+            <div class="timer-fill" id="timer-fill"></div>
+        </div>
+        
+        <div class="score-display">
+            <div class="score-big" id="game-score">0</div>
+            <div class="score-target">Цель: <span id="game-target">50</span></div>
         </div>
 
-        <div class="score-board">
-            <div class="current-score" id="current-score">0</div>
-            <div class="target-display">Цель: <span id="game-target">50</span></div>
-        </div>
-
-        <div class="game-area">
+        <div class="game-field">
             <div class="tree-container" id="tree">
                 <div class="lumberjack left" id="lumberjack">
                     <div class="lumberjack-body">
-                        <div class="head">👷</div>
-                        <div class="axe">🪓</div>
+                        <div class="lumberjack-head"></div>
+                        <div class="lumberjack-hat"></div>
+                        <div class="lumberjack-axe">🪓</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="game-controls">
-            <button class="chop-btn left" ontouchstart="doChop('left'); return false;" onmousedown="doChop('left')">←</button>
-            <button class="chop-btn right" ontouchstart="doChop('right'); return false;" onmousedown="doChop('right')">→</button>
+        <div class="chop-controls">
+            <button class="chop-btn left" id="btn-left">←</button>
+            <button class="chop-btn right" id="btn-right">→</button>
         </div>
     </div>
 
-    <div id="result-screen" class="screen">
-        <div class="result-content" id="result-box">
+    <!-- Result Screen -->
+    <div id="screen-result" class="screen result-screen">
+        <div>
             <div class="result-icon" id="result-icon">🏆</div>
-            <h2 id="result-title">Победа!</h2>
+            <h2 class="result-title" id="result-title">Победа!</h2>
             
             <div class="result-stats">
-                <div class="stat">
-                    <span class="stat-label">Очки:</span>
+                <div class="stat-row">
+                    <span class="stat-label">Очки</span>
                     <span class="stat-value" id="result-score">0</span>
                 </div>
-                <div class="stat">
-                    <span class="stat-label">Результат:</span>
-                    <span class="stat-value" id="result-amount">+1.0 TON</span>
+                <div class="stat-row">
+                    <span class="stat-label">Результат</span>
+                    <span class="stat-value" id="result-amount" style="color: var(--success);">+1.0 TON</span>
                 </div>
             </div>
 
-            <div class="result-message" id="result-message">Отличная игра!</div>
+            <p class="result-message" id="result-message">Отличная игра!</p>
 
-            <div class="result-actions">
-                <button class="btn btn-primary" onclick="openGameMenu()">🔄 Играть ещё</button>
-                <button class="btn btn-secondary" onclick="goHome()">🏠 В меню</button>
-            </div>
+            <button class="btn btn-primary" onclick="openGameMenu()" style="margin-bottom: 12px;">
+                🔄 Играть ещё
+            </button>
+            <button class="btn btn-secondary" onclick="goHome()">
+                🏠 В меню
+            </button>
         </div>
     </div>
 
-    <div id="deposit-screen" class="screen">
-        <div class="screen-header">
+    <!-- Deposit Screen -->
+    <div id="screen-deposit" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
             <button class="back-btn" onclick="goHome()">←</button>
-            <h2>💰 Пополнение</h2>
+            <h2 style="font-size: 20px;">Пополнение</h2>
         </div>
 
-        <div class="deposit-options">
-            <div class="option-card" onclick="showScreen('deposit-ton-screen')">
-                <div class="option-icon">💎</div>
-                <h3>Пополнить TON</h3>
-                <p>Отправь TON на адрес проекта</p>
-                <small>Минимум: 1 TON</small>
+        <div class="payment-options">
+            <div class="payment-card ton" onclick="openDepositTon()">
+                <div class="payment-icon">💎</div>
+                <div class="payment-info">
+                    <h3>Пополнить TON</h3>
+                    <p>Отправьте TON на адрес проекта</p>
+                </div>
             </div>
-
-            <div class="option-card" onclick="showScreen('deposit-rub-screen')">
-                <div class="option-icon">₽</div>
-                <h3>Пополнить рубли</h3>
-                <p>Перевод по СБП на OZON Банк</p>
-                <small>Минимум: 100 ₽</small>
+            
+            <div class="payment-card rub" onclick="openDepositRub()">
+                <div class="payment-icon">₽</div>
+                <div class="payment-info">
+                    <h3>Пополнить рубли</h3>
+                    <p>Перевод по СБП на OZON Банк</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="deposit-ton-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="showScreen('deposit-screen')">←</button>
-            <h2>💎 Пополнить TON</h2>
+    <!-- Deposit TON -->
+    <div id="screen-deposit-ton" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button class="back-btn" onclick="openDeposit()">←</button>
+            <h2 style="font-size: 20px;">Пополнить TON</h2>
         </div>
 
-        <div class="deposit-form">
-            <div class="info-box">
-                <h4>Адрес для пополнения:</h4>
+        <div class="form-card">
+            <div class="form-group">
+                <label>Адрес для пополнения</label>
                 <div class="copy-box" onclick="copyText('UQD-U9iJRqGCZhtJRg7GDvUUP-IwhGu1jAknZXdRmxR3pSOh')">
-                    <code>UQD-U9iJRqGCZhtJRg7GDvUUP-IwhGu1jAknZXdRmxR3pSOh</code>
-                    <span class="copy-hint">📋 Нажми чтобы скопировать</span>
+                    UQD-U9iJRqGCZhtJRg7GDvUUP-IwhGu1jAknZXdRmxR3pSOh
                 </div>
+                <div class="copy-hint">📋 Нажмите чтобы скопировать</div>
             </div>
-
-            <div class="form-group">
-                <label>Сколько TON отправили:</label>
-                <input type="number" id="dep-ton-amount" step="0.1" min="1" placeholder="Например: 5">
-            </div>
-
-            <div class="form-group">
-                <label>Ваш TON-адрес:</label>
-                <input type="text" id="dep-ton-addr" placeholder="UQ...">
-            </div>
-
-            <button class="btn btn-primary" onclick="submitDepositTon()">✅ Я отправил TON</button>
-            <p class="hint">Баланс будет пополнен после проверки</p>
         </div>
+
+        <div class="form-card">
+            <div class="form-group">
+                <label>Сколько TON отправили</label>
+                <input type="number" id="dep-ton-amount" step="0.1" min="1" placeholder="Минимум 1 TON">
+            </div>
+            
+            <div class="form-group">
+                <label>Ваш TON-адрес (для возврата)</label>
+                <input type="text" id="dep-ton-from" placeholder="UQ...">
+            </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="submitDepositTon()">
+            ✅ Я отправил TON
+        </button>
+        
+        <p class="hint-text">Баланс будет пополнен после проверки администратором</p>
     </div>
 
-    <div id="deposit-rub-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="showScreen('deposit-screen')">←</button>
-            <h2>₽ Пополнить рубли</h2>
+    <!-- Deposit RUB -->
+    <div id="screen-deposit-rub" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button class="back-btn" onclick="openDeposit()">←</button>
+            <h2 style="font-size: 20px;">Пополнить рубли</h2>
         </div>
 
-        <div class="deposit-form">
-            <div class="bank-card sbp">
-                <div class="bank-header">
-                    <span class="bank-logo">OZON</span>
-                    <span class="sbp-badge">СБП</span>
-                </div>
-                <div class="bank-phone" onclick="copyText('+79941402339')">
-                    +7 (994) 140-23-39
-                    <small>📋 Нажми чтобы скопировать</small>
-                </div>
+        <div class="form-card" style="background: linear-gradient(135deg, #0057b8, #003d82); border: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <span style="font-weight: 800; font-size: 20px;">OZON Банк</span>
+                <span style="background: white; color: #0057b8; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">СБП</span>
             </div>
-
-            <div class="payment-id-box">
-                <h4>Ваш ID для перевода:</h4>
-                <div class="copy-box important">
-                    <code id="pay-id">Загрузка...</code>
-                    <span class="copy-hint">⚠️ Укажи в комментарии к переводу!</span>
-                </div>
+            <div class="copy-box" onclick="copyText('+79941402339')" style="background: rgba(255,255,255,0.1); border: none; color: white; font-size: 22px;">
+                +7 (994) 140-23-39
             </div>
+        </div>
 
+        <div class="form-card">
             <div class="form-group">
-                <label>Сумма (₽):</label>
-                <input type="number" id="dep-rub-amount" min="100" step="100" placeholder="Например: 500">
+                <label>Ваш ID для перевода (обязательно в комментарии!)</label>
+                <div class="copy-box important-box" id="pay-id-box" onclick="copyText(document.getElementById('pay-id').textContent)">
+                    <span id="pay-id">Загрузка...</span>
+                </div>
+                <div class="copy-hint" style="color: var(--danger);">⚠️ Без этого ID платёж не будет найден!</div>
             </div>
-
-            <button class="btn btn-primary" onclick="submitDepositRub()">✅ Я оплатил</button>
-            <p class="hint">Проверка занимает 5-15 минут</p>
         </div>
+
+        <div class="form-card">
+            <div class="form-group">
+                <label>Сумма перевода (₽)</label>
+                <input type="number" id="dep-rub-amount" min="100" step="100" placeholder="Минимум 100 ₽">
+            </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="submitDepositRub()">
+            ✅ Я оплатил
+        </button>
+        
+        <p class="hint-text">Проверка занимает 5-15 минут</p>
     </div>
 
-    <div id="withdraw-screen" class="screen">
-        <div class="screen-header">
+    <!-- Withdraw Screen -->
+    <div id="screen-withdraw" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
             <button class="back-btn" onclick="goHome()">←</button>
-            <h2>💸 Вывод средств</h2>
+            <h2 style="font-size: 20px;">Вывод средств</h2>
         </div>
 
-        <div class="withdraw-options">
-            <div class="option-card" onclick="showScreen('withdraw-ton-screen')">
-                <div class="option-icon">💎</div>
-                <h3>Вывести TON</h3>
-                <p>На ваш TON-кошелёк</p>
-                <small>Минимум: 5 TON</small>
+        <div class="payment-options">
+            <div class="payment-card ton" onclick="openWithdrawTon()">
+                <div class="payment-icon">💎</div>
+                <div class="payment-info">
+                    <h3>Вывести TON</h3>
+                    <p>На ваш TON-кошелёк</p>
+                </div>
             </div>
-
-            <div class="option-card" onclick="showScreen('withdraw-rub-screen')">
-                <div class="option-icon">₽</div>
-                <h3>Вывести рубли</h3>
-                <p>На карту через СБП</p>
-                <small>Минимум: 500 ₽</small>
+            
+            <div class="payment-card rub" onclick="openWithdrawRub()">
+                <div class="payment-icon">₽</div>
+                <div class="payment-info">
+                    <h3>Вывести рубли</h3>
+                    <p>На карту через СБП</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="withdraw-ton-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="showScreen('withdraw-screen')">←</button>
-            <h2>💎 Вывод TON</h2>
+    <!-- Withdraw TON -->
+    <div id="screen-withdraw-ton" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button class="back-btn" onclick="openWithdraw()">←</button>
+            <h2 style="font-size: 20px;">Вывод TON</h2>
         </div>
 
-        <div class="withdraw-form">
-            <div class="balance-info">
-                Доступно: <strong id="wd-ton-bal">0.00</strong> TON
+        <div class="form-card">
+            <div style="text-align: center; padding: 16px; color: var(--text-muted);">
+                Доступно: <strong style="color: var(--primary); font-size: 24px;" id="wd-ton-balance">0.00</strong> TON
             </div>
+        </div>
 
+        <div class="form-card">
             <div class="form-group">
-                <label>TON-адрес:</label>
-                <input type="text" id="wd-ton-addr" placeholder="UQ...">
+                <label>TON-адрес</label>
+                <input type="text" id="wd-ton-addr" placeholder="UQ... или EQ...">
             </div>
-
+            
             <div class="form-group">
-                <label>Сумма:</label>
+                <label>Сумма</label>
                 <input type="number" id="wd-ton-amount" step="0.1" min="5" placeholder="Минимум 5 TON">
             </div>
-
-            <button class="btn btn-primary" onclick="submitWithdrawTon()">🚀 Запросить вывод</button>
-            <p class="hint">Обработка: до 24 часов</p>
         </div>
+
+        <button class="btn btn-primary" onclick="submitWithdrawTon()">
+            🚀 Запросить вывод
+        </button>
+        
+        <p class="hint-text">Обработка: до 24 часов. Комиссия: 0%</p>
     </div>
 
-    <div id="withdraw-rub-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="showScreen('withdraw-screen')">←</button>
-            <h2>₽ Вывод рублей</h2>
+    <!-- Withdraw RUB -->
+    <div id="screen-withdraw-rub" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button class="back-btn" onclick="openWithdraw()">←</button>
+            <h2 style="font-size: 20px;">Вывод рублей</h2>
         </div>
 
-        <div class="withdraw-form">
-            <div class="balance-info">
-                Доступно: <strong id="wd-rub-bal">0</strong> ₽
+        <div class="form-card">
+            <div style="text-align: center; padding: 16px; color: var(--text-muted);">
+                Доступно: <strong style="color: var(--success); font-size: 24px;" id="wd-rub-balance">0</strong> ₽
             </div>
+        </div>
 
+        <div class="form-card">
             <div class="form-group">
-                <label>Телефон (СБП):</label>
+                <label>Номер телефона (СБП)</label>
                 <input type="tel" id="wd-rub-phone" placeholder="+7 (999) 123-45-67">
             </div>
-
+            
             <div class="form-group">
-                <label>Банк:</label>
+                <label>Банк</label>
                 <select id="wd-rub-bank">
                     <option value="Сбербанк">🏦 Сбербанк</option>
                     <option value="Тинькофф">🟡 Тинькофф</option>
@@ -2181,47 +1282,782 @@ body {
                     <option value="Другой">⚪ Другой</option>
                 </select>
             </div>
-
+            
             <div class="form-group">
-                <label>Сумма (₽):</label>
-                <input type="number" id="wd-rub-amount" min="500" step="100" placeholder="Минимум 500 ₽">
-            </div>
+                <label>Сумма (₽)</label>
+                <input type="number" id="wd-rub-amount" min="500" step="100" placeholder="Минимум  position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 44px;
+    background: #fdbf60;
+    border-radius: 50%;
+    border: 3px solid #8b4513;
+}
 
-            <button class="btn btn-primary" onclick="submitWithdrawRub()">🚀 Запросить вывод</button>
-            <p class="hint">Обработка: до 24 часов</p>
+.lumberjack-hat {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 54px;
+    height: 22px;
+    background: #c92a2a;
+    border-radius: 6px;
+}
+
+.lumberjack-axe {
+    position: absolute;
+    right: -20px;
+    top: 15px;
+    font-size: 32px;
+    animation: axeChop 0.3s ease-out;
+}
+
+@keyframes axeChop {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(-45deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.chop-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 20px;
+    padding-bottom: 40px;
+}
+
+.chop-btn {
+    height: 90px;
+    border: none;
+    border-radius: 20px;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 8px 0 rgba(0,0,0,0.3), 0 16px 32px rgba(0,0,0,0.3);
+    transition: all 0.1s;
+    position: relative;
+    overflow: hidden;
+    -webkit-touch-callout: none;
+}
+
+.chop-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.chop-btn:active {
+    transform: translateY(8px);
+    box-shadow: 0 0 0 rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.chop-btn.left {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+    color: white;
+}
+
+.chop-btn.right {
+    background: linear-gradient(135deg, #4ecdc4, #44a08d);
+    color: white;
+}
+
+/* Result Screen */
+.result-screen {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 400;
+    background: var(--bg);
+}
+
+.result-screen.active {
+    display: flex !important;
+}
+
+.result-icon {
+    font-size: 100px;
+    margin-bottom: 20px;
+    animation: bounce 0.5s ease-out;
+}
+
+@keyframes bounce {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.result-title {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.result-screen.win .result-title { color: var(--success); }
+.result-screen.lose .result-title { color: var(--danger); }
+
+.result-stats {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 24px;
+    margin: 24px 0;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.stat-row:last-child { border-bottom: none; }
+
+.stat-label { color: var(--text-muted); }
+.stat-value { font-weight: 700; font-size: 18px; }
+
+.result-message {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    font-size: 16px;
+}
+
+/* Payment Screens */
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.payment-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.payment-card:active {
+    transform: scale(0.98);
+    border-color: var(--primary);
+}
+
+.payment-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.payment-card.ton .payment-icon { background: rgba(0, 136, 204, 0.2); }
+.payment-card.rub .payment-icon { background: rgba(0, 255, 136, 0.2); }
+
+.payment-info h3 {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.payment-info p {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* Forms */
+.form-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px;
+    color: var(--text);
+    font-size: 16px;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+}
+
+.copy-box {
+    background: var(--bg);
+    border: 2px dashed rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    word-break: break-all;
+    font-family: monospace;
+    font-size: 14px;
+    color: var(--primary);
+}
+
+.copy-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
+.important-box {
+    border-color: var(--danger);
+    background: rgba(255, 71, 87, 0.05);
+    color: var(--danger);
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.hint-text {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 16px;
+    line-height: 1.6;
+}
+
+/* History */
+.history-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.history-tab {
+    padding: 12px 20px;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.history-tab.active {
+    background: var(--primary);
+    color: #000;
+    border-color: var(--primary);
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.history-item {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-item .info { flex: 1; }
+.history-item .type { font-weight: 700; margin-bottom: 4px; }
+.history-item .date { font-size: 12px; color: var(--text-muted); }
+.history-item .amount { font-weight: 800; font-size: 18px; }
+.history-item .amount.positive { color: var(--success); }
+.history-item .amount.negative { color: var(--danger); }
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+/* Notification */
+.notification {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 16px 24px;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    z-index: 10000;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* Wood chips */
+.chip {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #DEB887;
+    border-radius: 2px;
+    pointer-events: none;
+    animation: chipFly 0.5s ease-out forwards;
+}
+
+@keyframes chipFly {
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); opacity: 0; }
+}
+
+/* Overlay fix */
+.game-overlay {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg);
+    z-index: 350;
+    display: none;
+}
+
+.game-overlay.active {
+    display: block;
+}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="balances">
+            <div class="balance-item ton">
+                <span>💎</span>
+                <span id="bal-ton">0.00</span>
+            </div>
+            <div class="balance-item rub">
+                <span>₽</span>
+                <span id="bal-rub">0</span>
+            </div>
+        </div>
+        <button class="menu-btn" onclick="goHome()">🏠</button>
+    </div>
+
+    <!-- Main Screen -->
+    <div id="screen-main" class="screen active">
+        <div class="main-header">
+            <div class="logo-big">🪓</div>
+            <h1>TimberTON</h1>
+            <p>Руби деревья — зарабатывай TON и рубли!</p>
+        </div>
+
+        <div class="preview-area">
+            <div class="tree-anim">🌲</div>
+            <div class="axe-anim">🪓</div>
+        </div>
+
+        <button class="btn btn-primary" onclick="openGameMenu()">
+            🎮 НАЧАТЬ ИГРУ
+        </button>
+        
+        <div class="btn-row">
+            <button class="btn btn-secondary" onclick="openDeposit()">
+                💰 Пополнить
+            </button>
+            <button class="btn btn-secondary" onclick="openWithdraw()">
+                💸 Вывести
+            </button>
+        </div>
+        
+        <button class="btn btn-secondary" onclick="openHistory()" style="margin-top: 12px;">
+            📊 История
+        </button>
+    </div>
+
+    <!-- Game Menu Screen -->
+    <div id="screen-gamemenu" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button class="back-btn" onclick="goHome()">←</button>
+            <h2 style="font-size: 20px;">Новая игра</h2>
+        </div>
+
+        <div class="section-title">Выберите валюту</div>
+        <div class="currency-tabs">
+            <button class="currency-tab active" id="tab-ton" onclick="setCurrency('ton')">
+                💎 TON
+            </button>
+            <button class="currency-tab" id="tab-rub" onclick="setCurrency('rub')">
+                ₽ Рубли
+            </button>
+        </div>
+
+        <div class="section-title">Размер ставки</div>
+        <div class="bet-display">
+            <div class="bet-amount-big" id="bet-display">0.5 TON</div>
+        </div>
+        
+        <input type="range" class="bet-slider" id="bet-slider" min="0.5" max="10" step="0.5" value="0.5" oninput="updateBet(this.value)">
+        
+        <div class="bet-presets" id="bet-presets">
+            <button onclick="setBet(0.5)">0.5</button>
+            <button onclick="setBet(1)">1</button>
+            <button onclick="setBet(2)">2</button>
+            <button onclick="setBet(5)">5</button>
+            <button onclick="setBet(10)">10</button>
+        </div>
+
+        <div class="info-cards">
+            <div class="info-card">
+                <div class="label">🎯 Цель</div>
+                <div class="value" id="target-display">50</div>
+            </div>
+            <div class="info-card highlight">
+                <div class="label">🏆 Выигрыш</div>
+                <div class="value" id="prize-display">1.0 TON</div>
+            </div>
+        </div>
+
+        <div class="rules">
+            <h3>📋 Правила</h3>
+            <ul>
+                <li>Руби дерево кнопками ← →</li>
+                <li>Избегай веток — иначе проигрыш!</li>
+                <li>Каждый удар = +1 очко</li>
+                <li>Набери цель за 30 секунд</li>
+            </ul>
+        </div>
+
+        <button class="btn btn-primary" onclick="startGame()">
+            ▶️ ИГРАТЬ
+        </button>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="screen-game" class="screen game-screen">
+        <div class="timer-bar">
+            <div class="timer-fill" id="timer-fill"></div>
+        </div>
+        
+        <div class="score-display">
+            <div class="score-big" id="game-score">0</div>
+            <div class="score-target">Цель: <span id="game-target">50</span></div>
+        </div>
+
+        <div class="game-field">
+            <div class="tree-container" id="tree">
+                <div class="lumberjack left" id="lumberjack">
+                    <div class="lumberjack-body">
+                        <div class="lumberjack-head"></div>
+                        <div class="lumberjack-hat"></div>
+                        <div class="lumberjack-axe">🪓</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chop-controls">
+            <button class="chop-btn left" id="btn-left">←</button>
+            <button class="chop-btn right" id="btn-right">→</button>
         </div>
     </div>
 
-    <div id="history-screen" class="screen">
-        <div class="screen-header">
+    <!-- Result Screen -->
+    <div id="screen-result" class="screen result-screen">
+        <div>
+            <div class="result-icon" id="result-icon">🏆</div>
+            <h2 class="result-title" id="result-title">Победа!</h2>
+            
+            <div class="result-stats">
+                <div class="stat-row">
+                    <span class="stat-label">Очки</span>
+                    <span class="stat-value" id="result-score">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Результат</span>
+                    <span class="stat-value" id="result-amount" style="color: var(--success);">+1.0 TON</span>
+                </div>
+            </div>
+
+            <p class="result-message" id="result-message">Отличная игра!</p>
+
+            <button class="btn btn-primary" onclick="openGameMenu()" style="margin-bottom: 12px;">
+                🔄 Играть ещё
+            </button>
+            <button class="btn btn-secondary" onclick="goHome()">
+                🏠 В меню
+            </button>
+        </div>
+    </div>
+
+    <!-- Deposit Screen -->
+    <div id="screen-deposit" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
             <button class="back-btn" onclick="goHome()">←</button>
-            <h2>📊 История</h2>
+            <h2 style="font-size: 20px;">Пополнение</h2>
+        </div>
+
+        <div class="payment-options">
+            <div class="payment-card ton" onclick="openDepositTon()">
+                <div class="payment-icon">💎</div>
+                <div class="payment-info">
+                    <h3>Пополнить TON</h3>
+                    <p>Отправьте TON на адрес проекта</p>
+                </div>
+            </div>
+            
+            <div class="payment-card rub" onclick="openDepositRub()">
+                <div class="payment-icon">₽</div>
+                <div class="payment-info">
+                    <h3>Пополнить рубли</h3>
+                    <p>Перевод по СБП на OZON Банк</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deposit TON -->
+    <div id="screen-deposit-ton" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button class="back-btn" onclick="openDeposit()">←</button>
+            <h2 style="font-size: 20px;">Пополнить TON</h2>
+        </div>
+
+        <div class="form-card">
+            <div class="form-group">
+                <label>Адрес для пополнения</label>
+                <div class="copy-box" onclick="copyText('UQD-U9iJRqGCZhtJRg7GDvUUP-IwhGu1jAknZXdRmxR3pSOh')">
+                    UQD-U9iJRqGCZhtJRg7GDvUUP-IwhGu1jAknZXdRmxR3pSOh
+                </div>
+                <div class="copy-hint">📋 Нажмите чтобы скопировать</div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <div class="form-group">
+                <label>Сколько TON отправили</label>
+                <input type="number" id="dep-ton-amount" step="0.1" min="1" placeholder="Минимум 1 TON">
+            </div>
+            
+            <div class="form-group">
+                <label>Ваш TON-адрес (для возврата)</label>
+                <input type="text" id="dep-ton-from" placeholder="UQ...">
+            </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="submitDepositTon()">
+            ✅ Я отправил TON
+        </button>
+        
+        <p class="hint-text">Баланс будет пополнен после проверки администратором</p>
+    </div>
+
+    <!-- Deposit RUB -->
+    <div id="screen-deposit-rub" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button class="back-btn" onclick="openDeposit()">←</button>
+            <h2 style="font-size: 20px;">Пополнить рубли</h2>
+        </div>
+
+        <div class="form-card" style="background: linear-gradient(135deg, #0057b8, #003d82); border: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <span style="font-weight: 800; font-size: 20px;">OZON Банк</span>
+                <span style="background: white; color: #0057b8; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">СБП</span>
+            </div>
+            <div class="copy-box" onclick="copyText('+79941402339')" style="background: rgba(255,255,255,0.1); border: none; color: white; font-size: 22px;">
+                +7 (994) 140-23-39
+            </div>
+        </div>
+
+        <div class="form-card">
+            <div class="form-group">
+                <label>Ваш ID для перевода (обязательно в комментарии!)</label>
+                <div class="copy-box important-box" id="pay-id-box" onclick="copyText(document.getElementById('pay-id').textContent)">
+                    <span id="pay-id">Загрузка...</span>
+                </div>
+                <div class="copy-hint" style="color: var(--danger);">⚠️ Без этого ID платёж не будет найден!</div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <div class="form-group">
+                <label>Сумма перевода (₽)</label>
+                <input type="number" id="dep-rub-amount" min="100" step="100" placeholder="Минимум 100 ₽">
+            </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="submitDepositRub()">
+            ✅ Я оплатил
+        </button>
+        
+        <p class="hint-text">Проверка занимает 5-15 минут</p>
+    </div>
+
+    <!-- Withdraw Screen -->
+    <div id="screen-withdraw" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button class="back-btn" onclick="goHome()">←</button>
+            <h2 style="font-size: 20px;">Вывод средств</h2>
+        </div>
+
+        <div class="payment-options">
+            <div class="payment-card ton" onclick="openWithdrawTon()">
+                <div class="payment-icon">💎</div>
+                <div class="payment-info">
+                    <h3>Вывести TON</h3>
+                    <p>На ваш TON-кошелёк</p>
+                </div>
+            </div>
+            
+            <div class="payment-card rub" onclick="openWithdrawRub()">
+                <div class="payment-icon">₽</div>
+                <div class="payment-info">
+                    <h3>Вывести рубли</h3>
+                    <p>На карту через СБП</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw TON -->
+    <div id="screen-withdraw-ton" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button class="back-btn" onclick="openWithdraw()">←</button>
+            <h2 style="font-size: 20px;">Вывод TON</h2>
+        </div>
+
+        <div class="form-card">
+            <div style="text-align: center; padding: 16px; color: var(--text-muted);">
+                Доступно: <strong style="color: var(--primary); font-size: 24px;" id="wd-ton-balance">0.00</strong> TON
+            </div>
+        </div>
+
+        <div class="form-card">
+            <div class="form-group">
+                <label>TON-адрес</label>
+                <input type="text" id="wd-ton-addr" placeholder="UQ... или EQ...">
+            </div>
+            
+            <div class="form-group">
+                <label>Сумма</label>
+                <input type="number" id="wd-ton-amount" step="0.1" min="5" placeholder="Минимум 5 TON">
+            </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="submitWithdrawTon()">
+            🚀 Запросить вывод
+        </button>
+        
+        <p class="hint-text">Обработка: до 24 часов. Комиссия: 0%</p>
+    </div>
+
+    <!-- Withdraw RUB -->
+    <div id="screen-withdraw-rub" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button class="back-btn" onclick="openWithdraw()">←</button>
+            <h2 style="font-size: 20px;">Вывод рублей</h2>
+        </div>
+
+        <div class="form-card">
+            <div style="text-align: center; padding: 16px; color: var(--text-muted);">
+                Доступно: <strong style="color: var(--success); font-size: 24px;" id="wd-rub-balance">0</strong> ₽
+            </div>
+        </div>
+
+        <div class="form-card">
+            <div class="form-group">
+                <label>Номер телефона (СБП)</label>
+                <input type="tel" id="wd-rub-phone" placeholder="+7 (999) 123-45-67">
+            </div>
+            
+            <div class="form-group">
+                <label>Банк</label>
+                <select id="wd-rub-bank">
+                    <option value="Сбербанк">🏦 Сбербанк</option>
+                    <option value="Тинькофф">🟡 Тинькофф</option>
+                    <option value="ВТБ">🔵 ВТБ</option>
+                    <option value="Альфа-Банк">🟣 Альфа-Банк</option>
+                    <option value="Райффайзен">🟢 Райффайзен</option>
+                    <option value="Другой">⚪ Другой</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Сумма (₽)</label>
+                <input type="number" id="wd-rub-amount" min="500" step="100" placeholder="Минимум 500 ₽">
+            </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="submitWithdrawRub()">
+            🚀 Запросить вывод
+        </button>
+        
+        <p class="hint-text">Обработка: до 24 часов. Комиссия: 0%</p>
+    </div>
+
+    <!-- History Screen -->
+    <div id="screen-history" class="screen">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <button class="back-btn" onclick="goHome()">←</button>
+            <h2 style="font-size: 20px;">История</h2>
         </div>
 
         <div class="history-tabs">
-            <button class="tab-btn active" id="hist-games" onclick="switchTab('games')">🎮 Игры</button>
-            <button class="tab-btn" id="hist-deps" onclick="switchTab('deposits')">💰 Пополнения</button>
-            <button class="tab-btn" id="hist-wds" onclick="switchTab('withdrawals')">💸 Выводы</button>
+            <button class="history-tab active" onclick="setHistoryTab('games', this)">🎮 Игры</button>
+            <button class="history-tab" onclick="setHistoryTab('deposits', this)">💰 Пополнения</button>
+            <button class="history-tab" onclick="setHistoryTab('withdrawals', this)">💸 Выводы</button>
         </div>
 
-        <div class="history-list" id="history-content">
+        <div class="history-list" id="history-list">
             <div class="empty-state">Нет записей</div>
         </div>
     </div>
 
-    <div id="notification" class="notification hidden">
+    <!-- Notification -->
+    <div id="notification" class="notification">
         <span id="notif-text"></span>
     </div>
 
     <script>
-// Глобальные переменные
+// Telegram WebApp
+const tg = window.Telegram.WebApp;
+tg.expand();
+tg.ready();
+
+// User data
 let user = {
-    id: 'demo',
+    id: tg.initDataUnsafe?.user?.id?.toString() || 'demo_' + Date.now(),
+    username: tg.initDataUnsafe?.user?.username || 'player',
     balanceTon: 10.00,
-    balanceRub: 1000,
-    username: 'player'
+    balanceRub: 1000
 };
 
+// Game state
 let game = {
     active: false,
     score: 0,
@@ -2234,70 +2070,68 @@ let game = {
     tree: []
 };
 
+// History
 let historyData = {
     games: [],
     deposits: [],
     withdrawals: []
 };
 
-// Инициализация Telegram
-let tg = null;
-try {
-    tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.ready();
-    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        user.id = tg.initDataUnsafe.user.id.toString();
-        user.username = tg.initDataUnsafe.user.username || 'player';
-    }
-} catch(e) {
-    console.log('Telegram WebApp not available');
-}
-
-// Навигация
+// Screen navigation - ИСПРАВЛЕНО
 function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+    // Скрываем ВСЕ экраны
+    document.querySelectorAll('.screen').forEach(function(s) {
+        s.classList.remove('active');
+    });
     
-    if (id === 'deposit-rub-screen') {
+    // Показываем нужный
+    const target = document.getElementById('screen-' + id);
+    if (target) {
+        target.classList.add('active');
+    }
+    
+    // Специальные действия для экранов
+    if (id === 'deposit-rub') {
         generatePayId();
-    } else if (id === 'withdraw-ton-screen') {
-        document.getElementById('wd-ton-bal').textContent = user.balanceTon.toFixed(2);
-    } else if (id === 'withdraw-rub-screen') {
-        document.getElementById('wd-rub-bal').textContent = user.balanceRub;
-    } else if (id === 'history-screen') {
+    } else if (id === 'withdraw-ton') {
+        document.getElementById('wd-ton-balance').textContent = user.balanceTon.toFixed(2);
+    } else if (id === 'withdraw-rub') {
+        document.getElementById('wd-rub-balance').textContent = user.balanceRub;
+    } else if (id === 'history') {
         renderHistory();
     }
 }
 
 function goHome() {
-    showScreen('main-screen');
+    // Останавливаем игру если активна
+    if (game.active) {
+        endGame(false);
+    }
+    showScreen('main');
     updateBalance();
 }
 
 function openGameMenu() {
-    showScreen('game-menu-screen');
+    showScreen('gamemenu');
     setCurrency('ton');
 }
 
-function openDeposit() {
-    showScreen('deposit-screen');
+function openDeposit() { showScreen('deposit'); }
+function openDepositTon() { showScreen('deposit-ton'); }
+function openDepositRub() { showScreen('deposit-rub'); }
+function openWithdraw() { showScreen('withdraw'); }
+function openWithdrawTon() { showScreen('withdraw-ton'); }
+function openWithdrawRub() { showScreen('withdraw-rub'); }
+function openHistory() { 
+    showScreen('history'); 
+    setHistoryTab('games', document.querySelector('.history-tab'));
 }
 
-function openWithdraw() {
-    showScreen('withdraw-screen');
-}
-
-function openHistory() {
-    showScreen('history-screen');
-    switchTab('games');
-}
-
-// Игра - меню ставок
+// Currency & Betting
 function setCurrency(curr) {
     game.currency = curr;
-    document.getElementById('btn-ton').classList.toggle('active', curr === 'ton');
-    document.getElementById('btn-rub').classList.toggle('active', curr === 'rub');
+    document.getElementById('tab-ton').classList.toggle('active', curr === 'ton');
+    document.getElementById('tab-rub').classList.toggle('active', curr === 'rub');
     
     const isTon = curr === 'ton';
     const slider = document.getElementById('bet-slider');
@@ -2308,14 +2142,10 @@ function setCurrency(curr) {
     slider.step = isTon ? 0.5 : 50;
     slider.value = isTon ? 0.5 : 50;
     
-    presets.innerHTML = '';
     const vals = isTon ? [0.5, 1, 2, 5, 10] : [50, 100, 250, 500, 1000];
-    vals.forEach(v => {
-        const b = document.createElement('button');
-        b.textContent = v;
-        b.onclick = function() { setBetValue(v); };
-        presets.appendChild(b);
-    });
+    presets.innerHTML = vals.map(function(v) { 
+        return '<button onclick="setBet(' + v + ')">' + v + '</button>';
+    }).join('');
     
     updateBet(slider.value);
 }
@@ -2327,18 +2157,18 @@ function updateBet(val) {
     
     const target = Math.floor(30 + (game.bet * (game.currency === 'ton' ? 20 : 0.4)));
     game.target = target;
-    document.getElementById('target-score').textContent = target;
+    document.getElementById('target-display').textContent = target;
     
     const prize = game.bet * 2;
-    document.getElementById('prize-amount').textContent = prize + sym;
+    document.getElementById('prize-display').textContent = prize + sym;
 }
 
-function setBetValue(val) {
+function setBet(val) {
     document.getElementById('bet-slider').value = val;
     updateBet(val);
 }
 
-// Игровой процесс
+// Game logic - ИСПРАВЛЕНО
 function startGame() {
     const bal = game.currency === 'ton' ? user.balanceTon : user.balanceRub;
     if (bal < game.bet) {
@@ -2346,27 +2176,40 @@ function startGame() {
         return;
     }
     
+    // Списываем ставку
     if (game.currency === 'ton') user.balanceTon -= game.bet;
     else user.balanceRub -= game.bet;
     updateBalance();
     
+    // Сбрасываем состояние игры
     game.active = true;
     game.score = 0;
     game.timeLeft = 30;
     game.tree = [];
+    game.position = 'left';
     
-    showScreen('play-screen');
-    document.getElementById('current-score').textContent = '0';
+    // Показываем экран игры
+    showScreen('game');
+    
+    // Обновляем UI
+    document.getElementById('game-score').textContent = '0';
     document.getElementById('game-target').textContent = game.target;
-    document.getElementById('time-fill').style.width = '100%';
+    document.getElementById('timer-fill').style.width = '100%';
     
+    // Сбрасываем позицию лесоруба
+    const lumberjack = document.getElementById('lumberjack');
+    lumberjack.className = 'lumberjack left';
+    
+    // Генерируем дерево
     generateTree();
     
+    // Запускаем таймер
+    if (game.timer) clearInterval(game.timer);
     game.timer = setInterval(function() {
+        if (!game.active) return;
         game.timeLeft -= 0.1;
-        const pct = (game.timeLeft / 30) * 100;
-        document.getElementById('time-fill').style.width = pct + '%';
-        
+        const pct = Math.max(0, (game.timeLeft / 30) * 100);
+        document.getElementById('timer-fill').style.width = pct + '%';
         if (game.timeLeft <= 0) {
             endGame(false);
         }
@@ -2375,17 +2218,19 @@ function startGame() {
 
 function generateTree() {
     const container = document.getElementById('tree');
-    const sections = container.querySelectorAll('.trunk-section');
-    sections.forEach(s => s.remove());
-    
+    // Удаляем все секции кроме лесоруба
+    container.querySelectorAll('.trunk-section').forEach(function(e) { 
+        e.remove(); 
+    });
     game.tree = [];
     
+    // Создаем 6 секций
     for (let i = 0; i < 6; i++) {
         const div = document.createElement('div');
         div.className = 'trunk-section';
         
-        const hasBranch = Math.random() > 0.3 && i > 0;
-        if (hasBranch) {
+        // Добавляем ветки (кроме нижней секции)
+        if (Math.random() > 0.4 && i > 0) {
             const side = Math.random() > 0.5 ? 'left' : 'right';
             const b = document.createElement('div');
             b.className = 'branch ' + side;
@@ -2394,7 +2239,6 @@ function generateTree() {
         } else {
             game.tree.push(null);
         }
-        
         container.appendChild(div);
     }
 }
@@ -2402,29 +2246,34 @@ function generateTree() {
 function doChop(side) {
     if (!game.active) return;
     
-    const bottom = game.tree[0];
-    if (bottom === side) {
+    // Проверяем столкновение с веткой
+    if (game.tree[0] === side) {
         endGame(false);
         return;
     }
     
+    // Увеличиваем счет
     game.score++;
-    document.getElementById('current-score').textContent = game.score;
+    game.timeLeft = Math.min(game.timeLeft + 0.5, 30); // Бонус времени
+    document.getElementById('game-score').textContent = game.score;
     
-    game.timeLeft = Math.min(game.timeLeft + 1, 30);
-    
+    // Анимируем лесоруба
     const lumberjack = document.getElementById('lumberjack');
     lumberjack.className = 'lumberjack ' + side;
     
+    // Создаем щепки
+    createChips(side);
+    
+    // Удаляем нижнюю секцию
     const container = document.getElementById('tree');
     const secs = container.querySelectorAll('.trunk-section');
     if (secs.length > 0) secs[0].remove();
     game.tree.shift();
     
+    // Добавляем новую секцию сверху
     const div = document.createElement('div');
     div.className = 'trunk-section';
-    const hasB = Math.random() > 0.3;
-    if (hasB) {
+    if (Math.random() > 0.4) {
         const bs = Math.random() > 0.5 ? 'left' : 'right';
         const b = document.createElement('div');
         b.className = 'branch ' + bs;
@@ -2435,14 +2284,39 @@ function doChop(side) {
     }
     container.appendChild(div);
     
+    // Проверяем победу
     if (game.score >= game.target) {
         endGame(true);
     }
 }
 
+function createChips(side) {
+    const container = document.getElementById('tree');
+    for (let i = 0; i < 5; i++) {
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        chip.style.left = '60px';
+        chip.style.top = '200px';
+        const angle = (Math.random() - 0.5) * 60 + (side === 'left' ? -30 : 30);
+        const dist = 50 + Math.random() * 100;
+        chip.style.setProperty('--tx', Math.sin(angle * Math.PI / 180) * dist + 'px');
+        chip.style.setProperty('--ty', -Math.cos(angle * Math.PI / 180) * dist - 50 + 'px');
+        chip.style.setProperty('--rot', Math.random() * 720 + 'deg');
+        container.appendChild(chip);
+        setTimeout(function() { 
+            if (chip.parentNode) chip.remove(); 
+        }, 500);
+    }
+}
+
 function endGame(win) {
+    if (!game.active && win === false && game.score === 0) return; // Уже остановлена
+    
     game.active = false;
-    clearInterval(game.timer);
+    if (game.timer) {
+        clearInterval(game.timer);
+        game.timer = null;
+    }
     
     const sym = game.currency === 'ton' ? ' TON' : ' ₽';
     let prize = 0;
@@ -2455,6 +2329,7 @@ function endGame(win) {
     
     updateBalance();
     
+    // Сохраняем в историю
     historyData.games.unshift({
         date: new Date(),
         bet: game.bet,
@@ -2464,41 +2339,42 @@ function endGame(win) {
         prize: win ? prize : 0
     });
     
-    const box = document.getElementById('result-box');
-    const icon = document.getElementById('result-icon');
-    const title = document.getElementById('result-title');
-    const msg = document.getElementById('result-message');
+    // Обновляем экран результата
+    const screen = document.getElementById('screen-result');
+    screen.className = 'screen result-screen active ' + (win ? 'win' : 'lose');
+    document.getElementById('result-icon').textContent = win ? '🏆' : '💀';
+    document.getElementById('result-title').textContent = win ? 'Победа!' : 'Поражение!';
+    document.getElementById('result-score').textContent = game.score;
     
+    const amountEl = document.getElementById('result-amount');
     if (win) {
-        box.className = 'result-content win';
-        icon.textContent = '🏆';
-        title.textContent = 'Победа!';
-        document.getElementById('result-amount').textContent = '+' + prize + sym;
-        msg.textContent = 'Отличная игра! Продолжай в том же духе!';
+        amountEl.textContent = '+' + prize + sym;
+        amountEl.style.color = 'var(--success)';
     } else {
-        box.className = 'result-content lose';
-        icon.textContent = '💀';
-        title.textContent = 'Поражение!';
-        document.getElementById('result-amount').textContent = '-' + game.bet + sym;
-        msg.textContent = 'Не сдавайся! Попробуй ещё раз!';
+        amountEl.textContent = '-' + game.bet + sym;
+        amountEl.style.color = 'var(--danger)';
     }
     
-    document.getElementById('result-score').textContent = game.score;
-    showScreen('result-screen');
+    document.getElementById('result-message').textContent = win ? 
+        'Отличная игра! Продолжай в том же духе!' : 
+        'Не сдавайся! Попробуй ещё раз!';
+    
+    // Показываем экран результата
+    showScreen('result');
 }
 
-// Пополнение
+// Payments
 function generatePayId() {
-    const id = 'SBP_' + user.id + '_' + Date.now().toString().slice(-6);
+    const id = 'SBP_' + user.id.slice(-6) + '_' + Date.now().toString().slice(-6);
     document.getElementById('pay-id').textContent = id;
 }
 
 function submitDepositTon() {
     const amt = parseFloat(document.getElementById('dep-ton-amount').value);
-    const addr = document.getElementById('dep-ton-addr').value;
+    const addr = document.getElementById('dep-ton-from').value;
     
     if (!amt || amt < 1) { notify('Минимум 1 TON'); return; }
-    if (!addr) { notify('Укажите адрес'); return; }
+    if (!addr) { notify('Укажите ваш адрес'); return; }
     
     historyData.deposits.unshift({
         date: new Date(),
@@ -2513,7 +2389,6 @@ function submitDepositTon() {
 
 function submitDepositRub() {
     const amt = parseFloat(document.getElementById('dep-rub-amount').value);
-    
     if (!amt || amt < 100) { notify('Минимум 100 ₽'); return; }
     
     historyData.deposits.unshift({
@@ -2527,7 +2402,6 @@ function submitDepositRub() {
     goHome();
 }
 
-// Вывод
 function submitWithdrawTon() {
     const addr = document.getElementById('wd-ton-addr').value;
     const amt = parseFloat(document.getElementById('wd-ton-amount').value);
@@ -2572,1376 +2446,63 @@ function submitWithdrawRub() {
     goHome();
 }
 
-// История
-function switchTab(tab) {
-    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-    document.getElementById('hist-' + (tab === 'deposits' ? 'deps' : (tab === 'withdrawals' ? 'wds' : 'games'))).classList.add('active');
+// History - ИСПРАВЛЕНО
+function setHistoryTab(tab, element) {
+    // Убираем active со всех табов
+    document.querySelectorAll('.history-tab').forEach(function(t) { 
+        t.classList.remove('active'); 
+    });
+    // Добавляем нажатому
+    if (element) element.classList.add('active');
+    
     renderHistory(tab);
 }
 
 function renderHistory(tab) {
     tab = tab || 'games';
-    const container = document.getElementById('history-content');
+    const list = document.getElementById('history-list');
     const data = historyData[tab];
     
     if (!data || data.length === 0) {
-        container.innerHTML = '<div class="empty-state">Нет записей</div>';
+        list.innerHTML = '<div class="empty-state">Нет записей</div>';
         return;
     }
     
-    container.innerHTML = '';
-    data.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'history-item';
-        
+    list.innerHTML = data.map(function(item) {
         if (tab === 'games') {
-            div.innerHTML = `
-                <div class="info">
-                    <div class="type">${item.win ? '✅ Победа' : '❌ Поражение'}</div>
-                    <div class="date">${item.date.toLocaleString()}</div>
-                </div>
-                <div class="amount ${item.win ? 'positive' : 'negative'}">
-                    ${item.win ? '+' : '-'}${item.bet} ${item.currency.toUpperCase()}
-                </div>
-            `;
+            return '<div class="history-item">' +
+                '<div class="info">' +
+                    '<div class="type">' + (item.win ? '✅ Победа' : '❌ Поражение') + '</div>' +
+                    '<div class="date">' + item.date.toLocaleString() + '</div>' +
+                '</div>' +
+                '<div class="amount ' + (item.win ? 'positive' : 'negative') + '">' +
+                    (item.win ? '+' : '-') + item.bet + ' ' + item.currency.toUpperCase() +
+                '</div>' +
+            '</div>';
         } else {
-            div.innerHTML = `
-                <div class="info">
-                    <div class="type">${tab === 'deposits' ? '💰 Пополнение' : '💸 Вывод'}</div>
-                    <div class="date">${item.date.toLocaleString()}</div>
-                </div>
-                <div class="amount ${tab === 'deposits' ? 'positive' : 'negativee6c200 100%);
-    color: #000;
-    font-size: 18px;
-}
-
-.btn-secondary {
-    background: #1a1a2e;
-    color: white;
-    border: 1px solid #2a2a4a;
-}
-
-.btn-info {
-    background: transparent;
-    color: #a0a0b0;
-    border: 1px solid #2a2a4a;
-}
-
-.btn-row {
-    display: flex;
-    gap: 12px;
-}
-
-.btn-row .btn {
-    flex: 1;
-}
-
-.screen-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(15, 15, 30, 0.98);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    z-index: 1000;
-    border-bottom: 1px solid #2a2a4a;
-    padding-top: 60px;
-}
-
-.back-btn {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    color: white;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.bet-container { padding: 20px; }
-
-.section { margin-bottom: 24px; }
-
-.section label {
-    display: block;
-    color: #a0a0b0;
-    font-size: 14px;
-    margin-bottom: 12px;
-}
-
-.currency-tabs {
-    display: flex;
-    gap: 8px;
-    background: #1a1a2e;
-    padding: 4px;
-    border-radius: 12px;
-}
-
-.currency-tab {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: #a0a0b0;
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.currency-tab.active {
-    background: #ffd700;
-    color: #000;
-}
-
-.bet-amount {
-    font-size: 48px;
-    font-weight: 800;
-    text-align: center;
-    color: #ffd700;
-    margin: 20px 0;
-}
-
-.bet-slider {
-    width: 100%;
-    height: 8px;
-    border-radius: 4px;
-    background: #1a1a2e;
-    outline: none;
-    -webkit-appearance: none;
-    margin: 20px 0;
-}
-
-.bet-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: #ffd700;
-    cursor: pointer;
-}
-
-.bet-presets {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.bet-presets button {
-    flex: 1;
-    min-width: 60px;
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    color: white;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.prize-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 24px 0;
-}
-
-.prize-card {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-}
-
-.prize-card.win { border-color: #00ff88; }
-
-.prize-label {
-    font-size: 12px;
-    color: #a0a0b0;
-    margin-bottom: 8px;
-}
-
-.prize-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: #ffd700;
-}
-
-.prize-card.win .prize-value { color: #00ff88; }
-
-.rules-box {
-    background: #1a1a2e;
-    border-radius: 16px;
-    padding: 20px;
-    margin: 24px 0;
-}
-
-.rules-box li {
-    padding: 8px 0;
-    padding-left: 24px;
-    position: relative;
-    color: #a0a0b0;
-    font-size: 14px;
-    list-style: none;
-}
-
-.rules-box li:before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: #00ff88;
-}
-
-.time-bar {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: #1a1a2e;
-    z-index: 100;
-}
-
-.time-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #00ff88 0%, #ffd700 50%, #ff4757 100%);
-    width: 100%;
-    transition: width 0.1s linear;
-}
-
-.score-board {
-    text-align: center;
-    padding: 40px 20px 20px;
-}
-
-.current-score {
-    font-size: 72px;
-    font-weight: 800;
-    color: #ffd700;
-    line-height: 1;
-}
-
-.target-display {
-    margin-top: 10px;
-    color: #a0a0b0;
-    font-size: 16px;
-}
-
-.game-area {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    min-height: 300px;
-}
-
-.tree-container {
-    position: relative;
-    width: 120px;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: 4px;
-}
-
-.trunk-section {
-    width: 80px;
-    height: 60px;
-    background: linear-gradient(90deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
-    border: 3px solid #5D3A1A;
-    border-radius: 8px;
-    position: relative;
-}
-
-.branch {
-    position: absolute;
-    width: 50px;
-    height: 16px;
-    background: linear-gradient(90deg, #228B22 0%, #32CD32 100%);
-    border: 2px solid #006400;
-    border-radius: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.branch.left { left: -45px; }
-.branch.right { right: -45px; }
-
-.lumberjack {
-    position: absolute;
-    bottom: -90px;
-    width: 70px;
-    height: 80px;
-    transition: all 0.15s;
-    z-index: 10;
-}
-
-.lumberjack.left { left: -80px; }
-.lumberjack.right { right: -80px; transform: scaleX(-1); }
-
-.lumberjack-body {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, #ff6b6b 0%, #c92a2a 100%);
-    border-radius: 12px;
-    position: relative;
-}
-
-.head {
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 40px;
-}
-
-.axe {
-    position: absolute;
-    right: -25px;
-    top: 20px;
-    font-size: 30px;
-}
-
-.game-controls {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background: linear-gradient(0deg, #0f0f1e 0%, transparent 100%);
-    display: flex;
-    gap: 16px;
-    z-index: 100;
-}
-
-.chop-btn {
-    flex: 1;
-    height: 80px;
-    border: none;
-    border-radius: 20px;
-    font-size: 36px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 8px 0 rgba(0,0,0,0.3);
-}
-
-.chop-btn.left {
-    background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
-    color: white;
-}
-
-.chop-btn.right {
-    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-    color: white;
-}
-
-#result-screen {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.result-content {
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-}
-
-.result-icon { font-size: 80px; margin-bottom: 20px; }
-
-.result-content h2 {
-    font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 24px;
-}
-
-.result-content.win h2 { color: #00ff88; }
-.result-content.lose h2 { color: #ff4757; }
-
-.result-stats {
-    background: #1a1a2e;
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 24px;
-}
-
-.stat {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #2a2a4a;
-}
-
-.stat:last-child { border-bottom: none; }
-
-.stat-label { color: #a0a0b0; }
-.stat-value { font-weight: 700; font-size: 18px; }
-
-.result-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.deposit-options, .withdraw-options {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.option-card {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    border-radius: 20px;
-    padding: 24px;
-    text-align: center;
-}
-
-.option-icon { font-size: 48px; margin-bottom: 12px; }
-
-.option-card h3 { font-size: 20px; margin-bottom: 8px; }
-.option-card p { color: #a0a0b0; font-size: 14px; margin-bottom: 8px; }
-.option-card small { color: #ffd700; font-size: 12px; font-weight: 600; }
-
-.deposit-form, .withdraw-form { padding: 20px; }
-
-.info-box, .bank-card, .payment-id-box {
-    background: #1a1a2e;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.copy-box {
-    background: #0f0f1e;
-    border: 2px dashed #2a2a4a;
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-}
-
-.copy-box code {
-    display: block;
-    font-family: monospace;
-    font-size: 13px;
-    word-break: break-all;
-    color: #ffd700;
-    margin-bottom: 8px;
-}
-
-.copy-hint { font-size: 12px; color: #a0a0b0; }
-
-.copy-box.important {
-    border-color: #ff4757;
-    background: rgba(255, 71, 87, 0.05);
-}
-
-.copy-box.important code {
-    color: #ff4757;
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.bank-card.sbp {
-    background: linear-gradient(135deg, #0057b8 0%, #003d82 100%);
-}
-
-.bank-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
-.bank-logo { font-weight: 800; font-size: 20px; }
-
-.sbp-badge {
-    background: white;
-    color: #0057b8;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.bank-phone {
-    font-size: 22px;
-    font-weight: 700;
-    text-align: center;
-    padding: 12px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 12px;
-}
-
-.form-group { margin-bottom: 20px; }
-
-.form-group label {
-    display: block;
-    font-size: 14px;
-    color: #a0a0b0;
-    margin-bottom: 8px;
-}
-
-.form-group input, .form-group select {
-    width: 100%;
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    border-radius: 12px;
-    padding: 16px;
-    color: white;
-    font-size: 16px;
-}
-
-.balance-info {
-    background: #1a1a2e;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #a0a0b0;
-}
-
-.balance-info strong { color: #ffd700; font-size: 20px; }
-
-.hint {
-    text-align: center;
-    color: #a0a0b0;
-    font-size: 13px;
-    margin-top: 16px;
-}
-
-.history-tabs {
-    display: flex;
-    gap: 8px;
-    padding: 0 20px;
-    margin-bottom: 20px;
-    overflow-x: auto;
-}
-
-.tab-btn {
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    color: #a0a0b0;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.tab-btn.active {
-    background: #ffd700;
-    color: #000;
-    border-color: #ffd700;
-}
-
-.history-list { padding: 0 20px; }
-
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: #a0a0b0;
-}
-
-.notification {
-    position: fixed;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #1a1a2e;
-    border: 1px solid #2a2a4a;
-    padding: 16px 24px;
-    border-radius: 12px;
-    z-index: 10000;
-    animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-    from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
-}
-
-.wood-chip {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: #DEB887;
-    border-radius: 2px;
-    pointer-events: none;
-    animation: chipFly 0.5s ease-out forwards;
-}
-
-@keyframes chipFly {
-    0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
-    100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); opacity: 0; }
-}
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="balance-display">
-            <div class="balance-item">
-                <span>💎</span>
-                <span id="balance-ton">0.00</span> TON
-            </div>
-            <div class="balance-item">
-                <span>₽</span>
-                <span id="balance-rub">0</span>
-            </div>
-        </div>
-        <button class="menu-btn" onclick="goHome()">🏠</button>
-    </div>
-
-    <div id="main-screen" class="screen active">
-        <div class="logo-section">
-            <div class="logo-icon">🪓</div>
-            <h1>TimberTON</h1>
-            <p class="subtitle">Руби деревья — зарабатывай TON и рубли!</p>
-        </div>
-
-        <div class="game-preview">
-            <div class="preview-tree">🌲</div>
-            <div class="preview-lumberjack">🪓</div>
-        </div>
-
-        <div class="main-actions">
-            <button class="btn btn-primary" onclick="openGameMenu()">🎮 ИГРАТЬ</button>
-            <div class="btn-row">
-                <button class="btn btn-secondary" onclick="openDeposit()">💰 Пополнить</button>
-                <button class="btn btn-secondary" onclick="openWithdraw()">💸 Вывести</button>
-            </div>
-            <button class="btn btn-info" onclick="openHistory()">📊 История игр</button>
-        </div>
-    </div>
-
-    <div id="game-menu-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="goHome()">←</button>
-            <h2>🎮 Новая игра</h2>
-        </div>
-
-        <div class="bet-container">
-            <div class="section">
-                <label>Валюта ставки:</label>
-                <div class="currency-tabs">
-                    <button class="currency-tab active" id="btn-ton" onclick="setCurrency('ton')">💎 TON</button>
-                    <button class="currency-tab" id="btn-rub" onclick="setCurrency('rub')">₽ Рубли</button>
-                </div>
-            </div>
-
-            <div class="section">
-                <label>Сумма ставки:</label>
-                <div class="bet-amount" id="bet-display">0.5 TON</div>
-                <input type="range" class="bet-slider" id="bet-slider" min="0.5" max="10" step="0.5" value="0.5" oninput="updateBet(this.value)">
-                <div class="bet-presets" id="bet-presets">
-                    <button onclick="setBetValue(0.5)">0.5</button>
-                    <button onclick="setBetValue(1)">1</button>
-                    <button onclick="setBetValue(2)">2</button>
-                    <button onclick="setBetValue(5)">5</button>
-                    <button onclick="setBetValue(10)">10</button>
-                </div>
-            </div>
-
-            <div class="prize-info">
-                <div class="prize-card">
-                    <div class="prize-label">🎯 Цель</div>
-                    <div class="prize-value" id="target-score">50</div>
-                    <small>очков за 30 сек</small>
-                </div>
-                <div class="prize-card win">
-                    <div class="prize-label">🏆 Выигрыш</div>
-                    <div class="prize-value" id="prize-amount">1.0 TON</div>
-                    <small>x2 от ставки</small>
-                </div>
-            </div>
-
-            <div class="rules-box">
-                <h4>📋 Правила:</h4>
-                <ul>
-                    <li>Руби дерево кнопками ← →</li>
-                    <li>Избегай веток — иначе проигрыш!</li>
-                    <li>Каждый удар = +1 очко</li>
-                    <li>Набери цель за отведённое время</li>
-                </ul>
-            </div>
-
-            <button class="btn btn-primary" onclick="startGame()">▶️ НАЧАТЬ ИГРУ</button>
-        </div>
-    </div>
-
-    <div id="play-screen" class="screen">
-        <div class="time-bar">
-            <div class="time-fill" id="time-fill"></div>
-        </div>
-
-        <div class="score-board">
-            <div class="current-score" id="current-score">0</div>
-            <div class="target-display">Цель: <span id="game-target">50</span></div>
-        </div>
-
-        <div class="game-area">
-            <div class="tree-container" id="tree">
-                <div class="lumberjack left" id="lumberjack">
-                    <div class="lumberjack-body">
-                        <div class="head">👷</div>
-                        <div class="axe">🪓</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="game-controls">
-            <button class="chop-btn left" ontouchstart="doChop('left'); return false;" onmousedown="doChop('left')">←</button>
-            <button class="chop-btn right" ontouchstart="doChop('right'); return false;" onmousedown="doChop('right')">→</button>
-        </div>
-    </div>
-
-    <div id="result-screen" class="screen">
-        <div class="result-content" id="result-box">
-            <div class="result-icon" id="result-icon">🏆</div>
-            <h2 id="result-title">Победа!</h2>
-            
-            <div class="result-stats">
-                <div class="stat">
-                    <span class="stat-label">Очки:</span>
-                    <span class="stat-value" id="result-score">0</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-label">Результат:</span>
-                    <span class="stat-value" id="result-amount">+1.0 TON</span>
-                </div>
-            </div>
-
-            <div class="result-message" id="result-message">Отличная игра!</div>
-
-            <div class="result-actions">
-                <button class="btn btn-primary" onclick="openGameMenu()">🔄 Играть ещё</button>
-                <button class="btn btn-secondary" onclick="goHome()">🏠 В меню</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="deposit-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="goHome()">←</button>
-            <h2>💰 Пополнение</h2>
-        </div>
-
-        <div class="deposit-options">
-            <div class="option-card" onclick="showScreen('deposit-ton-screen')">
-                <div class="option-icon">💎</div>
-                <h3>Пополнить TON</h3>
-                <p>Отправь TON на адрес проекта</p>
-                <small>Минимум: 1 TON</small>
-            </div>
-
-            <div class="option-card" onclick="showScreen('deposit-rub-screen')">
-                <div class="option-icon">₽</div>
-                <h3>Пополнить рубли</h3>
-                <p>Перевод по СБП на OZON Банк</p>
-                <small>Минимум: 100 ₽</small>
-            </div>
-        </div>
-    </div>
-
-    <div id="deposit-ton-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="showScreen('deposit-screen')">←</button>
-            <h2>💎 Пополнить TON</h2>
-        </div>
-
-        <div class="deposit-form">
-            <div class="info-box">
-                <h4>Адрес для пополнения:</h4>
-                <div class="copy-box" onclick="copyText('UQD-U9iJRqGCZhtJRg7GDvUUP-IwhGu1jAknZXdRmxR3pSOh')">
-                    <code>UQD-U9iJRqGCZhtJRg7GDvUUP-IwhGu1jAknZXdRmxR3pSOh</code>
-                    <span class="copy-hint">📋 Нажми чтобы скопировать</span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Сколько TON отправили:</label>
-                <input type="number" id="dep-ton-amount" step="0.1" min="1" placeholder="Например: 5">
-            </div>
-
-            <div class="form-group">
-                <label>Ваш TON-адрес:</label>
-                <input type="text" id="dep-ton-addr" placeholder="UQ...">
-            </div>
-
-            <button class="btn btn-primary" onclick="submitDepositTon()">✅ Я отправил TON</button>
-            <p class="hint">Баланс будет пополнен после проверки</p>
-        </div>
-    </div>
-
-    <div id="deposit-rub-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="showScreen('deposit-screen')">←</button>
-            <h2>₽ Пополнить рубли</h2>
-        </div>
-
-        <div class="deposit-form">
-            <div class="bank-card sbp">
-                <div class="bank-header">
-                    <span class="bank-logo">OZON</span>
-                    <span class="sbp-badge">СБП</span>
-                </div>
-                <div class="bank-phone" onclick="copyText('+79941402339')">
-                    +7 (994) 140-23-39
-                    <small>📋 Нажми чтобы скопировать</small>
-                </div>
-            </div>
-
-            <div class="payment-id-box">
-                <h4>Ваш ID для перевода:</h4>
-                <div class="copy-box important">
-                    <code id="pay-id">Загрузка...</code>
-                    <span class="copy-hint">⚠️ Укажи в комментарии к переводу!</span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Сумма (₽):</label>
-                <input type="number" id="dep-rub-amount" min="100" step="100" placeholder="Например: 500">
-            </div>
-
-            <button class="btn btn-primary" onclick="submitDepositRub()">✅ Я оплатил</button>
-            <p class="hint">Проверка занимает 5-15 минут</p>
-        </div>
-    </div>
-
-    <div id="withdraw-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="goHome()">←</button>
-            <h2>💸 Вывод средств</h2>
-        </div>
-
-        <div class="withdraw-options">
-            <div class="option-card" onclick="showScreen('withdraw-ton-screen')">
-                <div class="option-icon">💎</div>
-                <h3>Вывести TON</h3>
-                <p>На ваш TON-кошелёк</p>
-                <small>Минимум: 5 TON</small>
-            </div>
-
-            <div class="option-card" onclick="showScreen('withdraw-rub-screen')">
-                <div class="option-icon">₽</div>
-                <h3>Вывести рубли</h3>
-                <p>На карту через СБП</p>
-                <small>Минимум: 500 ₽</small>
-            </div>
-        </div>
-    </div>
-
-    <div id="withdraw-ton-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="showScreen('withdraw-screen')">←</button>
-            <h2>💎 Вывод TON</h2>
-        </div>
-
-        <div class="withdraw-form">
-            <div class="balance-info">
-                Доступно: <strong id="wd-ton-bal">0.00</strong> TON
-            </div>
-
-            <div class="form-group">
-                <label>TON-адрес:</label>
-                <input type="text" id="wd-ton-addr" placeholder="UQ...">
-            </div>
-
-            <div class="form-group">
-                <label>Сумма:</label>
-                <input type="number" id="wd-ton-amount" step="0.1" min="5" placeholder="Минимум 5 TON">
-            </div>
-
-            <button class="btn btn-primary" onclick="submitWithdrawTon()">🚀 Запросить вывод</button>
-            <p class="hint">Обработка: до 24 часов</p>
-        </div>
-    </div>
-
-    <div id="withdraw-rub-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="showScreen('withdraw-screen')">←</button>
-            <h2>₽ Вывод рублей</h2>
-        </div>
-
-        <div class="withdraw-form">
-            <div class="balance-info">
-                Доступно: <strong id="wd-rub-bal">0</strong> ₽
-            </div>
-
-            <div class="form-group">
-                <label>Телефон (СБП):</label>
-                <input type="tel" id="wd-rub-phone" placeholder="+7 (999) 123-45-67">
-            </div>
-
-            <div class="form-group">
-                <label>Банк:</label>
-                <select id="wd-rub-bank">
-                    <option value="Сбербанк">🏦 Сбербанк</option>
-                    <option value="Тинькофф">🟡 Тинькофф</option>
-                    <option value="ВТБ">🔵 ВТБ</option>
-                    <option value="Альфа-Банк">🟣 Альфа-Банк</option>
-                    <option value="Райффайзен">🟢 Райффайзен</option>
-                    <option value="Другой">⚪ Другой</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Сумма (₽):</label>
-                <input type="number" id="wd-rub-amount" min="500" step="100" placeholder="Минимум 500 ₽">
-            </div>
-
-            <button class="btn btn-primary" onclick="submitWithdrawRub()">🚀 Запросить вывод</button>
-            <p class="hint">Обработка: до 24 часов</p>
-        </div>
-    </div>
-
-    <div id="history-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="goHome()">←</button>
-            <h2>📊 История</h2>
-        </div>
-
-        <div class="history-tabs">
-            <button class="tab-btn active" id="hist-games" onclick="switchTab('games')">🎮 Игры</button>
-            <button class="tab-btn" id="hist-deps" onclick="switchTab('deposits')">💰 Пополнения</button>
-            <button class="tab-btn" id="hist-wds" onclick="switchTab('withdrawals')">💸 Выводы</button>
-        </div>
-
-        <div class="history-list" id="history-content">
-            <div class="empty-state">Нет записей</div>
-        </div>
-    </div>
-
-    <div id="notification" class="notification hidden">
-        <span id="notif-text"></span>
-    </div>
-
-    <script>
-// Глобальные переменные
-let user = {
-    id: 'demo',
-    balanceTon: 10.00,
-    balanceRub: 1000,
-    username: 'player'
-};
-
-let game = {
-    active: false,
-    score: 0,
-    target: 50,
-    timeLeft: 30,
-    timer: null,
-    bet: 0.5,
-    currency: 'ton',
-    position: 'left',
-    tree: []
-};
-
-let historyData = {
-    games: [],
-    deposits: [],
-    withdrawals: []
-};
-
-// Инициализация Telegram
-let tg = null;
-try {
-    tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.ready();
-    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        user.id = tg.initDataUnsafe.user.id.toString();
-        user.username = tg.initDataUnsafe.user.username || 'player';
-    }
-} catch(e) {
-    console.log('Telegram WebApp not available');
-}
-
-// Навигация
-function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    
-    if (id === 'deposit-rub-screen') {
-        generatePayId();
-    } else if (id === 'withdraw-ton-screen') {
-        document.getElementById('wd-ton-bal').textContent = user.balanceTon.toFixed(2);
-    } else if (id === 'withdraw-rub-screen') {
-        document.getElementById('wd-rub-bal').textContent = user.balanceRub;
-    } else if (id === 'history-screen') {
-        renderHistory();
-    }
-}
-
-function goHome() {
-    showScreen('main-screen');
-    updateBalance();
-}
-
-function openGameMenu() {
-    showScreen('game-menu-screen');
-    setCurrency('ton');
-}
-
-function openDeposit() {
-    showScreen('deposit-screen');
-}
-
-function openWithdraw() {
-    showScreen('withdraw-screen');
-}
-
-function openHistory() {
-    showScreen('history-screen');
-    switchTab('games');
-}
-
-// Игра - меню ставок
-function setCurrency(curr) {
-    game.currency = curr;
-    document.getElementById('btn-ton').classList.toggle('active', curr === 'ton');
-    document.getElementById('btn-rub').classList.toggle('active', curr === 'rub');
-    
-    const isTon = curr === 'ton';
-    const slider = document.getElementById('bet-slider');
-    const presets = document.getElementById('bet-presets');
-    
-    slider.min = isTon ? 0.5 : 50;
-    slider.max = isTon ? 10 : 1000;
-    slider.step = isTon ? 0.5 : 50;
-    slider.value = isTon ? 0.5 : 50;
-    
-    presets.innerHTML = '';
-    const vals = isTon ? [0.5, 1, 2, 5, 10] : [50, 100, 250, 500, 1000];
-    vals.forEach(v => {
-        const b = document.createElement('button');
-        b.textContent = v;
-        b.onclick = function() { setBetValue(v); };
-        presets.appendChild(b);
-    });
-    
-    updateBet(slider.value);
-}
-
-function updateBet(val) {
-    game.bet = parseFloat(val);
-    const sym = game.currency === 'ton' ? ' TON' : ' ₽';
-    document.getElementById('bet-display').textContent = val + sym;
-    
-    const target = Math.floor(30 + (game.bet * (game.currency === 'ton' ? 20 : 0.4)));
-    game.target = target;
-    document.getElementById('target-score').textContent = target;
-    
-    const prize = game.bet * 2;
-    document.getElementById('prize-amount').textContent = prize + sym;
-}
-
-function setBetValue(val) {
-    document.getElementById('bet-slider').value = val;
-    updateBet(val);
-}
-
-// Игровой процесс
-function startGame() {
-    const bal = game.currency === 'ton' ? user.balanceTon : user.balanceRub;
-    if (bal < game.bet) {
-        notify('Недостаточно средств!');
-        return;
-    }
-    
-    if (game.currency === 'ton') user.balanceTon -= game.bet;
-    else user.balanceRub -= game.bet;
-    updateBalance();
-    
-    game.active = true;
-    game.score = 0;
-    game.timeLeft = 30;
-    game.tree = [];
-    
-    showScreen('play-screen');
-    document.getElementById('current-score').textContent = '0';
-    document.getElementById('game-target').textContent = game.target;
-    document.getElementById('time-fill').style.width = '100%';
-    
-    generateTree();
-    
-    game.timer = setInterval(function() {
-        game.timeLeft -= 0.1;
-        const pct = (game.timeLeft / 30) * 100;
-        document.getElementById('time-fill').style.width = pct + '%';
-        
-        if (game.timeLeft <= 0) {
-            endGame(false);
+            return '<div class="history-item">' +
+                '<div class="info">' +
+                    '<div class="type">' + (tab === 'deposits' ? '💰 Пополнение' : '💸 Вывод') + '</div>' +
+                    '<div class="date">' + item.date.toLocaleString() + '</div>' +
+                '</div>' +
+                '<div class="amount ' + (tab === 'deposits' ? 'positive' : 'negative') + '">' +
+                    (tab === 'deposits' ? '+' : '-') + item.amount + ' ' + item.currency.toUpperCase() +
+                '</div>' +
+            '</div>';
         }
-    }, 100);
+    }).join('');
 }
 
-function generateTree() {
-    const container = document.getElementById('tree');
-    const sections = container.querySelectorAll('.trunk-section');
-    sections.forEach(s => s.remove());
-    
-    game.tree = [];
-    
-    for (let i = 0; i < 6; i++) {
-        const div = document.createElement('div');
-        div.className = 'trunk-section';
-        
-        const hasBranch = Math.random() > 0.3 && i > 0;
-        if (hasBranch) {
-            const side = Math.random() > 0.5 ? 'left' : 'right';
-            const b = document.createElement('div');
-            b.className = 'branch ' + side;
-            div.appendChild(b);
-            game.tree.push(side);
-        } else {
-            game.tree.push(null);
-        }
-        
-        container.appendChild(div);
-    }
-}
-
-function doChop(side) {
-    if (!game.active) return;
-    
-    const bottom = game.tree[0];
-    if (bottom === side) {
-        endGame(false);
-        return;
-    }
-    
-    game.score++;
-    document.getElementById('current-score').textContent = game.score;
-    
-    game.timeLeft = Math.min(game.timeLeft + 1, 30);
-    
-    const lumberjack = document.getElementById('lumberjack');
-    lumberjack.className = 'lumberjack ' + side;
-    
-    const container = document.getElementById('tree');
-    const secs = container.querySelectorAll('.trunk-section');
-    if (secs.length > 0) secs[0].remove();
-    game.tree.shift();
-    
-    const div = document.createElement('div');
-    div.className = 'trunk-section';
-    const hasB = Math.random() > 0.3;
-    if (hasB) {
-        const bs = Math.random() > 0.5 ? 'left' : 'right';
-        const b = document.createElement('div');
-        b.className = 'branch ' + bs;
-        div.appendChild(b);
-        game.tree.push(bs);
-    } else {
-        game.tree.push(null);
-    }
-    container.appendChild(div);
-    
-    if (game.score >= game.target) {
-        endGame(true);
-    }
-}
-
-function endGame(win) {
-    game.active = false;
-    clearInterval(game.timer);
-    
-    const sym = game.currency === 'ton' ? ' TON' : ' ₽';
-    let prize = 0;
-    
-    if (win) {
-        prize = game.bet * 2;
-        if (game.currency === 'ton') user.balanceTon += prize;
-        else user.balanceRub += prize;
-    }
-    
-    updateBalance();
-    
-    historyData.games.unshift({
-        date: new Date(),
-        bet: game.bet,
-        currency: game.currency,
-        score: game.score,
-        win: win,
-        prize: win ? prize : 0
-    });
-    
-    const box = document.getElementById('result-box');
-    const icon = document.getElementById('result-icon');
-    const title = document.getElementById('result-title');
-    const msg = document.getElementById('result-message');
-    
-    if (win) {
-        box.className = 'result-content win';
-        icon.textContent = '🏆';
-        title.textContent = 'Победа!';
-        document.getElementById('result-amount').textContent = '+' + prize + sym;
-        msg.textContent = 'Отличная игра! Продолжай в том же духе!';
-    } else {
-        box.className = 'result-content lose';
-        icon.textContent = '💀';
-        title.textContent = 'Поражение!';
-        document.getElementById('result-amount').textContent = '-' + game.bet + sym;
-        msg.textContent = 'Не сдавайся! Попробуй ещё раз!';
-    }
-    
-    document.getElementById('result-score').textContent = game.score;
-    showScreen('result-screen');
-}
-
-// Пополнение
-function generatePayId() {
-    const id = 'SBP_' + user.id + '_' + Date.now().toString().slice(-6);
-    document.getElementById('pay-id').textContent = id;
-}
-
-function submitDepositTon() {
-    const amt = parseFloat(document.getElementById('dep-ton-amount').value);
-    const addr = document.getElementById('dep-ton-addr').value;
-    
-    if (!amt || amt < 1) { notify('Минимум 1 TON'); return; }
-    if (!addr) { notify('Укажите адрес'); return; }
-    
-    historyData.deposits.unshift({
-        date: new Date(),
-        amount: amt,
-        currency: 'ton',
-        status: 'pending'
-    });
-    
-    notify('Заявка создана! Ожидайте зачисления');
-    goHome();
-}
-
-function submitDepositRub() {
-    const amt = parseFloat(document.getElementById('dep-rub-amount').value);
-    
-    if (!amt || amt < 100) { notify('Минимум 100 ₽'); return; }
-    
-    historyData.deposits.unshift({
-        date: new Date(),
-        amount: amt,
-        currency: 'rub',
-        status: 'pending'
-    });
-    
-    notify('Заявка создана! После оплаты ожидайте зачисления');
-    goHome();
-}
-
-// Вывод
-function submitWithdrawTon() {
-    const addr = document.getElementById('wd-ton-addr').value;
-    const amt = parseFloat(document.getElementById('wd-ton-amount').value);
-    
-    if (!addr) { notify('Укажите адрес'); return; }
-    if (!amt || amt < 5) { notify('Минимум 5 TON'); return; }
-    if (amt > user.balanceTon) { notify('Недостаточно средств'); return; }
-    
-    user.balanceTon -= amt;
-    updateBalance();
-    
-    historyData.withdrawals.unshift({
-        date: new Date(),
-        amount: amt,
-        currency: 'ton',
-        status: 'pending'
-    });
-    
-    notify('Заявка на вывод создана!');
-    goHome();
-}
-
-function submitWithdrawRub() {
-    const phone = document.getElementById('wd-rub-phone').value;
-    const amt = parseFloat(document.getElementById('wd-rub-amount').value);
-    
-    if (!phone) { notify('Укажите номер телефона'); return; }
-    if (!amt || amt < 500) { notify('Минимум 500 ₽'); return; }
-    if (amt > user.balanceRub) { notify('Недостаточно средств'); return; }
-    
-    user.balanceRub -= amt;
-    updateBalance();
-    
-    historyData.withdrawals.unshift({
-        date: new Date(),
-        amount: amt,
-        currency: 'rub',
-        status: 'pending'
-    });
-    
-    notify('Заявка на вывод создана!');
-    goHome();
-}
-
-// История
-function switchTab(tab) {
-    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-    document.getElementById('hist-' + (tab === 'deposits' ? 'deps' : (tab === 'withdrawals' ? 'wds' : 'games'))).classList.add('active');
-    renderHistory(tab);
-}
-
-function renderHistory(tab) {
-    tab = tab || 'games';
-    const container = document.getElementById('history-content');
-    const data = historyData[tab];
-    
-    if (!data || data.length === 0) {
-        container.innerHTML = '<div class="empty-state">Нет записей</div>';
-        return;
-    }
-    
-    container.innerHTML = '';
-    data.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'history-item';
-        
-        if (tab === 'games') {
-            div.innerHTML = `
-                <div class="info">
-                    <div class="type">${item.win ? '✅ Победа' : '❌ Поражение'}</div>
-                    <div class="date">${item.date.toLocaleString()}</div>
-                </div>
-                <div class="amount ${item.win ? 'positive' : 'negative'}">
-                    ${item.win ? '+' : '-'}${item.bet} ${item.currency.toUpperCase()}
-                </div>
-            `;
-        } else {
-            div.innerHTML = `
-                <div class="info">
-                    <div class="type">${tab === 'deposits' ? '💰 Пополнение' : '💸 Вывод'}</div>
-                    <div class="date">${item.date.toLocaleString()}</div>
-                </div>
-                <div class="amount ${tab === 'deposits' ? 'positive' : 'negative'}">
-                    ${tab === 'deposits' ? '+' : '-'}${item.amount} ${item.currency.toUpperCase()}
-                </div>
-            `;
-        }
-        
-        container.appendChild(div);
-    });
-}
-
-// Утилиты
+// Utils
 function updateBalance() {
-    document.getElementById('balance-ton').textContent = user.balanceTon.toFixed(2);
-    document.getElementById('balance-rub').textContent = user.balanceRub;
+    document.getElementById('bal-ton').textContent = user.balanceTon.toFixed(2);
+    document.getElementById('bal-rub').textContent = user.balanceRub;
 }
 
 function copyText(text) {
+    if (!text) return;
     if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(() => notify('Скопировано!'));
+        navigator.clipboard.writeText(text).then(function() { notify('Скопировано!'); });
     } else {
         const inp = document.createElement('input');
         inp.value = text;
@@ -3956,19 +2517,53 @@ function copyText(text) {
 function notify(text) {
     const n = document.getElementById('notification');
     document.getElementById('notif-text').textContent = text;
-    n.classList.remove('hidden');
-    setTimeout(() => n.classList.add('hidden'), 3000);
+    n.classList.add('show');
+    setTimeout(function() { n.classList.remove('show'); }, 3000);
 }
 
-// Клавиатура
+// Keyboard controls
 document.addEventListener('keydown', function(e) {
     if (!game.active) return;
     if (e.key === 'ArrowLeft') doChop('left');
     if (e.key === 'ArrowRight') doChop('right');
 });
 
-// Инициализация
+// Touch/Mouse controls - ИСПРАВЛЕНО (убраны inline обработчики)
+function setupGameControls() {
+    const btnLeft = document.getElementById('btn-left');
+    const btnRight = document.getElementById('btn-right');
+    
+    if (!btnLeft || !btnRight) return;
+    
+    // Очищаем старые обработчики
+    const newBtnLeft = btnLeft.cloneNode(true);
+    const newBtnRight = btnRight.cloneNode(true);
+    btnLeft.parentNode.replaceChild(newBtnLeft, btnLeft);
+    btnRight.parentNode.replaceChild(newBtnRight, btnRight);
+    
+    // Добавляем новые
+    function handleChop(e, side) {
+        e.preventDefault();
+        e.stopPropagation();
+        doChop(side);
+    }
+    
+    newBtnLeft.addEventListener('touchstart', function(e) { handleChop(e, 'left'); }, {passive: false});
+    newBtnLeft.addEventListener('mousedown', function(e) { handleChop(e, 'left'); });
+    
+    newBtnRight.addEventListener('touchstart', function(e) { handleChop(e, 'right'); }, {passive: false});
+    newBtnRight.addEventListener('mousedown', function(e) { handleChop(e, 'right'); });
+}
+
+// Init
 updateBalance();
+
+// Настраиваем управление после загрузки DOM
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupGameControls);
+} else {
+    setupGameControls();
+}
     </script>
 </body>
 </html>
