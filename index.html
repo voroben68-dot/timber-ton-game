@@ -1,9 +1,9 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TimberTON - Руби деревья за TON</title>
+    <title>TimberTON - Руби деревья за TON и ₽</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
@@ -40,18 +40,54 @@
             align-items: center;
             gap: 8px;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
         }
         
-        .ton-icon {
+        .currency-icon {
             width: 24px;
             height: 24px;
-            background: linear-gradient(135deg, #0088cc, #00a8e8);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
+        }
+        
+        .currency-icon.ton {
+            background: linear-gradient(135deg, #0088cc, #00a8e8);
+        }
+        
+        .currency-icon.rub {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+        
+        .currency-toggle {
+            display: flex;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 3px;
+            gap: 3px;
+        }
+        
+        .currency-btn {
+            padding: 6px 12px;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.6);
+            border-radius: 17px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .currency-btn.active {
+            background: linear-gradient(135deg, #0088cc, #00a8e8);
+            color: white;
+        }
+        
+        .currency-btn.rub.active {
+            background: linear-gradient(135deg, #28a745, #20c997);
         }
         
         .connect-btn {
@@ -263,6 +299,7 @@
             justify-content: center;
             z-index: 1000;
             padding: 20px;
+            overflow-y: auto;
         }
         
         .menu-content {
@@ -278,10 +315,30 @@
         .menu-title {
             font-size: 32px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             background: linear-gradient(135deg, #ffd700, #ffed4e);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+        
+        .currency-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .currency-badge.ton {
+            color: #00a8e8;
+            border: 1px solid #0088cc;
+        }
+        
+        .currency-badge.rub {
+            color: #20c997;
+            border: 1px solid #28a745;
         }
         
         .bet-section {
@@ -349,6 +406,25 @@
             color: #ffd700;
         }
         
+        .limits-info {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 13px;
+            text-align: left;
+        }
+        
+        .limits-info h4 {
+            margin-bottom: 8px;
+            color: #ffd700;
+        }
+        
+        .limits-info div {
+            margin: 4px 0;
+            opacity: 0.9;
+        }
+        
         .start-btn {
             width: 100%;
             padding: 18px;
@@ -383,7 +459,6 @@
         .wallet-btn {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #0088cc, #00a8e8);
             border: none;
             border-radius: 12px;
             color: white;
@@ -391,6 +466,14 @@
             font-weight: bold;
             cursor: pointer;
             margin-bottom: 10px;
+        }
+        
+        .wallet-btn.deposit {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+        
+        .wallet-btn.ton {
+            background: linear-gradient(135deg, #0088cc, #00a8e8);
         }
         
         .hidden {
@@ -621,6 +704,10 @@
             background: #0088cc;
         }
         
+        .tab-btn.rub.active {
+            background: #28a745;
+        }
+        
         .withdraw-section {
             margin-top: 15px;
             padding: 15px;
@@ -660,15 +747,34 @@
             cursor: pointer;
             margin-top: 10px;
         }
+        
+        .min-limit-warning {
+            background: rgba(237, 137, 54, 0.2);
+            border: 1px solid #ed8936;
+            color: #ed8936;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        
+        .rate-info {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="balance-display">
-            <div class="ton-icon">💎</div>
-            <span id="balance">0.00 TON</span>
+            <div class="currency-icon" id="currencyIcon">💎</div>
+            <span id="balance">0.00</span>
         </div>
-        <button class="connect-btn" id="connectBtn" onclick="toggleWallet()">Подключить</button>
+        <div class="currency-toggle">
+            <button class="currency-btn active" id="btnTon" onclick="switchCurrency('ton')">TON</button>
+            <button class="currency-btn rub" id="btnRub" onclick="switchCurrency('rub')">₽</button>
+        </div>
     </div>
 
     <div id="ton-connect" class="hidden"></div>
@@ -677,29 +783,36 @@
     <div id="mainMenu" class="menu-overlay">
         <div class="menu-content">
             <div class="menu-title">🪓 TimberTON</div>
-            <p style="opacity: 0.8; margin-bottom: 20px;">Руби деревья и зарабатывай TON!</p>
+            <div class="currency-badge" id="currencyBadge">💎 TON Mode</div>
             
             <div class="tab-buttons">
                 <button class="tab-btn active" onclick="switchTab('play')">Играть</button>
-                <button class="tab-btn" onclick="switchTab('wallet')">Кошелек</button>
+                <button class="tab-btn" id="walletTabBtn" onclick="switchTab('wallet')">Кошелек</button>
             </div>
 
             <div id="playTab">
                 <div class="bet-section">
                     <div class="bet-label">Ваша ставка</div>
-                    <div class="bet-amount" id="betAmount">0.1 TON</div>
-                    <input type="range" class="bet-slider" id="betSlider" min="0.1" max="10" step="0.1" value="0.1" oninput="updateBet(this.value)">
+                    <div class="bet-amount" id="betAmount">0.5 TON</div>
+                    <input type="range" class="bet-slider" id="betSlider" min="0.5" max="10" step="0.5" value="0.5" oninput="updateBet(this.value)">
                     
                     <div class="prize-info">
                         <div class="prize-card">
                             <div class="prize-label">Цель (очки)</div>
-                            <div class="prize-value" id="targetScore">50</div>
+                            <div class="prize-value" id="targetScore">40</div>
                         </div>
                         <div class="prize-card">
                             <div class="prize-label">Выигрыш</div>
-                            <div class="prize-value" id="prizeAmount">0.2 TON</div>
+                            <div class="prize-value" id="prizeAmount">1.0 TON</div>
                         </div>
                     </div>
+                </div>
+
+                <div class="limits-info" id="limitsInfo">
+                    <h4>💰 Лимиты TON</h4>
+                    <div>• Мин. пополнение: 1 TON</div>
+                    <div>• Мин. вывод: 5 TON</div>
+                    <div>• Мин. ставка: 0.5 TON</div>
                 </div>
 
                 <div class="leaderboard">
@@ -728,13 +841,19 @@
 
             <div id="walletTab" class="hidden">
                 <div class="wallet-section">
-                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">Баланс: <span id="walletBalance">0.00</span> TON</div>
+                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">
+                        Баланс: <span id="walletBalance">0.00</span> <span id="walletCurrency">TON</span>
+                    </div>
                     
-                    <button class="wallet-btn" onclick="showDeposit()">Пополнить</button>
+                    <button class="wallet-btn deposit" onclick="showDeposit()">Пополнить</button>
                     
                     <div class="withdraw-section">
                         <div style="font-weight: bold; margin-bottom: 10px;">Вывод средств</div>
                         
+                        <div class="min-limit-warning" id="withdrawWarning">
+                            Минимальная сумма вывода: 5 TON
+                        </div>
+
                         <div class="input-group">
                             <label>Способ вывода</label>
                             <select id="withdrawMethod" onchange="toggleWithdrawInputs()">
@@ -762,15 +881,12 @@
                         </div>
 
                         <div class="input-group">
-                            <label>Сумма (TON)</label>
-                            <input type="number" id="withdrawAmount" step="0.01" min="0.1" placeholder="0.00">
+                            <label>Сумма</label>
+                            <input type="number" id="withdrawAmount" step="0.01" min="5" placeholder="0.00">
                         </div>
 
                         <button class="withdraw-btn" onclick="requestWithdraw()">Вывести</button>
-                        <div style="font-size: 12px; opacity: 0.6; margin-top: 10px;">
-                            Минимальная сумма вывода: 0.5 TON<br>
-                            Комиссия: 0% (СБП - ручное подтверждение)
-                        </div>
+                        <div class="rate-info" id="rateInfo"></div>
                     </div>
                 </div>
             </div>
@@ -785,7 +901,7 @@
         
         <div class="score-board">
             <div class="score" id="currentScore">0</div>
-            <div class="best-score">Цель: <span id="gameTarget">50</span></div>
+            <div class="best-score">Цель: <span id="gameTarget">40</span></div>
         </div>
 
         <div class="combo" id="combo">x1</div>
@@ -825,6 +941,9 @@
         tg.expand();
         tg.ready();
 
+        // Exchange rate (1 TON = ~200 RUB, обновляется динамически)
+        let exchangeRate = 200;
+
         // Game state
         let gameState = {
             score: 0,
@@ -834,9 +953,27 @@
             timeLeft: 100,
             maxTime: 100,
             combo: 0,
-            bet: 0.1,
-            targetScore: 50,
-            balance: 0,
+            currency: 'ton', // 'ton' или 'rub'
+            bet: 0.5,
+            targetScore: 40,
+            balance: {
+                ton: 1.0,
+                rub: 1000
+            },
+            limits: {
+                ton: {
+                    minDeposit: 1,
+                    minWithdraw: 5,
+                    minBet: 0.5,
+                    maxBet: 10
+                },
+                rub: {
+                    minDeposit: 100,
+                    minWithdraw: 500,
+                    minBet: 50,
+                    maxBet: 5000
+                }
+            },
             userId: tg.initDataUnsafe?.user?.id || 'demo_user',
             username: tg.initDataUnsafe?.user?.username || 'player'
         };
@@ -844,7 +981,6 @@
         // TON Connect
         let tonConnectUI = null;
 
-        // Initialize TON Connect
         function initTonConnect() {
             if (document.getElementById('ton-connect')) {
                 tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
@@ -854,26 +990,69 @@
             }
         }
 
-        function toggleWallet() {
-            const menu = document.getElementById('mainMenu');
-            const isHidden = menu.classList.contains('hidden');
+        function switchCurrency(curr) {
+            gameState.currency = curr;
             
-            if (isHidden) {
-                menu.classList.remove('hidden');
-                document.getElementById('gameArea').classList.add('hidden');
-                switchTab('wallet');
+            // Update UI
+            document.getElementById('btnTon').classList.toggle('active', curr === 'ton');
+            document.getElementById('btnRub').classList.toggle('active', curr === 'rub');
+            
+            const icon = document.getElementById('currencyIcon');
+            icon.textContent = curr === 'ton' ? '💎' : '₽';
+            icon.className = 'currency-icon ' + curr;
+            
+            const badge = document.getElementById('currencyBadge');
+            badge.textContent = curr === 'ton' ? '💎 TON Mode' : '₽ Рубли Mode';
+            badge.className = 'currency-badge ' + curr;
+            
+            // Update limits display
+            updateLimitsDisplay();
+            
+            // Update slider
+            const slider = document.getElementById('betSlider');
+            const limits = gameState.limits[curr];
+            slider.min = limits.minBet;
+            slider.max = limits.maxBet;
+            slider.step = curr === 'ton' ? 0.5 : 50;
+            slider.value = limits.minBet;
+            
+            updateBet(slider.value);
+            updateBalance();
+            
+            // Update wallet tab button color
+            const walletBtn = document.querySelector('.tab-btn:nth-child(2)');
+            if (curr === 'rub') {
+                walletBtn.classList.add('rub');
             } else {
-                if (tonConnectUI) {
-                    tonConnectUI.openModal();
-                } else {
-                    // Demo mode
-                    alert('В демо-режиме кошелек не требуется');
-                }
+                walletBtn.classList.remove('rub');
+            }
+        }
+
+        function updateLimitsDisplay() {
+            const limits = gameState.limits[gameState.currency];
+            const info = document.getElementById('limitsInfo');
+            
+            if (gameState.currency === 'ton') {
+                info.innerHTML = `
+                    <h4>💰 Лимиты TON</h4>
+                    <div>• Мин. пополнение: ${limits.minDeposit} TON</div>
+                    <div>• Мин. вывод: ${limits.minWithdraw} TON</div>
+                    <div>• Мин. ставка: ${limits.minBet} TON</div>
+                `;
+            } else {
+                info.innerHTML = `
+                    <h4>💰 Лимиты Рубли</h4>
+                    <div>• Мин. пополнение: ${limits.minDeposit} ₽</div>
+                    <div>• Мин. вывод: ${limits.minWithdraw} ₽</div>
+                    <div>• Мин. ставка: ${limits.minBet} ₽</div>
+                `;
             }
         }
 
         function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                if (idx < 2) btn.classList.remove('active');
+            });
             event.target.classList.add('active');
             
             if (tab === 'play') {
@@ -882,36 +1061,57 @@
             } else {
                 document.getElementById('playTab').classList.add('hidden');
                 document.getElementById('walletTab').classList.remove('hidden');
+                updateWithdrawInfo();
             }
         }
 
         function updateBet(value) {
             gameState.bet = parseFloat(value);
-            document.getElementById('betAmount').textContent = gameState.bet.toFixed(1) + ' TON';
+            const curr = gameState.currency.toUpperCase();
+            document.getElementById('betAmount').textContent = gameState.bet + ' ' + curr;
             
-            // Calculate target based on bet (higher bet = higher target)
-            gameState.targetScore = Math.floor(30 + (gameState.bet * 20));
+            // Calculate target based on bet
+            const baseTarget = gameState.currency === 'ton' ? 30 : 30;
+            const multiplier = gameState.bet / gameState.limits[gameState.currency].minBet;
+            gameState.targetScore = Math.floor(baseTarget + (multiplier * 10));
             document.getElementById('targetScore').textContent = gameState.targetScore;
             
             // Prize is 2x bet
             const prize = gameState.bet * 2;
-            document.getElementById('prizeAmount').textContent = prize.toFixed(2) + ' TON';
+            document.getElementById('prizeAmount').textContent = prize + ' ' + curr;
+        }
+
+        function updateWithdrawInfo() {
+            const limits = gameState.limits[gameState.currency];
+            const warning = document.getElementById('withdrawWarning');
+            const input = document.getElementById('withdrawAmount');
+            const rateInfo = document.getElementById('rateInfo');
+            
+            if (gameState.currency === 'ton') {
+                warning.textContent = `Минимальная сумма вывода: ${limits.minWithdraw} TON`;
+                input.min = limits.minWithdraw;
+                input.placeholder = '5.00';
+                rateInfo.textContent = '';
+            } else {
+                warning.textContent = `Минимальная сумма вывода: ${limits.minWithdraw} ₽`;
+                input.min = limits.minWithdraw;
+                input.placeholder = '500';
+                rateInfo.textContent = `Курс: 1 TON ≈ ${exchangeRate} ₽`;
+            }
         }
 
         function generateTree() {
             const tree = document.getElementById('tree');
-            // Clear existing sections except lumberjack
             const sections = tree.querySelectorAll('.trunk-section');
             sections.forEach(s => s.remove());
             
             gameState.treeSections = [];
             
-            // Generate 6 sections with random branches
             for (let i = 0; i < 6; i++) {
                 const section = document.createElement('div');
                 section.className = 'trunk-section';
                 
-                const hasBranch = Math.random() > 0.3 && i > 0; // No branch on first section
+                const hasBranch = Math.random() > 0.3 && i > 0;
                 if (hasBranch) {
                     const side = Math.random() > 0.5 ? 'left' : 'right';
                     const branch = document.createElement('div');
@@ -929,43 +1129,35 @@
         function chop(side) {
             if (!gameState.isPlaying) return;
             
-            // Check for collision
             const bottomSection = gameState.treeSections[0];
             if (bottomSection && bottomSection === side) {
                 endGame(false);
                 return;
             }
             
-            // Add score
             gameState.score++;
             gameState.combo++;
             document.getElementById('currentScore').textContent = gameState.score;
             
-            // Show combo
             const comboEl = document.getElementById('combo');
             if (gameState.combo > 5) {
                 comboEl.textContent = 'x' + Math.floor(gameState.combo / 5);
                 comboEl.classList.add('show');
             }
             
-            // Add time for each chop (max 100)
             gameState.timeLeft = Math.min(gameState.timeLeft + 2, gameState.maxTime);
             
-            // Move lumberjack
             gameState.position = side;
             const lumberjack = document.getElementById('lumberjack');
             lumberjack.className = `lumberjack ${side}`;
             
-            // Animation
             lumberjack.style.transform = side === 'left' ? 'translateX(-10px) rotate(-10deg)' : 'translateX(10px) rotate(10deg) scaleX(-1)';
             setTimeout(() => {
                 lumberjack.style.transform = side === 'left' ? '' : 'scaleX(-1)';
             }, 100);
             
-            // Create particles
             createParticles(side);
             
-            // Move tree down
             const tree = document.getElementById('tree');
             const sections = tree.querySelectorAll('.trunk-section');
             if (sections.length > 0) {
@@ -973,7 +1165,6 @@
                 gameState.treeSections.shift();
             }
             
-            // Add new section at top
             const newSection = document.createElement('div');
             newSection.className = 'trunk-section';
             const hasBranch = Math.random() > 0.3;
@@ -988,7 +1179,6 @@
             }
             tree.appendChild(newSection);
             
-            // Check win condition
             if (gameState.score >= gameState.targetScore) {
                 endGame(true);
             }
@@ -1018,11 +1208,14 @@
         }
 
         function startGame() {
-            if (gameState.balance < gameState.bet && !confirm('Недостаточно средств. Играть в демо-режиме?')) {
+            const limits = gameState.limits[gameState.currency];
+            
+            if (gameState.balance[gameState.currency] < gameState.bet) {
+                alert(`Недостаточно средств. Минимум: ${gameState.bet} ${gameState.currency.toUpperCase()}`);
                 return;
             }
             
-            gameState.balance -= gameState.bet;
+            gameState.balance[gameState.currency] -= gameState.bet;
             updateBalance();
             
             gameState.score = 0;
@@ -1064,22 +1257,21 @@
             
             const finalScore = document.getElementById('finalScore');
             const resultMessage = document.getElementById('resultMessage');
+            const curr = gameState.currency.toUpperCase();
             
             finalScore.textContent = gameState.score;
             
             if (win) {
                 const prize = gameState.bet * 2;
-                gameState.balance += prize;
+                gameState.balance[gameState.currency] += prize;
                 updateBalance();
                 
                 resultMessage.className = 'result-message win';
-                resultMessage.innerHTML = `🎉 Победа!<br>Вы выиграли ${prize.toFixed(2)} TON`;
-                
-                // Save high score
+                resultMessage.innerHTML = `🎉 Победа!<br>Вы выиграли ${prize} ${curr}`;
                 saveScore();
             } else {
                 resultMessage.className = 'result-message lose';
-                resultMessage.innerHTML = `😢 Поражение!<br>Вы потеряли ${gameState.bet.toFixed(2)} TON`;
+                resultMessage.innerHTML = `😢 Поражение!<br>Вы потеряли ${gameState.bet} ${curr}`;
             }
             
             document.getElementById('gameOver').classList.remove('hidden');
@@ -1092,30 +1284,46 @@
         }
 
         function updateBalance() {
-            document.getElementById('balance').textContent = gameState.balance.toFixed(2) + ' TON';
-            document.getElementById('walletBalance').textContent = gameState.balance.toFixed(2);
+            const curr = gameState.currency;
+            const balance = gameState.balance[curr].toFixed(curr === 'ton' ? 2 : 0);
+            const symbol = curr === 'ton' ? 'TON' : '₽';
+            
+            document.getElementById('balance').textContent = balance + ' ' + symbol;
+            document.getElementById('walletBalance').textContent = balance;
+            document.getElementById('walletCurrency').textContent = symbol;
         }
 
         function saveScore() {
-            // In real app, send to backend
             const scores = JSON.parse(localStorage.getItem('timber_scores') || '[]');
             scores.push({
                 user: gameState.username,
                 score: gameState.score,
+                currency: gameState.currency,
                 date: new Date().toISOString()
             });
             scores.sort((a, b) => b.score - a.score);
             localStorage.setItem('timber_scores', JSON.stringify(scores.slice(0, 10)));
         }
 
-        // Wallet functions
         function showDeposit() {
-            const amount = prompt('Введите сумму пополнения (TON):', '1');
-            if (amount && parseFloat(amount) > 0) {
-                // In real app, generate TON payment link
-                alert(`Для пополнения на ${amount} TON:\n\n1. Отправьте ${amount} TON на адрес:\nEQDemoAddressForDeposits...\n\n2. После подтверждения сети баланс будет обновлен.\n\n(В демо-режиме баланс пополнен автоматически)`);
-                gameState.balance += parseFloat(amount);
+            const limits = gameState.limits[gameState.currency];
+            const curr = gameState.currency.toUpperCase();
+            
+            const amount = prompt(`Минимум ${limits.minDeposit} ${curr}\n\nВведите сумму пополнения:`, limits.minDeposit);
+            
+            if (amount && parseFloat(amount) >= limits.minDeposit) {
+                if (gameState.currency === 'ton') {
+                    alert(`Для пополнения на ${amount} TON:\n\n1. Отправьте ${amount} TON на адрес:\nEQDemoAddressForDeposits...\n\n2. После подтверждения сети баланс будет обновлен.`);
+                } else {
+                    alert(`Для пополнения на ${amount} ₽:\n\n1. Переведите ${amount} ₽ по СБП на номер:\n+7 (999) 123-45-67\n\n2. В комментарии укажите: ${gameState.userId}\n\n3. После проверки баланс будет обновлен (обычно 5-15 минут).`);
+                }
+                
+                // Demo: auto-add
+                gameState.balance[gameState.currency] += parseFloat(amount);
                 updateBalance();
+                alert('✅ Баланс пополнен (демо-режим)');
+            } else if (amount) {
+                alert(`❌ Минимальная сумма: ${limits.minDeposit} ${curr}`);
             }
         }
 
@@ -1132,41 +1340,46 @@
 
         function requestWithdraw() {
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
-            const method = document.getElementById('withdrawMethod').value;
+            const limits = gameState.limits[gameState.currency];
+            const curr = gameState.currency;
             
-            if (!amount || amount < 0.5) {
-                alert('Минимальная сумма вывода: 0.5 TON');
+            if (!amount || amount < limits.minWithdraw) {
+                alert(`Минимальная сумма вывода: ${limits.minWithdraw} ${curr.toUpperCase()}`);
                 return;
             }
             
-            if (amount > gameState.balance) {
+            if (amount > gameState.balance[curr]) {
                 alert('Недостаточно средств');
                 return;
             }
             
+            const method = document.getElementById('withdrawMethod').value;
             let details = '';
+            
             if (method === 'ton') {
                 const address = document.getElementById('tonAddress').value;
-                if (!address) {
-                    alert('Введите TON адрес');
+                if (!address || !address.startsWith('EQ')) {
+                    alert('Введите корректный TON адрес (начинается с EQ)');
                     return;
                 }
                 details = `Адрес: ${address}`;
             } else {
                 const phone = document.getElementById('phoneNumber').value;
                 const bank = document.getElementById('bankSelect').value;
-                if (!phone) {
-                    alert('Введите номер телефона');
+                if (!phone || phone.length < 10) {
+                    alert('Введите корректный номер телефона');
                     return;
                 }
                 details = `Телефон: ${phone}\nБанк: ${bank}`;
             }
             
-            // In real app, send to backend for manual processing
-            alert(`Заявка на вывод создана!\n\nСумма: ${amount} TON\nМетод: ${method.toUpperCase()}\n${details}\n\nОбычно обработка занимает 10-30 минут.`);
-            
-            gameState.balance -= amount;
+            // Process withdrawal
+            gameState.balance[curr] -= amount;
             updateBalance();
+            
+            const processingTime = method === 'ton' ? '5-30 минут' : '10 минут - 2 часа';
+            
+            alert(`✅ Заявка на вывод создана!\n\nСумма: ${amount} ${curr.toUpperCase()}\nМетод: ${method.toUpperCase()}\n${details}\n\nОбработка: ${processingTime}\n\nВы получите уведомление в боте когда средства будут отправлены.`);
         }
 
         // Keyboard controls
@@ -1176,7 +1389,7 @@
             if (e.key === 'ArrowRight' || e.key === 'd') chop('right');
         });
 
-        // Prevent zoom on double tap
+        // Prevent zoom
         let lastTouchEnd = 0;
         document.addEventListener('touchend', (e) => {
             const now = Date.now();
@@ -1187,12 +1400,10 @@
         }, false);
 
         // Init
+        updateLimitsDisplay();
+        updateBet(gameState.limits.ton.minBet);
         updateBalance();
         initTonConnect();
-
-        // Demo: add some initial balance
-        gameState.balance = 1.0;
-        updateBalance();
     </script>
 </body>
 </html>
