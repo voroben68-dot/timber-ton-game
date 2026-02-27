@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TimberTON - Руби деревья за TON</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
 * {
     margin: 0;
@@ -398,1310 +397,6 @@ body {
     font-size: 12px;
     color: var(--text-muted);
     margin-bottom: 8px;
-   20px rgba(255, 215, 0, 0.3);
-}
-
-.btn-primary:active {
-    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
-}
-
-.btn-secondary {
-    background: var(--bg-card);
-    color: var(--text);
-    padding: 16px 24px;
-    border: 1px solid var(--border);
-}
-
-.btn-secondary:active {
-    background: var(--bg-hover);
-}
-
-.btn-info {
-    background: transparent;
-    color: var(--text-muted);
-    padding: 14px 24px;
-    border: 1px solid var(--border);
-}
-
-.btn-large {
-    font-size: 18px;
-    padding: 20px 40px;
-}
-
-.btn-row {
-    display: flex;
-    gap: 12px;
-}
-
-.btn-row .btn {
-    flex: 1;
-}
-
-.screen-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(15, 15, 30, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    z-index: 100;
-    border-bottom: 1px solid var(--border);
-    padding-top: 60px;
-}
-
-.back-btn {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.screen-header h2 {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-#game-menu-screen {
-    padding-top: 120px;
-}
-
-.bet-container {
-    padding: 20px;
-}
-
-.section {
-    margin-bottom: 24px;
-}
-
-.section label {
-    display: block;
-    color: var(--text-muted);
-    font-size: 14px;
-    margin-bottom: 12px;
-    font-weight: 500;
-}
-
-.currency-tabs {
-    display: flex;
-    gap: 8px;
-    background: var(--bg-card);
-    padding: 4px;
-    border-radius: 12px;
-}
-
-.currency-tab {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.currency-tab.active {
-    background: var(--primary);
-    color: #000;
-}
-
-.bet-amount {
-    font-size: 48px;
-    font-weight: 800;
-    text-align: center;
-    color: var(--primary);
-    margin: 20px 0;
-    text-shadow: 0 2px 20px rgba(255, 215, 0, 0.3);
-}
-
-.bet-slider {
-    width: 100%;
-    height: 8px;
-    border-radius: 4px;
-    background: var(--bg-card);
-    outline: none;
-    -webkit-appearance: none;
-    margin: 20px 0;
-}
-
-.bet-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--primary);
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-}
-
-.bet-presets {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.bet-presets button {
-    flex: 1;
-    min-width: 60px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.bet-presets button:active {
-    background: var(--primary);
-    color: #000;
-    border-color: var(--primary);
-}
-
-.prize-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 24px 0;
-}
-
-.prize-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-}
-
-.prize-card.win {
-    border-color: var(--success);
-    background: rgba(0, 255, 136, 0.05);
-}
-
-.prize-label {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.prize-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.prize-card.win .prize-value {
-    color: var(--success);
-}
-
-.prize-card small {
-    display: block;
-    margin-top: 8px;
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.rules-box {
-    background: var(--bg-card);
-    border-radius: 16px;
-    padding: 20px;
-    margin: 24px 0;
-}
-
-.rules-box h4 {
-    font-size: 16px;
-    margin-bottom: 12px;
-    color: var(--text);
-}
-
-.rules-box ul {
-    list-style: none;
-}
-
-.rules-box li {
-    padding: 8px 0;
-    padding-left: 24px;
-    position: relative;
-    color: var(--text-muted);
-    font-size: 14px;
-}
-
-.rules-box li:before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: var(--success);
-    font-weight: bold;
-}
-
-#play-screen {
-    padding-top: 60px;
-    background: linear-gradient(180deg, var(--bg-dark) 0%, #1a1a3e 100%);
-}
-
-.time-bar {
-    width: 100%;
-    height: 6px;
-    background: var(--bg-card);
-    position: relative;
-    overflow: hidden;
-}
-
-.time-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--success) 0%, var(--primary) 50%, var(--danger) 100%);
-    width: 100%;
-    transition: width 0.1s linear;
-}
-
-.score-board {
-    text-align: center;
-    padding: 30px 20px;
-}
-
-.current-score {
-    font-size: 72px;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--primary) 0%, #ffed4e 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1;
-}
-
-.target-display {
-    margin-top: 10px;
-    color: var(--text-muted);
-    font-size: 16px;
-}
-
-.combo-display {
-    position: absolute;
-    top: 120px;
-    left: 50%;
-    transform: translateX(-50%) scale(0);
-    font-size: 36px;
-    font-weight: 800;
-    color: var(--primary);
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-    opacity: 0;
-    transition: all 0.3s;
-    pointer-events: none;
-}
-
-.combo-display.show {
-    transform: translateX(-50%) scale(1);
-    opacity: 1;
-}
-
-.game-area {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    min-height: 300px;
-}
-
-.tree-container {
-    position: relative;
-    width: 120px;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: 4px;
-}
-
-.trunk-section {
-    width: 80px;
-    height: 60px;
-    background: linear-gradient(90deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
-    border: 3px solid #5D3A1A;
-    border-radius: 8px;
-    position: relative;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    animation: slideDown 0.2s ease-out;
-}
-
-20px rgba(255, 215, 0, 0.3);
-}
-
-.btn-primary:active {
-    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
-}
-
-.btn-secondary {
-    background: var(--bg-card);
-    color: var(--text);
-    padding: 16px 24px;
-    border: 1px solid var(--border);
-}
-
-.btn-secondary:active {
-    background: var(--bg-hover);
-}
-
-.btn-info {
-    background: transparent;
-    color: var(--text-muted);
-    padding: 14px 24px;
-    border: 1px solid var(--border);
-}
-
-.btn-large {
-    font-size: 18px;
-    padding: 20px 40px;
-}
-
-.btn-row {
-    display: flex;
-    gap: 12px;
-}
-
-.btn-row .btn {
-    flex: 1;
-}
-
-.screen-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(15, 15, 30, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    z-index: 100;
-    border-bottom: 1px solid var(--border);
-    padding-top: 60px;
-}
-
-.back-btn {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.screen-header h2 {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-#game-menu-screen {
-    padding-top: 120px;
-}
-
-.bet-container {
-    padding: 20px;
-}
-
-.section {
-    margin-bottom: 24px;
-}
-
-.section label {
-    display: block;
-    color: var(--text-muted);
-    font-size: 14px;
-    margin-bottom: 12px;
-    font-weight: 500;
-}
-
-.currency-tabs {
-    display: flex;
-    gap: 8px;
-    background: var(--bg-card);
-    padding: 4px;
-    border-radius: 12px;
-}
-
-.currency-tab {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.currency-tab.active {
-    background: var(--primary);
-    color: #000;
-}
-
-.bet-amount {
-    font-size: 48px;
-    font-weight: 800;
-    text-align: center;
-    color: var(--primary);
-    margin: 20px 0;
-    text-shadow: 0 2px 20px rgba(255, 215, 0, 0.3);
-}
-
-.bet-slider {
-    width: 100%;
-    height: 8px;
-    border-radius: 4px;
-    background: var(--bg-card);
-    outline: none;
-    -webkit-appearance: none;
-    margin: 20px 0;
-}
-
-.bet-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--primary);
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-}
-
-.bet-presets {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.bet-presets button {
-    flex: 1;
-    min-width: 60px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.bet-presets button:active {
-    background: var(--primary);
-    color: #000;
-    border-color: var(--primary);
-}
-
-.prize-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 24px 0;
-}
-
-.prize-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-}
-
-.prize-card.win {
-    border-color: var(--success);
-    background: rgba(0, 255, 136, 0.05);
-}
-
-.prize-label {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.prize-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.prize-card.win .prize-value {
-    color: var(--success);
-}
-
-.prize-card small {
-    display: block;
-    margin-top: 8px;
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.rules-box {
-    background: var(--bg-card);
-    border-radius: 16px;
-    padding: 20px;
-    margin: 24px 0;
-}
-
-.rules-box h4 {
-    font-size: 16px;
-    margin-bottom: 12px;
-    color: var(--text);
-}
-
-.rules-box ul {
-    list-style: none;
-}
-
-.rules-box li {
-    padding: 8px 0;
-    padding-left: 24px;
-    position: relative;
-    color: var(--text-muted);
-    font-size: 14px;
-}
-
-.rules-box li:before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: var(--success);
-    font-weight: bold;
-}
-
-#play-screen {
-    padding-top: 60px;
-    background: linear-gradient(180deg, var(--bg-dark) 0%, #1a1a3e 100%);
-}
-
-.time-bar {
-    width: 100%;
-    height: 6px;
-    background: var(--bg-card);
-    position: relative;
-    overflow: hidden;
-}
-
-.time-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--success) 0%, var(--primary) 50%, var(--danger) 100%);
-    width: 100%;
-    transition: width 0.1s linear;
-}
-
-.score-board {
-    text-align: center;
-    padding: 30px 20px;
-}
-
-.current-score {
-    font-size: 72px;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--primary) 0%, #ffed4e 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1;
-}
-
-.target-display {
-    margin-top: 10px;
-    color: var(--text-muted);
-    font-size: 16px;
-}
-
-.combo-display {
-    position: absolute;
-    top: 120px;
-    left: 50%;
-    transform: translateX(-50%) scale(0);
-    font-size: 36px;
-    font-weight: 800;
-    color: var(--primary);
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-    opacity: 0;
-    transition: all 0.3s;
-    pointer-events: none;
-}
-
-.combo-display.show {
-    transform: translateX(-50%) scale(1);
-    opacity: 1;
-}
-
-.game-area {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    min-height: 300px;
-}
-
-.tree-container {
-    position: relative;
-    width: 120px;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: 4px;
-}
-
-.trunk-section {
-    width: 80px;
-    height: 60px;
-    background: linear-gradient(90deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
-    border: 3px solid #5D3A1A;
-    border-radius: 8px;
-    position: relative;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    animation: slideDown 0.2s ease-out;
-}
-
-@keyframes slideDown {
-    from {
-        transform: translateY(-20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.branch {
-    position: absolute;
-    width: 50px;
-    height: 16px;
-    background: linear-gradient(90deg, #228B22 0%, #32CD32 100%);
-    border: 2px solid #006400;
-    border-radius: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.branch.left {
-    left: -45px;
-}
-
-.branch.right {
-    right: -45px;
-}
-
-.lumberjack {
-    position: absolute;
-    bottom: -90px;
-    width: 70px;
-    height: 80px;
-    transition: all 0.15s;
-    z-index: 10;
-}
-
-.lumberjack.left {
-    left: -80px;
-}
-
-.lumberjack.right {
-    right: -80px;
-    transform: scaleX(-1);
-}
-
-.lumberjack.chopping {
-    animation: chopAnim 0.15s ease-out;
-}
-
-@keyframes chopAnim {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(-25deg) translateX(-10px); }
-    100% { transform: rotate(0deg); }
-}
-
-.lumberjack.right.chopping {
-    animation: chopAnimRight 0.15s ease-out;
-}
-
-@keyframes chopAnimRight {
-    0% { transform: scaleX(-1) rotate(0deg); }
-    50% { transform: scaleX(-1) rotate(-25deg) translateX(-10px); }
-    100% { transform: scaleX(-1) rotate(0deg); }
-}
-
-.lumberjack-body {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, #ff6b6b 0%, #c92a2a 100%);
-    border-radius: 12px 12px 24px 24px;
-    position: relative;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-}
-
-.head {
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 40px;
-}
-
-.axe {
-    position: absolute;
-    right: -25px;
-    top: 20px;
-    font-size: 30px;
-    transform-origin: left center;
-}
-
-.game-controls {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background: linear-gradient(0deg, var(--bg-dark) 0%, transparent 100%);
-    display: flex;
-    gap: 16px;
-}
-
-.chop-btn {
-    flex: 1;
-    height: 80px;
-    border: none;
-    border-radius: 20px;
-    font-size: 36px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.1s;
-    box-shadow: 0 8px 0 rgba(0,0,0,0.3), 0 15px 30px rgba(0,0,0,0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.chop-btn:active {
-    transform: translateY(8px);
-    box-shadow: 0 0 0 rgba(0,0,0,0.3), 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.chop-btn.left {
-    background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
-    color: white;
-}
-
-.chop-btn.right {
-    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-    color: white;
-}
-
-.chop-btn:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.5s;
-}
-
-.chop-btn:active:after {
-    left: 100%;
-}
-
-#result-screen {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: var(--bg-dark);
-}
-
-.result-content {
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-    animation: fadeInUp 0.5s ease-out;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.result-icon {
-    font-size: 80px;
-    margin-bottom: 20px;
-}
-
-.result-content h2 {
-    font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 24px;
-}
-
-.result-content.win h2 {
-    color: var(--success);
-}
-
-.result-content.lose h2 {
-    color: var(--danger);
-}
-
-.result-stats {
-    background: var(--bg-card);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 24px;
-}
-
-.stat {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-}
-
-.stat:last-child {
-    border-bottom: none;
-}
-
-.stat-label {
-    color: var(--text-muted);
-}
-
-.stat-value {
-    font-weight: 700;
-    font-size: 18px;
-}
-
-.result-message {
-    color: var(--text-muted);
-    margin-bottom: 24px;
-    line-height: 1.6;
-}
-
-.result-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-#deposit-screen, #withdraw-screen {
-    padding-top: 120px;
-}
-
-.deposit-options, .withdraw-options {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.option-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-}
-
-.option-card:active {
-    transform: scale(0.98);
-    border-color: var(--primary);
-    background: var(--bg-hover);
-}
-
-.option-icon {
-    font-size: 48px;
-    margin-bottom: 12px;
-}
-
-.option-card h3 {
-    font-size: 20px;
-    margin-bottom: 8px;
-}
-
-.option-card p {
-    color: var(--text-muted);
-    font-size: 14px;
-    margin-bottom: 8px;
-}
-
-.option-card small {
-    color: var(--primary);
-    font-size: 12px;
-    font-weight: 600;
-}
-
-#deposit-ton-screen, #deposit-rub-screen,
-#withdraw-ton-screen, #withdraw-rub-screen {
-    padding-top: 120px;
-}
-
-.deposit-form, .withdraw-form {
-    padding: 20px;
-}
-
-.info-box, .bank-card, .payment-id-box {
-    background: var(--bg-card);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.info-box h4, .payment-id-box h4 {
-    font-size: 14px;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.copy-box {
-    background: var(--bg-dark);
-    border: 2px dashed var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.copy-box:active {
-    border-color: var(--primary);
-    background: var(--bg-hover);
-}
-
-.copy-box code {
-    display: block;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    word-break: break-all;
-    color: var(--primary);
-    margin-bottom: 8px;
-}
-
-.copy-hint {
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.copy-box.important {
-    border-color: var(--danger);
-    background: rgba(255, 71, 87, 0.05);
-}
-
-.copy-box.important code {
-    color: var(--danger);
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.bank-card.sbp {
-    background: linear-gradient(135deg, #0057b8 0%, #003d82 100%);
-    border: none;
-}
-
-.bank-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
-.bank-logo {
-    font-weight: 800;
-    font-size: 20px;
-    color: white;
-}
-
-.sbp-badge {
-    background: white;
-    color: #0057b8;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.bank-phone {
-    font-size: 24px;
-    font-weight: 700;
-    text-align: center;
-    cursor: pointer;
-    padding: 12px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 12px;
-}
-
-.bank-phone small {
-    display: block;
-    font-size: 12px;
-    opacity: 0.8;
-    margin-top: 4px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    font-size: 14px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-}
-
-.form-group input, .form-group select {
-    width: 100%;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    color: var(--text);
-    font-size: 16px;
-    outline: none;
-    transition: all 0.2s;
-}
-
-.form-group input:focus, .form-group select:focus {
-    border-color: var(--primary);
-}
-
-.form-group input::placeholder {
-    color: var(--text-muted);
-}
-
-.balance-info {
-    background: var(--bg-card);
-    border-radius: 12px;
-    padding: 16px20px rgba(255, 215, 0, 0.3);
-}
-
-.btn-primary:active {
-    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
-}
-
-.btn-secondary {
-    background: var(--bg-card);
-    color: var(--text);
-    padding: 16px 24px;
-    border: 1px solid var(--border);
-}
-
-.btn-secondary:active {
-    background: var(--bg-hover);
-}
-
-.btn-info {
-    background: transparent;
-    color: var(--text-muted);
-    padding: 14px 24px;
-    border: 1px solid var(--border);
-}
-
-.btn-large {
-    font-size: 18px;
-    padding: 20px 40px;
-}
-
-.btn-row {
-    display: flex;
-    gap: 12px;
-}
-
-.btn-row .btn {
-    flex: 1;
-}
-
-.screen-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(15, 15, 30, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    z-index: 100;
-    border-bottom: 1px solid var(--border);
-    padding-top: 60px;
-}
-
-.back-btn {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.screen-header h2 {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-#game-menu-screen {
-    padding-top: 120px;
-}
-
-.bet-container {
-    padding: 20px;
-}
-
-.section {
-    margin-bottom: 24px;
-}
-
-.section label {
-    display: block;
-    color: var(--text-muted);
-    font-size: 14px;
-    margin-bottom: 12px;
-    font-weight: 500;
-}
-
-.currency-tabs {
-    display: flex;
-    gap: 8px;
-    background: var(--bg-card);
-    padding: 4px;
-    border-radius: 12px;
-}
-
-.currency-tab {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.currency-tab.active {
-    background: var(--primary);
-    color: #000;
-}
-
-.bet-amount {
-    font-size: 48px;
-    font-weight: 800;
-    text-align: center;
-    color: var(--primary);
-    margin: 20px 0;
-    text-shadow: 0 2px 20px rgba(255, 215, 0, 0.3);
-}
-
-.bet-slider {
-    width: 100%;
-    height: 8px;
-    border-radius: 4px;
-    background: var(--bg-card);
-    outline: none;
-    -webkit-appearance: none;
-    margin: 20px 0;
-}
-
-.bet-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--primary);
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-}
-
-.bet-presets {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.bet-presets button {
-    flex: 1;
-    min-width: 60px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.bet-presets button:active {
-    background: var(--primary);
-    color: #000;
-    border-color: var(--primary);
-}
-
-.prize-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 24px 0;
-}
-
-.prize-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-}
-
-.prize-card.win {
-    border-color: var(--success);
-    background: rgba(0, 255, 136, 0.05);
-}
-
-.prize-label {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -2453,1011 +1148,6 @@ body {
     
     .bet-amount {
         font-size: 36px;
-    }
-}
-
-@media (min-width: 768px) {
-    body {
-        max-width: 414px;
-        margin: 0 auto;
-        border-left: 1px solid var(--border);
-        border-right: 1px solid var(--border);
-    }
-    
-    .header, .screen-header {
-        max-width: 414px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    
-    .game-controls {
-        max-width: 414px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-}
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="balance-display">
-            <div class="balance-item">
-                <span class="icon">💎</span>
-                <span id="balance-ton">0.00</span> TON
-            </div>
-            <div class="balance-item">
-                <span class="icon">₽</span>
-                <span id20px rgba(255, 215, 0, 0.3);
-}
-
-.btn-primary:active {
-    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
-}
-
-.btn-secondary {
-    background: var(--bg-card);
-    color: var(--text);
-    padding: 16px 24px;
-    border: 1px solid var(--border);
-}
-
-.btn-secondary:active {
-    background: var(--bg-hover);
-}
-
-.btn-info {
-    background: transparent;
-    color: var(--text-muted);
-    padding: 14px 24px;
-    border: 1px solid var(--border);
-}
-
-.btn-large {
-    font-size: 18px;
-    padding: 20px 40px;
-}
-
-.btn-row {
-    display: flex;
-    gap: 12px;
-}
-
-.btn-row .btn {
-    flex: 1;
-}
-
-.screen-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(15, 15, 30, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    z-index: 100;
-    border-bottom: 1px solid var(--border);
-    padding-top: 60px;
-}
-
-.back-btn {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.screen-header h2 {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-#game-menu-screen {
-    padding-top: 120px;
-}
-
-.bet-container {
-    padding: 20px;
-}
-
-.section {
-    margin-bottom: 24px;
-}
-
-.section label {
-    display: block;
-    color: var(--text-muted);
-    font-size: 14px;
-    margin-bottom: 12px;
-    font-weight: 500;
-}
-
-.currency-tabs {
-    display: flex;
-    gap: 8px;
-    background: var(--bg-card);
-    padding: 4px;
-    border-radius: 12px;
-}
-
-.currency-tab {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.currency-tab.active {
-    background: var(--primary);
-    color: #000;
-}
-
-.bet-amount {
-    font-size: 48px;
-    font-weight: 800;
-    text-align: center;
-    color: var(--primary);
-    margin: 20px 0;
-    text-shadow: 0 2px 20px rgba(255, 215, 0, 0.3);
-}
-
-.bet-slider {
-    width: 100%;
-    height: 8px;
-    border-radius: 4px;
-    background: var(--bg-card);
-    outline: none;
-    -webkit-appearance: none;
-    margin: 20px 0;
-}
-
-.bet-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--primary);
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-}
-
-.bet-presets {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.bet-presets button {
-    flex: 1;
-    min-width: 60px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.bet-presets button:active {
-    background: var(--primary);
-    color: #000;
-    border-color: var(--primary);
-}
-
-.prize-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 24px 0;
-}
-
-.prize-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-}
-
-.prize-card.win {
-    border-color: var(--success);
-    background: rgba(0, 255, 136, 0.05);
-}
-
-.prize-label {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.prize-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.prize-card.win .prize-value {
-    color: var(--success);
-}
-
-.prize-card small {
-    display: block;
-    margin-top: 8px;
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.rules-box {
-    background: var(--bg-card);
-    border-radius: 16px;
-    padding: 20px;
-    margin: 24px 0;
-}
-
-.rules-box h4 {
-    font-size: 16px;
-    margin-bottom: 12px;
-    color: var(--text);
-}
-
-.rules-box ul {
-    list-style: none;
-}
-
-.rules-box li {
-    padding: 8px 0;
-    padding-left: 24px;
-    position: relative;
-    color: var(--text-muted);
-    font-size: 14px;
-}
-
-.rules-box li:before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: var(--success);
-    font-weight: bold;
-}
-
-#play-screen {
-    padding-top: 60px;
-    background: linear-gradient(180deg, var(--bg-dark) 0%, #1a1a3e 100%);
-}
-
-.time-bar {
-    width: 100%;
-    height: 6px;
-    background: var(--bg-card);
-    position: relative;
-    overflow: hidden;
-}
-
-.time-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--success) 0%, var(--primary) 50%, var(--danger) 100%);
-    width: 100%;
-    transition: width 0.1s linear;
-}
-
-.score-board {
-    text-align: center;
-    padding: 30px 20px;
-}
-
-.current-score {
-    font-size: 72px;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--primary) 0%, #ffed4e 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1;
-}
-
-.target-display {
-    margin-top: 10px;
-    color: var(--text-muted);
-    font-size: 16px;
-}
-
-.combo-display {
-    position: absolute;
-    top: 120px;
-    left: 50%;
-    transform: translateX(-50%) scale(0);
-    font-size: 36px;
-    font-weight: 800;
-    color: var(--primary);
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-    opacity: 0;
-    transition: all 0.3s;
-    pointer-events: none;
-}
-
-.combo-display.show {
-    transform: translateX(-50%) scale(1);
-    opacity: 1;
-}
-
-.game-area {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    min-height: 300px;
-}
-
-.tree-container {
-    position: relative;
-    width: 120px;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: 4px;
-}
-
-.trunk-section {
-    width: 80px;
-    height: 60px;
-    background: linear-gradient(90deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
-    border: 3px solid #5D3A1A;
-    border-radius: 8px;
-    position: relative;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    animation: slideDown 0.2s ease-out;
-}
-
-@keyframes slideDown {
-    from {
-        transform: translateY(-20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.branch {
-    position: absolute;
-    width: 50px;
-    height: 16px;
-    background: linear-gradient(90deg, #228B22 0%, #32CD32 100%);
-    border: 2px solid #006400;
-    border-radius: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.branch.left {
-    left: -45px;
-}
-
-.branch.right {
-    right: -45px;
-}
-
-.lumberjack {
-    position: absolute;
-    bottom: -90px;
-    width: 70px;
-    height: 80px;
-    transition: all 0.15s;
-    z-index: 10;
-}
-
-.lumberjack.left {
-    left: -80px;
-}
-
-.lumberjack.right {
-    right: -80px;
-    transform: scaleX(-1);
-}
-
-.lumberjack.chopping {
-    animation: chopAnim 0.15s ease-out;
-}
-
-@keyframes chopAnim {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(-25deg) translateX(-10px); }
-    100% { transform: rotate(0deg); }
-}
-
-.lumberjack.right.chopping {
-    animation: chopAnimRight 0.15s ease-out;
-}
-
-@keyframes chopAnimRight {
-    0% { transform: scaleX(-1) rotate(0deg); }
-    50% { transform: scaleX(-1) rotate(-25deg) translateX(-10px); }
-    100% { transform: scaleX(-1) rotate(0deg); }
-}
-
-.lumberjack-body {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, #ff6b6b 0%, #c92a2a 100%);
-    border-radius: 12px 12px 24px 24px;
-    position: relative;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-}
-
-.head {
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 40px;
-}
-
-.axe {
-    position: absolute;
-    right: -25px;
-    top: 20px;
-    font-size: 30px;
-    transform-origin: left center;
-}
-
-.game-controls {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background: linear-gradient(0deg, var(--bg-dark) 0%, transparent 100%);
-    display: flex;
-    gap: 16px;
-}
-
-.chop-btn {
-    flex: 1;
-    height: 80px;
-    border: none;
-    border-radius: 20px;
-    font-size: 36px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.1s;
-    box-shadow: 0 8px 0 rgba(0,0,0,0.3), 0 15px 30px rgba(0,0,0,0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.chop-btn:active {
-    transform: translateY(8px);
-    box-shadow: 0 0 0 rgba(0,0,0,0.3), 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.chop-btn.left {
-    background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
-    color: white;
-}
-
-.chop-btn.right {
-    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-    color: white;
-}
-
-.chop-btn:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.5s;
-}
-
-.chop-btn:active:after {
-    left: 100%;
-}
-
-#result-screen {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: var(--bg-dark);
-}
-
-.result-content {
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-    animation: fadeInUp 0.5s ease-out;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.result-icon {
-    font-size: 80px;
-    margin-bottom: 20px;
-}
-
-.result-content h2 {
-    font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 24px;
-}
-
-.result-content.win h2 {
-    color: var(--success);
-}
-
-.result-content.lose h2 {
-    color: var(--danger);
-}
-
-.result-stats {
-    background: var(--bg-card);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 24px;
-}
-
-.stat {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-}
-
-.stat:last-child {
-    border-bottom: none;
-}
-
-.stat-label {
-    color: var(--text-muted);
-}
-
-.stat-value {
-    font-weight: 700;
-    font-size: 18px;
-}
-
-.result-message {
-    color: var(--text-muted);
-    margin-bottom: 24px;
-    line-height: 1.6;
-}
-
-.result-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-#deposit-screen, #withdraw-screen {
-    padding-top: 120px;
-}
-
-.deposit-options, .withdraw-options {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.option-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-}
-
-.option-card:active {
-    transform: scale(0.98);
-    border-color: var(--primary);
-    background: var(--bg-hover);
-}
-
-.option-icon {
-    font-size: 48px;
-    margin-bottom: 12px;
-}
-
-.option-card h3 {
-    font-size: 20px;
-    margin-bottom: 8px;
-}
-
-.option-card p {
-    color: var(--text-muted);
-    font-size: 14px;
-    margin-bottom: 8px;
-}
-
-.option-card small {
-    color: var(--primary);
-    font-size: 12px;
-    font-weight: 600;
-}
-
-#deposit-ton-screen, #deposit-rub-screen,
-#withdraw-ton-screen, #withdraw-rub-screen {
-    padding-top: 120px;
-}
-
-.deposit-form, .withdraw-form {
-    padding: 20px;
-}
-
-.info-box, .bank-card, .payment-id-box {
-    background: var(--bg-card);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.info-box h4, .payment-id-box h4 {
-    font-size: 14px;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.copy-box {
-    background: var(--bg-dark);
-    border: 2px dashed var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.copy-box:active {
-    border-color: var(--primary);
-    background: var(--bg-hover);
-}
-
-.copy-box code {
-    display: block;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    word-break: break-all;
-    color: var(--primary);
-    margin-bottom: 8px;
-}
-
-.copy-hint {
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.copy-box.important {
-    border-color: var(--danger);
-    background: rgba(255, 71, 87, 0.05);
-}
-
-.copy-box.important code {
-    color: var(--danger);
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.bank-card.sbp {
-    background: linear-gradient(135deg, #0057b8 0%, #003d82 100%);
-    border: none;
-}
-
-.bank-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
-.bank-logo {
-    font-weight: 800;
-    font-size: 20px;
-    color: white;
-}
-
-.sbp-badge {
-    background: white;
-    color: #0057b8;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.bank-phone {
-    font-size: 24px;
-    font-weight: 700;
-    text-align: center;
-    cursor: pointer;
-    padding: 12px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 12px;
-}
-
-.bank-phone small {
-    display: block;
-    font-size: 12px;
-    opacity: 0.8;
-    margin-top: 4px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    font-size: 14px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-}
-
-.form-group input, .form-group select {
-    width: 100%;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    color: var(--text);
-    font-size: 16px;
-    outline: none;
-    transition: all 0.2s;
-}
-
-.form-group input:focus, .form-group select:focus {
-    border-color: var(--primary);
-}
-
-.form-group input::placeholder {
-    color: var(--text-muted);
-}
-
-.balance-info {
-    background: var(--bg-card);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: var(--text-muted);
-}
-
-.balance-info strong {
-    color: var(--primary);
-    font-size: 20px;
-}
-
-.hint {
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 13px;
-    margin-top: 16px;
-    line-height: 1.5;
-}
-
-#history-screen {
-    padding-top: 120px;
-}
-
-.history-tabs {
-    display: flex;
-    gap: 8px;
-    padding: 0 20px;
-    margin-bottom: 20px;
-    overflow-x: auto;
-}
-
-.tab-btn {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s;
-}
-
-.tab-btn.active {
-    background: var(--primary);
-    color: #000;
-    border-color: var(--primary);
-}
-
-.history-list {
-    padding: 0 20px;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-muted);
-}
-
-.history-item {
-    background: var(--bg-card);
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid var(--border);
-}
-
-.history-item .info {
-    flex: 1;
-}
-
-.history-item .type {
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.history-item .date {
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.history-item .amount {
-    font-weight: 700;
-    font-size: 18px;
-}
-
-.history-item .amount.positive {
-    color: var(--success);
-}
-
-.history-item .amount.negative {
-    color: var(--danger);
-}
-
-.history-item .status {
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    margin-left: 12px;
-}
-
-.status.pending {
-    background: rgba(255, 215, 0, 0.1);
-    color: var(--primary);
-}
-
-.status.completed {
-    background: rgba(0, 255, 136, 0.1);
-    color: var(--success);
-}
-
-.status.failed {
-    background: rgba(255, 71, 87, 0.1);
-    color: var(--danger);
-}
-
-.notification {
-    position: fixed;
-    top: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    padding: 16px 24px;
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    z-index: 1000;
-    animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-    }
-}
-
-.wood-chip {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: #DEB887;
-    border-radius: 2px;
-    pointer-events: none;
-    animation: chipFly 0.5s ease-out forwards;
-}
-
-@keyframes chipFly {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
-        opacity: 0;
-    }
-}
-
-@media (max-width: 380px) {
-    .balance-display {
-        gap: 12px;
-    }
-    
-    .balance-item {
-        font-size: 12px;
-    }
-    
-    .current-score {
-        font-size: 56px;
-    }
-    
-    .chop-btn {
-        height: 70px;
-        font-size: 28px;
-    }
-    
-    .bet-amount {
-        font-size: 36px;
-    }
-}
-
-@media (min-width: 768px) {
-    body {
-        max-width: 414px;
-        margin: 0 auto;
-        border-left: 1px solid var(--border);
-        border-right: 1px solid var(--border);
-    }
-    
-    .header, .screen-header {
-        max-width: 414px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    
-    .game-controls {
-        max-width: 414px;
-        left: 50%;
-        transform: translateX(-50%);
     }
 }
     </style>
@@ -3495,50 +1185,66 @@ body {
             </button>
             
             <div class="btn-row">
-                <button class="btn btn-secondary" onclick="showScreen('deposit-screen')">
-                    💰 Пополнить
-                </button>
-                <button class="btn btn-secondary" onclick="showScreen('withdraw-screen')">
-                    💸 Вывести
-                </button>
-            </div>
-            
-            <button class="btn btn-info" onclick="showScreen('history-screen')">
-                📊 История игр
-            </button>
-        </div>
-    </div>
+                <button center;
+    justify-content: center;
+    margin: 20px 0;
+}
 
-    <div id="game-menu-screen" class="screen">
-        <div class="screen-header">
-            <button class="back-btn" onclick="showScreen('main-screen')">←</button>
-            <h2>🎮 Новая игра</h2>
-        </div>
+.preview-tree {
+    font-size: 120px;
+    position: absolute;
+    animation: sway 4s ease-in-out infinite;
+    transform-origin: bottom center;
+}
 
-        <div class="bet-container">
-            <div class="section">
-                <label>Валюта ставки:</label>
-                <div class="currency-tabs">
-                    <button class="currency-tab active" onclick="selectCurrency('ton')" id="tab-ton">
-                        💎 TON
-                    </button>
-                    <button class="currency-tab" onclick="selectCurrency('rub')" id="tab-rub">
-                        ₽ Рубли
-                    </button>
-                </div>
-            </div>
+@keyframes sway {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+}
 
-            <div class="section">
-                <label>Сумма ставки:</label>
-                <div class="bet-amount" id="bet-display">0.5 TON</div>
-                <input type="range" class="bet-slider" id="bet-slider" 
-                       min="0.5" max="10" step="0.5" value="0.5" 
-                       oninput="updateBet(this.value)">
-                <div class="bet-presets">
-                    <button onclick="setBet(0.5)">0.5</button>
-                    <button onclick="setBet(1)">1</button>
-                    <button onclick="setBet(2)">2</button>
-                    <button onclick="20px rgba(255, 215, 0, 0.3);
+.preview-lumberjack {
+    font-size: 60px;
+    position: absolute;
+    bottom: 20px;
+    right: 30%;
+    animation: chop 1s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+@keyframes chop {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-20deg); }
+}
+
+.main-actions {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn {
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #000;
+    padding: 18px 32px;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
 }
 
 .btn-primary:active {
@@ -4488,27 +2194,6 @@ body {
     
     .bet-amount {
         font-size: 36px;
-    }
-}
-
-@media (min-width: 768px) {
-    body {
-        max-width: 414px;
-        margin: 0 auto;
-        border-left: 1px solid var(--border);
-        border-right: 1px solid var(--border);
-    }
-    
-    .header, .screen-header {
-        max-width: 414px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    
-    .game-controls {
-        max-width: 414px;
-        left: 50%;
-        transform: translateX(-50%);
     }
 }
     </style>
@@ -4647,16 +2332,1215 @@ body {
         </div>
 
         <div class="game-controls">
-            <button class="chop-btn left" id="btn-left" 
-                    ontouchstart="chop('left')" 
-                    onmousedown="chop('left')">
-                ←
+            <button class="chop-btn left" id="btn-left" ontouchstart="event.preventDefault(); chop('left')" onmousedown="chop('left')">←</button>
+            <button class="chop-btn right" id="btn-right" ontouchstart="event.preventDefault(); chop('right')" onmousedown="chop('right')">→</button>
+        </div>
+    </div>
+
+    <div id="result-screen" class="screen">
+        <div class="result-content" id="result-content">
+            <div class="result-icon" id="result-icon">🏆</div>
+            <h2 id="result-title">Победа!</h2>
+            
+            <div class="result-stats">
+                <div class="stat">
+                    <span class="stat-label">Очки:</span>
+                    <span class="stat-value" id="result-score">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Результат:</span>
+                    <span class="stat-value" id="result-win">+1.0 TON</span>
+                </div>
+            </div>
+
+            <div class="result-message" id="result-message">
+                Отличная игра! Продолжай в том же духе!
+            </div>
+
+            <div class="result-actions">
+                <button class="btn btn-primary" onclick="showScreen('game-menu-screen')">
+                    🔄 Играть ещё
+                </button>
+                <button class="btn btn-secondary" onclick="showScreen('main-screen')">
+                    🏠 В меню
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deposit-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+            <h2>💰 Пополнение</h2>
+        </div>
+
+        <div class="deposit-options">
+            <div class="option-card" onclick="showScreen('deposit-ton-screen')">
+                <div class="option-icon">💎</div>
+                <h3>Пополнить TON</h3>
+                <p>Отправь TON на адрес проекта</p>
+                <small>Минимум: 1 TON</small>
+            </div>
+
+            <div class="option-card" onclick="showScreen('deposit-rub-screen')">
+                <div class="option-icon">₽</div>
+                <h3>Пополнить рубли</h3>
+                <p>Перевод по СБП на OZON Банк</p>
+                <small>Минимум: 100 ₽</small>
+            </div>
+        </div>
+    </div>
+
+    <div id="deposit-ton-screen" class="screen">
+        <div center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.preview-tree {
+    font-size: 120px;
+    position: absolute;
+    animation: sway 4s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+@keyframes sway {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+}
+
+.preview-lumberjack {
+    font-size: 60px;
+    position: absolute;
+    bottom: 20px;
+    right: 30%;
+    animation: chop 1s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+@keyframes chop {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-20deg); }
+}
+
+.main-actions {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn {
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #000;
+    padding: 18px 32px;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+}
+
+.btn-primary:active {
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
+}
+
+.btn-secondary {
+    background: var(--bg-card);
+    color: var(--text);
+    padding: 16px 24px;
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:active {
+    background: var(--bg-hover);
+}
+
+.btn-info {
+    background: transparent;
+    color: var(--text-muted);
+    padding: 14px 24px;
+    border: 1px solid var(--border);
+}
+
+.btn-large {
+    font-size: 18px;
+    padding: 20px 40px;
+}
+
+.btn-row {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-row .btn {
+    flex: 1;
+}
+
+.screen-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 15, 30, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+    padding-top: 60px;
+}
+
+.back-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.screen-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+#game-menu-screen {
+    padding-top: 120px;
+}
+
+.bet-container {
+    padding: 20px;
+}
+
+.section {
+    margin-bottom: 24px;
+}
+
+.section label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.currency-tabs {
+    display: flex;
+    gap: 8px;
+    background: var(--bg-card);
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.currency-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.currency-tab.active {
+    background: var(--primary);
+    color: #000;
+}
+
+.bet-amount {
+    font-size: 48px;
+    font-weight: 800;
+    text-align: center;
+    color: var(--primary);
+    margin: 20px 0;
+    text-shadow: 0 2px 20px rgba(255, 215, 0, 0.3);
+}
+
+.bet-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--bg-card);
+    outline: none;
+    -webkit-appearance: none;
+    margin: 20px 0;
+}
+
+.bet-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+}
+
+.bet-presets {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.bet-presets button {
+    flex: 1;
+    min-width: 60px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.bet-presets button:active {
+    background: var(--primary);
+    color: #000;
+    border-color: var(--primary);
+}
+
+.prize-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 24px 0;
+}
+
+.prize-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+}
+
+.prize-card.win {
+    border-color: var(--success);
+    background: rgba(0, 255, 136, 0.05);
+}
+
+.prize-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.prize-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.prize-card.win .prize-value {
+    color: var(--success);
+}
+
+.prize-card small {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.rules-box {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 24px 0;
+}
+
+.rules-box h4 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: var(--text);
+}
+
+.rules-box ul {
+    list-style: none;
+}
+
+.rules-box li {
+    padding: 8px 0;
+    padding-left: 24px;
+    position: relative;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.rules-box li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: bold;
+}
+
+#play-screen {
+    padding-top: 60px;
+    background: linear-gradient(180deg, var(--bg-dark) 0%, #1a1a3e 100%);
+}
+
+.time-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-card);
+    position: relative;
+    overflow: hidden;
+}
+
+.time-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success) 0%, var(--primary) 50%, var(--danger) 100%);
+    width: 100%;
+    transition: width 0.1s linear;
+}
+
+.score-board {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.current-score {
+    font-size: 72px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary) 0%, #ffed4e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.target-display {
+    margin-top: 10px;
+    color: var(--text-muted);
+    font-size: 16px;
+}
+
+.combo-display {
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--primary);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+}
+
+.combo-display.show {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+}
+
+.game-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    min-height: 300px;
+}
+
+.tree-container {
+    position: relative;
+    width: 120px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 4px;
+}
+
+.trunk-section {
+    width: 80px;
+    height: 60px;
+    background: linear-gradient(90deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+    border: 3px solid #5D3A1A;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.branch {
+    position: absolute;
+    width: 50px;
+    height: 16px;
+    background: linear-gradient(90deg, #228B22 0%, #32CD32 100%);
+    border: 2px solid #006400;
+    border-radius: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.branch.left {
+    left: -45px;
+}
+
+.branch.right {
+    right: -45px;
+}
+
+.lumberjack {
+    position: absolute;
+    bottom: -90px;
+    width: 70px;
+    height: 80px;
+    transition: all 0.15s;
+    z-index: 10;
+}
+
+.lumberjack.left {
+    left: -80px;
+}
+
+.lumberjack.right {
+    right: -80px;
+    transform: scaleX(-1);
+}
+
+.lumberjack.chopping {
+    animation: chopAnim 0.15s ease-out;
+}
+
+@keyframes chopAnim {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(-25deg) translateX(-10px); }
+    100% { transform: rotate(0deg); }
+}
+
+.lumberjack.right.chopping {
+    animation: chopAnimRight 0.15s ease-out;
+}
+
+@keyframes chopAnimRight {
+    0% { transform: scaleX(-1) rotate(0deg); }
+    50% { transform: scaleX(-1) rotate(-25deg) translateX(-10px); }
+    100% { transform: scaleX(-1) rotate(0deg); }
+}
+
+.lumberjack-body {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #ff6b6b 0%, #c92a2a 100%);
+    border-radius: 12px 12px 24px 24px;
+    position: relative;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+.head {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+}
+
+.axe {
+    position: absolute;
+    right: -25px;
+    top: 20px;
+    font-size: 30px;
+    transform-origin: left center;
+}
+
+.game-controls {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(0deg, var(--bg-dark) 0%, transparent 100%);
+    display: flex;
+    gap: 16px;
+}
+
+.chop-btn {
+    flex: 1;
+    height: 80px;
+    border: none;
+    border-radius: 20px;
+    font-size: 36px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.1s;
+    box-shadow: 0 8px 0 rgba(0,0,0,0.3), 0 15px 30px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.chop-btn:active {
+    transform: translateY(8px);
+    box-shadow: 0 0 0 rgba(0,0,0,0.3), 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.chop-btn.left {
+    background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
+    color: white;
+}
+
+.chop-btn.right {
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+    color: white;
+}
+
+.chop-btn:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.chop-btn:active:after {
+    left: 100%;
+}
+
+#result-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--bg-dark);
+}
+
+.result-content {
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.result-content h2 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 24px;
+}
+
+.result-content.win h2 {
+    color: var(--success);
+}
+
+.result-content.lose h2 {
+    color: var(--danger);
+}
+
+.result-stats {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.stat:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    color: var(--text-muted);
+}
+
+.stat-value {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.result-message {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.result-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#deposit-screen, #withdraw-screen {
+    padding-top: 120px;
+}
+
+.deposit-options, .withdraw-options {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.option-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.option-card:active {
+    transform: scale(0.98);
+    border-color: var(--primary);
+    background: var(--bg-hover);
+}
+
+.option-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.option-card h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.option-card p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.option-card small {
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#deposit-ton-screen, #deposit-rub-screen,
+#withdraw-ton-screen, #withdraw-rub-screen {
+    padding-top: 120px;
+}
+
+.deposit-form, .withdraw-form {
+    padding: 20px;
+}
+
+.info-box, .bank-card, .payment-id-box {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.info-box h4, .payment-id-box h4 {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.copy-box {
+    background: var(--bg-dark);
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.copy-box:active {
+    border-color: var(--primary);
+    background: var(--bg-hover);
+}
+
+.copy-box code {
+    display: block;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    word-break: break-all;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.copy-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.copy-box.important {
+    border-color: var(--danger);
+    background: rgba(255, 71, 87, 0.05);
+}
+
+.copy-box.important code {
+    color: var(--danger);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.bank-card.sbp {
+    background: linear-gradient(135deg, #0057b8 0%, #003d82 100%);
+    border: none;
+}
+
+.bank-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.bank-logo {
+    font-weight: 800;
+    font-size: 20px;
+    color: white;
+}
+
+.sbp-badge {
+    background: white;
+    color: #0057b8;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.bank-phone {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    padding: 12px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+}
+
+.bank-phone small {
+    display: block;
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    color: var(--text);
+    font-size: 16px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: var(--primary);
+}
+
+.form-group input::placeholder {
+    color: var(--text-muted);
+}
+
+.balance-info {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.balance-info strong {
+    color: var(--primary);
+    font-size: 20px;
+}
+
+.hint {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 16px;
+    line-height: 1.5;
+}
+
+#history-screen {
+    padding-top: 120px;
+}
+
+.history-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 0 20px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: #000;
+    border-color: var(--primary);
+}
+
+.history-list {
+    padding: 0 20px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.history-item {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border);
+}
+
+.history-item .info {
+    flex: 1;
+}
+
+.history-item .type {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.history-item .date {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.history-item .amount {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.history-item .amount.positive {
+    color: var(--success);
+}
+
+.history-item .amount.negative {
+    color: var(--danger);
+}
+
+.history-item .status {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-left: 12px;
+}
+
+.status.pending {
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--primary);
+}
+
+.status.completed {
+    background: rgba(0, 255, 136, 0.1);
+    color: var(--success);
+}
+
+.status.failed {
+    background: rgba(255, 71, 87, 0.1);
+    color: var(--danger);
+}
+
+.notification {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    z-index: 1000;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.wood-chip {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #DEB887;
+    border-radius: 2px;
+    pointer-events: none;
+    animation: chipFly 0.5s ease-out forwards;
+}
+
+@keyframes chipFly {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+        opacity: 0;
+    }
+}
+
+@media (max-width: 380px) {
+    .balance-display {
+        gap: 12px;
+    }
+    
+    .balance-item {
+        font-size: 12px;
+    }
+    
+    .current-score {
+        font-size: 56px;
+    }
+    
+    .chop-btn {
+        height: 70px;
+        font-size: 28px;
+    }
+    
+    .bet-amount {
+        font-size: 36px;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="balance-display">
+            <div class="balance-item">
+                <span class="icon">💎</span>
+                <span id="balance-ton">0.00</span> TON
+            </div>
+            <div class="balance-item">
+                <span class="icon">₽</span>
+                <span id="balance-rub">0</span>
+            </div>
+        </div>
+        <button class="menu-btn" onclick="showScreen('main-screen')">🏠</button>
+    </div>
+
+    <div id="main-screen" class="screen active">
+        <div class="logo-section">
+            <div class="logo-icon">🪓</div>
+            <h1>TimberTON</h1>
+            <p class="subtitle">Руби деревья — зарабатывай TON и рубли!</p>
+        </div>
+
+        <div class="game-preview">
+            <div class="preview-tree">🌲</div>
+            <div class="preview-lumberjack">🪓</div>
+        </div>
+
+        <div class="main-actions">
+            <button class="btn btn-primary btn-large" onclick="showScreen('game-menu-screen')">
+                🎮 ИГРАТЬ
             </button>
-            <button class="chop-btn right" id="btn-right" 
-                    ontouchstart="chop('right')" 
-                    onmousedown="chop('right')">
-                →
+            
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="showScreen('deposit-screen')">
+                    💰 Пополнить
+                </button>
+                <button class="btn btn-secondary" onclick="showScreen('withdraw-screen')">
+                    💸 Вывести
+                </button>
+            </div>
+            
+            <button class="btn btn-info" onclick="showScreen('history-screen')">
+                📊 История игр
             </button>
+        </div>
+    </div>
+
+    <div id="game-menu-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+            <h2>🎮 Новая игра</h2>
+        </div>
+
+        <div class="bet-container">
+            <div class="section">
+                <label>Валюта ставки:</label>
+                <div class="currency-tabs">
+                    <button class="currency-tab active" onclick="selectCurrency('ton')" id="tab-ton">
+                        💎 TON
+                    </button>
+                    <button class="currency-tab" onclick="selectCurrency('rub')" id="tab-rub">
+                        ₽ Рубли
+                    </button>
+                </div>
+            </div>
+
+            <div class="section">
+                <label>Сумма ставки:</label>
+                <div class="bet-amount" id="bet-display">0.5 TON</div>
+                <input type="range" class="bet-slider" id="bet-slider" 
+                       min="0.5" max="10" step="0.5" value="0.5" 
+                       oninput="updateBet(this.value)">
+                <div class="bet-presets">
+                    <button onclick="setBet(0.5)">0.5</button>
+                    <button onclick="setBet(1)">1</button>
+                    <button onclick="setBet(2)">2</button>
+                    <button onclick="setBet(5)">5</button>
+                    <button onclick="setBet(10)">10</button>
+                </div>
+            </div>
+
+            <div class="prize-info">
+                <div class="prize-card">
+                    <div class="prize-label">🎯 Цель</div>
+                    <div class="prize-value" id="target-score">50 очков</div>
+                    <small>Набери за 30 сек</small>
+                </div>
+                <div class="prize-card win">
+                    <div class="prize-label">🏆 Выигрыш</div>
+                    <div class="prize-value" id="prize-amount">1.0 TON</div>
+                    <small>x2 от ставки</small>
+                </div>
+            </div>
+
+            <div class="rules-box">
+                <h4>📋 Правила:</h4>
+                <ul>
+                    <li>Руби дерево кнопками ← →</li>
+                    <li>Избегай веток — иначе проигрыш!</li>
+                    <li>Каждый удар = +1 очко</li>
+                    <li>Набери цель за отведённое время</li>
+                </ul>
+            </div>
+
+            <button class="btn btn-primary btn-large" onclick="startGame()">
+                ▶️ НАЧАТЬ ИГРУ
+            </button>
+        </div>
+    </div>
+
+    <div id="play-screen" class="screen">
+        <div class="time-bar">
+            <div class="time-fill" id="time-fill"></div>
+        </div>
+
+        <div class="score-board">
+            <div class="current-score" id="current-score">0</div>
+            <div class="target-display">Цель: <span id="game-target">50</span></div>
+        </div>
+
+        <div class="combo-display" id="combo-display">x1</div>
+
+        <div class="game-area">
+            <div class="tree-container" id="tree">
+                <div class="lumberjack left" id="lumberjack">
+                    <div class="lumberjack-body">
+                        <div class="head">👷</div>
+                        <div class="axe">🪓</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <button class="chop-btn left" id="btn-left" ontouchstart="event.preventDefault(); chop('left')" onmousedown="chop('left')">←</button>
+            <button class="chop-btn right" id="btn-right" ontouchstart="event.preventDefault(); chop('right')" onmousedown="chop('right')">→</button>
         </div>
     </div>
 
@@ -4767,7 +3651,7 @@ body {
 
             <div class="payment-id-box">
                 <h4>Ваш ID для перевода:</h4>
-                <div class="copy-box important" id="payment-id-display" onclick="copyToClipboard(this.querySelector('code').textContent)">
+                <div class="copy-box important" id="payment-id-display" onclick="copyToClipboard(document.getElementById('payment-id-code').textContent)">
                     <code id="payment-id-code">Загрузка...</code>
                     <span class="copy-hint">⚠️ Обязательно укажи в комментарии!</span>
                 </div>
@@ -4817,7 +3701,80 @@ body {
 
         <div class="withdraw-form">
             <div class="balance-info">
-               20px rgba(255, 215, 0, 0.3);
+                Доступно: <strong id="withdraw-available-ton">0.00</strong> TON
+            </div>
+
+            <div class="form-group">
+                <label>TON-адрес:</label>
+                <input type="text" id="withdraw-ton-address" placeholder="UQ... или EQ...">
+            </div>
+
+            <div class="form-group">
+                <label>Сумма:</label>
+                <input type="number" id="withdraw-ton-amount" step="0.1" min="5" placeholder="Минимум 5 TON">
+            </div>
+
+            <button class="btn btn-primary btn-large" onclick="submitWithdraw('ton')">
+                🚀 Зап center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.preview-tree {
+    font-size: 120px;
+    position: absolute;
+    animation: sway 4s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+@keyframes sway {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+}
+
+.preview-lumberjack {
+    font-size: 60px;
+    position: absolute;
+    bottom: 20px;
+    right: 30%;
+    animation: chop 1s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+@keyframes chop {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-20deg); }
+}
+
+.main-actions {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn {
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #000;
+    padding: 18px 32px;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
 }
 
 .btn-primary:active {
@@ -5769,27 +4726,6 @@ body {
         font-size: 36px;
     }
 }
-
-@media (min-width: 768px) {
-    body {
-        max-width: 414px;
-        margin: 0 auto;
-        border-left: 1px solid var(--border);
-        border-right: 1px solid var(--border);
-    }
-    
-    .header, .screen-header {
-        max-width: 414px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    
-    .game-controls {
-        max-width: 414px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-}
     </style>
 </head>
 <body>
@@ -5926,16 +4862,8 @@ body {
         </div>
 
         <div class="game-controls">
-            <button class="chop-btn left" id="btn-left" 
-                    ontouchstart="chop('left')" 
-                    onmousedown="chop('left')">
-                ←
-            </button>
-            <button class="chop-btn right" id="btn-right" 
-                    ontouchstart="chop('right')" 
-                    onmousedown="chop('right')">
-                →
-            </button>
+            <button class="chop-btn left" id="btn-left" ontouchstart="event.preventDefault(); chop('left')" onmousedown="chop('left')">←</button>
+            <button class="chop-btn right" id="btn-right" ontouchstart="event.preventDefault(); chop('right')" onmousedown="chop('right')">→</button>
         </div>
     </div>
 
@@ -6046,7 +4974,7 @@ body {
 
             <div class="payment-id-box">
                 <h4>Ваш ID для перевода:</h4>
-                <div class="copy-box important" id="payment-id-display" onclick="copyToClipboard(this.querySelector('code').textContent)">
+                <div class="copy-box important" id="payment-id-display" onclick="copyToClipboard(document.getElementById('payment-id-code').textContent)">
                     <code id="payment-id-code">Загрузка...</code>
                     <span class="copy-hint">⚠️ Обязательно укажи в комментарии!</span>
                 </div>
@@ -6184,19 +5112,10 @@ const tg = window.Telegram.WebApp;
 tg.expand();
 tg.ready();
 
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_KEY = 'YOUR_SUPABASE_KEY';
-const API_URL = 'YOUR_BACKEND_URL';
-
-let supabase = null;
-try {
-    supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-} catch(e) {
-    console.log('Supabase not initialized');
-}
+const API_URL = '';
 
 let currentUser = {
-    id: tg.initDataUnsafe?.user?.id?.toString() || 'demo_user',
+    id: tg.initDataUnsafe?.user?.id?.toString() || 'demo_' + Date.now(),
     username: tg.initDataUnsafe?.user?.username || 'demo',
     balance_ton: 0,
     balance_rub: 0
@@ -6221,10 +5140,13 @@ let currentHistoryTab = 'games';
 
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(screenId).classList.add('active');
+    const screen = document.getElementById(screenId);
+    if (screen) {
+        screen.classList.add('active');
+    }
     
     if (screenId === 'main-screen') {
-        loadUserData();
+        updateBalanceDisplay();
     } else if (screenId === 'deposit-rub-screen') {
         generatePaymentId();
     } else if (screenId === 'withdraw-ton-screen') {
@@ -6245,15 +5167,14 @@ function selectCurrency(currency) {
     const minBet = isTon ? 0.5 : 50;
     const maxBet = isTon ? 10 : 1000;
     const step = isTon ? 0.5 : 50;
-    const currentVal = parseFloat(document.getElementById('bet-slider').value);
     
     const slider = document.getElementById('bet-slider');
     slider.min = minBet;
     slider.max = maxBet;
     slider.step = step;
-    slider.value = Math.max(minBet, Math.min(currentVal, maxBet));
+    slider.value = minBet;
     
-    updateBet(slider.value);
+    updateBet(minBet);
     
     const presets = document.querySelector('.bet-presets');
     presets.innerHTML = '';
@@ -6261,7 +5182,1494 @@ function selectCurrency(currency) {
     values.forEach(v => {
         const btn = document.createElement('button');
         btn.textContent = v;
-        btn.onclick = () => setBet(v);
+        btn.onclick = function() { setBet(v); };
+        presets.appendChild(btn);
+    });
+}
+
+function updateBet(value) {
+    gameState.bet = parseFloat(value);
+    const isTon = gameState.currency === 'ton';
+    const symbol = isTon ? ' TON' : ' ₽';
+    document.getElementById('bet-display').textContent = value + symbol;
+    
+    const target = Math.floor(30 + (gameState.bet * (isTon ? 20 : 0.4)));
+    gameState.targetScore = target;
+    document.getElementById('target-score').textContent = target + ' очков';
+    
+    const prize = gameState.bet * 2;
+    document.getElementById('prize-amount').textContent = prize + symbol;
+}
+
+function setBet(value) {
+    document.getElement center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.preview-tree {
+    font-size: 120px;
+    position: absolute;
+    animation: sway 4s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+@keyframes sway {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+}
+
+.preview-lumberjack {
+    font-size: 60px;
+    position: absolute;
+    bottom: 20px;
+    right: 30%;
+    animation: chop 1s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+@keyframes chop {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-20deg); }
+}
+
+.main-actions {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn {
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #000;
+    padding: 18px 32px;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+}
+
+.btn-primary:active {
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
+}
+
+.btn-secondary {
+    background: var(--bg-card);
+    color: var(--text);
+    padding: 16px 24px;
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:active {
+    background: var(--bg-hover);
+}
+
+.btn-info {
+    background: transparent;
+    color: var(--text-muted);
+    padding: 14px 24px;
+    border: 1px solid var(--border);
+}
+
+.btn-large {
+    font-size: 18px;
+    padding: 20px 40px;
+}
+
+.btn-row {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-row .btn {
+    flex: 1;
+}
+
+.screen-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 15, 30, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+    padding-top: 60px;
+}
+
+.back-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.screen-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+#game-menu-screen {
+    padding-top: 120px;
+}
+
+.bet-container {
+    padding: 20px;
+}
+
+.section {
+    margin-bottom: 24px;
+}
+
+.section label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.currency-tabs {
+    display: flex;
+    gap: 8px;
+    background: var(--bg-card);
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.currency-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.currency-tab.active {
+    background: var(--primary);
+    color: #000;
+}
+
+.bet-amount {
+    font-size: 48px;
+    font-weight: 800;
+    text-align: center;
+    color: var(--primary);
+    margin: 20px 0;
+    text-shadow: 0 2px 20px rgba(255, 215, 0, 0.3);
+}
+
+.bet-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--bg-card);
+    outline: none;
+    -webkit-appearance: none;
+    margin: 20px 0;
+}
+
+.bet-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+}
+
+.bet-presets {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.bet-presets button {
+    flex: 1;
+    min-width: 60px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.bet-presets button:active {
+    background: var(--primary);
+    color: #000;
+    border-color: var(--primary);
+}
+
+.prize-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 24px 0;
+}
+
+.prize-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+}
+
+.prize-card.win {
+    border-color: var(--success);
+    background: rgba(0, 255, 136, 0.05);
+}
+
+.prize-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.prize-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.prize-card.win .prize-value {
+    color: var(--success);
+}
+
+.prize-card small {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.rules-box {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 24px 0;
+}
+
+.rules-box h4 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: var(--text);
+}
+
+.rules-box ul {
+    list-style: none;
+}
+
+.rules-box li {
+    padding: 8px 0;
+    padding-left: 24px;
+    position: relative;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.rules-box li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: bold;
+}
+
+#play-screen {
+    padding-top: 60px;
+    background: linear-gradient(180deg, var(--bg-dark) 0%, #1a1a3e 100%);
+}
+
+.time-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-card);
+    position: relative;
+    overflow: hidden;
+}
+
+.time-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success) 0%, var(--primary) 50%, var(--danger) 100%);
+    width: 100%;
+    transition: width 0.1s linear;
+}
+
+.score-board {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.current-score {
+    font-size: 72px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary) 0%, #ffed4e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.target-display {
+    margin-top: 10px;
+    color: var(--text-muted);
+    font-size: 16px;
+}
+
+.combo-display {
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--primary);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+}
+
+.combo-display.show {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+}
+
+.game-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    min-height: 300px;
+}
+
+.tree-container {
+    position: relative;
+    width: 120px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 4px;
+}
+
+.trunk-section {
+    width: 80px;
+    height: 60px;
+    background: linear-gradient(90deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+    border: 3px solid #5D3A1A;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.branch {
+    position: absolute;
+    width: 50px;
+    height: 16px;
+    background: linear-gradient(90deg, #228B22 0%, #32CD32 100%);
+    border: 2px solid #006400;
+    border-radius: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.branch.left {
+    left: -45px;
+}
+
+.branch.right {
+    right: -45px;
+}
+
+.lumberjack {
+    position: absolute;
+    bottom: -90px;
+    width: 70px;
+    height: 80px;
+    transition: all 0.15s;
+    z-index: 10;
+}
+
+.lumberjack.left {
+    left: -80px;
+}
+
+.lumberjack.right {
+    right: -80px;
+    transform: scaleX(-1);
+}
+
+.lumberjack.chopping {
+    animation: chopAnim 0.15s ease-out;
+}
+
+@keyframes chopAnim {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(-25deg) translateX(-10px); }
+    100% { transform: rotate(0deg); }
+}
+
+.lumberjack.right.chopping {
+    animation: chopAnimRight 0.15s ease-out;
+}
+
+@keyframes chopAnimRight {
+    0% { transform: scaleX(-1) rotate(0deg); }
+    50% { transform: scaleX(-1) rotate(-25deg) translateX(-10px); }
+    100% { transform: scaleX(-1) rotate(0deg); }
+}
+
+.lumberjack-body {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #ff6b6b 0%, #c92a2a 100%);
+    border-radius: 12px 12px 24px 24px;
+    position: relative;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+.head {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+}
+
+.axe {
+    position: absolute;
+    right: -25px;
+    top: 20px;
+    font-size: 30px;
+    transform-origin: left center;
+}
+
+.game-controls {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(0deg, var(--bg-dark) 0%, transparent 100%);
+    display: flex;
+    gap: 16px;
+}
+
+.chop-btn {
+    flex: 1;
+    height: 80px;
+    border: none;
+    border-radius: 20px;
+    font-size: 36px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.1s;
+    box-shadow: 0 8px 0 rgba(0,0,0,0.3), 0 15px 30px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.chop-btn:active {
+    transform: translateY(8px);
+    box-shadow: 0 0 0 rgba(0,0,0,0.3), 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.chop-btn.left {
+    background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
+    color: white;
+}
+
+.chop-btn.right {
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+    color: white;
+}
+
+.chop-btn:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.chop-btn:active:after {
+    left: 100%;
+}
+
+#result-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--bg-dark);
+}
+
+.result-content {
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.result-content h2 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 24px;
+}
+
+.result-content.win h2 {
+    color: var(--success);
+}
+
+.result-content.lose h2 {
+    color: var(--danger);
+}
+
+.result-stats {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.stat:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    color: var(--text-muted);
+}
+
+.stat-value {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.result-message {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.result-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#deposit-screen, #withdraw-screen {
+    padding-top: 120px;
+}
+
+.deposit-options, .withdraw-options {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.option-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.option-card:active {
+    transform: scale(0.98);
+    border-color: var(--primary);
+    background: var(--bg-hover);
+}
+
+.option-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.option-card h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.option-card p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.option-card small {
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#deposit-ton-screen, #deposit-rub-screen,
+#withdraw-ton-screen, #withdraw-rub-screen {
+    padding-top: 120px;
+}
+
+.deposit-form, .withdraw-form {
+    padding: 20px;
+}
+
+.info-box, .bank-card, .payment-id-box {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.info-box h4, .payment-id-box h4 {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.copy-box {
+    background: var(--bg-dark);
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.copy-box:active {
+    border-color: var(--primary);
+    background: var(--bg-hover);
+}
+
+.copy-box code {
+    display: block;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    word-break: break-all;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.copy-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.copy-box.important {
+    border-color: var(--danger);
+    background: rgba(255, 71, 87, 0.05);
+}
+
+.copy-box.important code {
+    color: var(--danger);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.bank-card.sbp {
+    background: linear-gradient(135deg, #0057b8 0%, #003d82 100%);
+    border: none;
+}
+
+.bank-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.bank-logo {
+    font-weight: 800;
+    font-size: 20px;
+    color: white;
+}
+
+.sbp-badge {
+    background: white;
+    color: #0057b8;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.bank-phone {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    padding: 12px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+}
+
+.bank-phone small {
+    display: block;
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    color: var(--text);
+    font-size: 16px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: var(--primary);
+}
+
+.form-group input::placeholder {
+    color: var(--text-muted);
+}
+
+.balance-info {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.balance-info strong {
+    color: var(--primary);
+    font-size: 20px;
+}
+
+.hint {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 16px;
+    line-height: 1.5;
+}
+
+#history-screen {
+    padding-top: 120px;
+}
+
+.history-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 0 20px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: #000;
+    border-color: var(--primary);
+}
+
+.history-list {
+    padding: 0 20px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.history-item {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border);
+}
+
+.history-item .info {
+    flex: 1;
+}
+
+.history-item .type {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.history-item .date {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.history-item .amount {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.history-item .amount.positive {
+    color: var(--success);
+}
+
+.history-item .amount.negative {
+    color: var(--danger);
+}
+
+.history-item .status {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-left: 12px;
+}
+
+.status.pending {
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--primary);
+}
+
+.status.completed {
+    background: rgba(0, 255, 136, 0.1);
+    color: var(--success);
+}
+
+.status.failed {
+    background: rgba(255, 71, 87, 0.1);
+    color: var(--danger);
+}
+
+.notification {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    z-index: 1000;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.wood-chip {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #DEB887;
+    border-radius: 2px;
+    pointer-events: none;
+    animation: chipFly 0.5s ease-out forwards;
+}
+
+@keyframes chipFly {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+        opacity: 0;
+    }
+}
+
+@media (max-width: 380px) {
+    .balance-display {
+        gap: 12px;
+    }
+    
+    .balance-item {
+        font-size: 12px;
+    }
+    
+    .current-score {
+        font-size: 56px;
+    }
+    
+    .chop-btn {
+        height: 70px;
+        font-size: 28px;
+    }
+    
+    .bet-amount {
+        font-size: 36px;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="balance-display">
+            <div class="balance-item">
+                <span class="icon">💎</span>
+                <span id="balance-ton">0.00</span> TON
+            </div>
+            <div class="balance-item">
+                <span class="icon">₽</span>
+                <span id="balance-rub">0</span>
+            </div>
+        </div>
+        <button class="menu-btn" onclick="showScreen('main-screen')">🏠</button>
+    </div>
+
+    <div id="main-screen" class="screen active">
+        <div class="logo-section">
+            <div class="logo-icon">🪓</div>
+            <h1>TimberTON</h1>
+            <p class="subtitle">Руби деревья — зарабатывай TON и рубли!</p>
+        </div>
+
+        <div class="game-preview">
+            <div class="preview-tree">🌲</div>
+            <div class="preview-lumberjack">🪓</div>
+        </div>
+
+        <div class="main-actions">
+            <button class="btn btn-primary btn-large" onclick="showScreen('game-menu-screen')">
+                🎮 ИГРАТЬ
+            </button>
+            
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="showScreen('deposit-screen')">
+                    💰 Пополнить
+                </button>
+                <button class="btn btn-secondary" onclick="showScreen('withdraw-screen')">
+                    💸 Вывести
+                </button>
+            </div>
+            
+            <button class="btn btn-info" onclick="showScreen('history-screen')">
+                📊 История игр
+            </button>
+        </div>
+    </div>
+
+    <div id="game-menu-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+            <h2>🎮 Новая игра</h2>
+        </div>
+
+        <div class="bet-container">
+            <div class="section">
+                <label>Валюта ставки:</label>
+                <div class="currency-tabs">
+                    <button class="currency-tab active" onclick="selectCurrency('ton')" id="tab-ton">
+                        💎 TON
+                    </button>
+                    <button class="currency-tab" onclick="selectCurrency('rub')" id="tab-rub">
+                        ₽ Рубли
+                    </button>
+                </div>
+            </div>
+
+            <div class="section">
+                <label>Сумма ставки:</label>
+                <div class="bet-amount" id="bet-display">0.5 TON</div>
+                <input type="range" class="bet-slider" id="bet-slider" 
+                       min="0.5" max="10" step="0.5" value="0.5" 
+                       oninput="updateBet(this.value)">
+                <div class="bet-presets">
+                    <button onclick="setBet(0.5)">0.5</button>
+                    <button onclick="setBet(1)">1</button>
+                    <button onclick="setBet(2)">2</button>
+                    <button onclick="setBet(5)">5</button>
+                    <button onclick="setBet(10)">10</button>
+                </div>
+            </div>
+
+            <div class="prize-info">
+                <div class="prize-card">
+                    <div class="prize-label">🎯 Цель</div>
+                    <div class="prize-value" id="target-score">50 очков</div>
+                    <small>Набери за 30 сек</small>
+                </div>
+                <div class="prize-card win">
+                    <div class="prize-label">🏆 Выигрыш</div>
+                    <div class="prize-value" id="prize-amount">1.0 TON</div>
+                    <small>x2 от ставки</small>
+                </div>
+            </div>
+
+            <div class="rules-box">
+                <h4>📋 Правила:</h4>
+                <ul>
+                    <li>Руби дерево кнопками ← →</li>
+                    <li>Избегай веток — иначе проигрыш!</li>
+                    <li>Каждый удар = +1 очко</li>
+                    <li>Набери цель за отведённое время</li>
+                </ul>
+            </div>
+
+            <button class="btn btn-primary btn-large" onclick="startGame()">
+                ▶️ НАЧАТЬ ИГРУ
+            </button>
+        </div>
+    </div>
+
+    <div id="play-screen" class="screen">
+        <div class="time-bar">
+            <div class="time-fill" id="time-fill"></div>
+        </div>
+
+        <div class="score-board">
+            <div class="current-score" id="current-score">0</div>
+            <div class="target-display">Цель: <span id="game-target">50</span></div>
+        </div>
+
+        <div class="combo-display" id="combo-display">x1</div>
+
+        <div class="game-area">
+            <div class="tree-container" id="tree">
+                <div class="lumberjack left" id="lumberjack">
+                    <div class="lumberjack-body">
+                        <div class="head">👷</div>
+                        <div class="axe">🪓</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <button class="chop-btn left" id="btn-left" ontouchstart="event.preventDefault(); chop('left')" onmousedown="chop('left')">←</button>
+            <button class="chop-btn right" id="btn-right" ontouchstart="event.preventDefault(); chop('right')" onmousedown="chop('right')">→</button>
+        </div>
+    </div>
+
+    <div id="result-screen" class="screen">
+        <div class="result-content" id="result-content">
+            <div class="result-icon" id="result-icon">🏆</div>
+            <h2 id="result-title">Победа!</h2>
+            
+            <div class="result-stats">
+                <div class="stat">
+                    <span class="stat-label">Очки:</span>
+                    <span class="stat-value" id="result-score">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Результат:</span>
+                    <span class="stat-value" id="result-win">+1.0 TON</span>
+                </div>
+            </div>
+
+            <div class="result-message" id="result-message">
+                Отличная игра! Продолжай в том же духе!
+            </div>
+
+            <div class="result-actions">
+                <button class="btn btn-primary" onclick="showScreen('game-menu-screen')">
+                    🔄 Играть ещё
+                </button>
+                <button class="btn btn-secondary" onclick="showScreen('main-screen')">
+                    🏠 В меню
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deposit-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+            <h2>💰 Пополнение</h2>
+        </div>
+
+        <div class="deposit-options">
+            <div class="option-card" onclick="showScreen('deposit-ton-screen')">
+                <div class="option-icon">💎</div>
+                <h3>Пополнить TON</h3>
+                <p>Отправь TON на адрес проекта</p>
+                <small>Минимум: 1 TON</small>
+            </div>
+
+            <div class="option-card" onclick="showScreen('deposit-rub-screen')">
+                <div class="option-icon">₽</div>
+                <h3>Пополнить рубли</h3>
+                <p>Перевод по СБП на OZON Банк</p>
+                <small>Минимум: 100 ₽</small>
+            </div>
+        </div>
+    </div>
+
+    <div id="deposit-ton-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="showScreen('deposit-screen')">←</button>
+            <h2>💎 Пополнить TON</h2>
+        </div>
+
+        <div class="deposit-form">
+            <div class="info-box">
+                <h4>Адрес для пополнения:</h4>
+                <div class="copy-box" onclick="copyToClipboard('UQD-U9iJRqGCZhtJRg7GDvUUP-IwhGu1jAknZXdRmxR3pSOh')">
+                    <code>UQD-U9iJRqGCZhtJRg7GDvUUP-IwhGu1jAknZXdRmxR3pSOh</code>
+                    <span class="copy-hint">📋 Нажми чтобы скопировать</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Сколько TON отправили:</label>
+                <input type="number" id="deposit-ton-amount" step="0.1" min="1" placeholder="Например: 5">
+            </div>
+
+            <div class="form-group">
+                <label>Ваш TON-адрес (для возврата):</label>
+                <input type="text" id="deposit-ton-from" placeholder="UQ...">
+            </div>
+
+            <button class="btn btn-primary btn-large" onclick="submitDeposit('ton')">
+                ✅ Я отправил TON
+            </button>
+            
+            <p class="hint">Баланс будет пополнен после подтверждения администратором</p>
+        </div>
+    </div>
+
+    <div id="deposit-rub-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="showScreen('deposit-screen')">←</button>
+            <h2>₽ Пополнить рубли</h2>
+        </div>
+
+        <div class="deposit-form">
+            <div class="bank-card sbp">
+                <div class="bank-header">
+                    <span class="bank-logo">OZON</span>
+                    <span class="sbp-badge">СБП</span>
+                </div>
+                <div class="bank-phone" onclick="copyToClipboard('+79941402339')">
+                    +7 (994) 140-23-39
+                    <small>📋 Нажми чтобы скопировать</small>
+                </div>
+            </div>
+
+            <div class="payment-id-box">
+                <h4>Ваш ID для перевода:</h4>
+                <div class="copy-box important" id="payment-id-display" onclick="copyToClipboard(document.getElementById('payment-id-code').textContent)">
+                    <code id="payment-id-code">Загрузка...</code>
+                    <span class="copy-hint">⚠️ Обязательно укажи в комментарии!</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Сумма перевода (₽):</label>
+                <input type="number" id="deposit-rub-amount" min="100" step="100" placeholder="Например: 500">
+            </div>
+
+            <button class="btn btn-primary btn-large" onclick="submitDeposit('rub')">
+                ✅ Я оплатил
+            </button>
+            
+            <p class="hint">Платёж проверяется вручную (5-15 минут)</p>
+        </div>
+    </div>
+
+    <div id="withdraw-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+            <h2>💸 Вывод средств</h2>
+        </div>
+
+        <div class="withdraw-options">
+            <div class="option-card" onclick="showScreen('withdraw-ton-screen')">
+                <div class="option-icon">💎</div>
+                <h3>Вывести TON</h3>
+                <p>На ваш TON-кошелёк</p>
+                <small>Минимум: 5 TON</small>
+            </div>
+
+            <div class="option-card" onclick="showScreen('withdraw-rub-screen')">
+                <div class="option-icon">₽</div>
+                <h3>Вывести рубли</h3>
+                <p>На карту через СБП</p>
+                <small>Минимум: 500 ₽</small>
+            </div>
+        </div>
+    </div>
+
+    <div id="withdraw-ton-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="showScreen('withdraw-screen')">←</button>
+            <h2>💎 Вывод TON</h2>
+        </div>
+
+        <div class="withdraw-form">
+            <div class="balance-info">
+                Доступно: <strong id="withdraw-available-ton">0.00</strong> TON
+            </div>
+
+            <div class="form-group">
+                <label>TON-адрес:</label>
+                <input type="text" id="withdraw-ton-address" placeholder="UQ... или EQ...">
+            </div>
+
+            <div class="form-group">
+                <label>Сумма:</label>
+                <input type="number" id="withdraw-ton-amount" step="0.1" min="5" placeholder="Минимум 5 TON">
+            </div>
+
+            <button class="btn btn-primary btn-large" onclick="submitWithdraw('ton')">
+                🚀 Запросить вывод
+            </button>
+            
+            <p class="hint">Обработка: до 24 часов. Комиссия: 0%</p>
+        </div>
+    </div>
+
+    <div id="withdraw-rub-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="showScreen('withdraw-screen')">←</button>
+            <h2>₽ Вывод рублей</h2>
+        </div>
+
+        <div class="withdraw-form">
+            <div class="balance-info">
+                Доступно: <strong id="withdraw-available-rub">0</strong> ₽
+            </div>
+
+            <div class="form-group">
+                <label>Номер телефона (СБП):</label>
+                <input type="tel" id="withdraw-rub-phone" placeholder="+7 (999) 123-45-67">
+            </div>
+
+            <div class="form-group">
+                <label>Банк:</label>
+                <select id="withdraw-rub-bank">
+                    <option value="Сбербанк">🏦 Сбербанк</option>
+                    <option value="Тинькофф">🟡 Тинькофф</option>
+                    <option value="ВТБ">🔵 ВТБ</option>
+                    <option value="Альфа-Банк">🟣 Альфа-Банк</option>
+                    <option value="Райффайзен">🟢 Райффайзен</option>
+                    <option value="Другой">⚪ Другой</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Сумма (₽):</label>
+                <input type="number" id="withdraw-rub-amount" min="500" step="100" placeholder="Минимум 500 ₽">
+            </div>
+
+            <button class="btn btn-primary btn-large" onclick="submitWithdraw('rub')">
+                🚀 Запросить вывод
+            </button>
+            
+            <p class="hint">Обработка: до 24 часов. Комиссия: 0%</p>
+        </div>
+    </div>
+
+    <div id="history-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+            <h2>📊 История</h2>
+        </div>
+
+        <div class="history-tabs">
+            <button class="tab-btn active" onclick="showHistoryTab('games')" id="tab-games">🎮 Игры</button>
+            <button class="tab-btn" onclick="showHistoryTab('deposits')" id="tab-deposits">💰 Пополнения</button>
+            <button class="tab-btn" onclick="showHistoryTab('withdrawals')" id="tab-withdrawals">💸 Выводы</button>
+        </div>
+
+        <div class="history-list" id="history-list">
+            <div class="empty-state">Загрузка...</div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification hidden">
+        <span id="notification-text"></span>
+    </div>
+
+    <script>
+const tg = window.Telegram.WebApp;
+tg.expand();
+tg.ready();
+
+const API_URL = '';
+
+let currentUser = {
+    id: tg.initDataUnsafe?.user?.id?.toString() || 'demo_' + Date.now(),
+    username: tg.initDataUnsafe?.user?.username || 'demo',
+    balance_ton: 0,
+    balance_rub: 0
+};
+
+let gameState = {
+    isPlaying: false,
+    score: 0,
+    targetScore: 50,
+    timeLeft: 30,
+    maxTime: 30,
+    combo: 0,
+    position: 'left',
+    treeSections: [],
+    bet: 0.5,
+    currency: 'ton',
+    gameId: null,
+    timer: null
+};
+
+let currentHistoryTab = 'games';
+
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const screen = document.getElementById(screenId);
+    if (screen) {
+        screen.classList.add('active');
+    }
+    
+    if (screenId === 'main-screen') {
+        updateBalanceDisplay();
+    } else if (screenId === 'deposit-rub-screen') {
+        generatePaymentId();
+    } else if (screenId === 'withdraw-ton-screen') {
+        document.getElementById('withdraw-available-ton').textContent = currentUser.balance_ton.toFixed(2);
+    } else if (screenId === 'withdraw-rub-screen') {
+        document.getElementById('withdraw-available-rub').textContent = currentUser.balance_rub;
+    } else if (screenId === 'history-screen') {
+        loadHistory();
+    }
+}
+
+function selectCurrency(currency) {
+    gameState.currency = currency;
+    document.querySelectorAll('.currency-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + currency).classList.add('active');
+    
+    const isTon = currency === 'ton';
+    const minBet = isTon ? 0.5 : 50;
+    const maxBet = isTon ? 10 : 1000;
+    const step = isTon ? 0.5 : 50;
+    
+    const slider = document.getElementById('bet-slider');
+    slider.min = minBet;
+    slider.max = maxBet;
+    slider.step = step;
+    slider.value = minBet;
+    
+    updateBet(minBet);
+    
+    const presets = document.querySelector('.bet-presets');
+    presets.innerHTML = '';
+    const values = isTon ? [0.5, 1, 2, 5, 10] : [50, 100, 250, 500, 1000];
+    values.forEach(v => {
+        const btn = document.createElement('button');
+        btn.textContent = v;
+        btn.onclick = function() { setBet(v); };
         presets.appendChild(btn);
     });
 }
@@ -6313,13 +6721,12 @@ function generateTree() {
 
 function createWoodChips(side) {
     const tree = document.getElementById('tree');
-    const rect = tree.getBoundingClientRect();
     
     for (let i = 0; i < 6; i++) {
         const chip = document.createElement('div');
         chip.className = 'wood-chip';
-        chip.style.left = (rect.width / 2) + 'px';
-        chip.style.top = (rect.height - 40) + 'px';
+        chip.style.left = '60px';
+        chip.style.top = '200px';
         
         const angle = (Math.random() - 0.5) * 60 + (side === 'left' ? -30 : 30);
         const distance = 50 + Math.random() * 100;
@@ -6391,7 +6798,7 @@ function chop(side) {
     }
 }
 
-async function startGame() {
+function startGame() {
     const balanceField = gameState.currency === 'ton' ? 'balance_ton' : 'balance_rub';
     
     if (currentUser[balanceField] < gameState.bet) {
@@ -6399,33 +6806,8 @@ async function startGame() {
         return;
     }
     
-    try {
-        const response = await fetch(API_URL + '/api/game/start', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                user_id: currentUser.id,
-                bet: gameState.bet,
-                currency: gameState.currency
-            })
-        });
-        
-        const data = await response.json();
-        if (data.error) {
-            showNotification(data.error);
-            return;
-        }
-        
-        gameState.gameId = data.game_id;
-        currentUser[balanceField] -= gameState.bet;
-        updateBalanceDisplay();
-        
-    } catch(e) {
-        console.log('Demo mode - no backend');
-        gameState.gameId = 'demo_' + Date.now();
-        currentUser[balanceField] -= gameState.bet;
-        updateBalanceDisplay();
-    }
+    currentUser[balanceField] -= gameState.bet;
+    updateBalanceDisplay();
     
     gameState.score = 0;
     gameState.isPlaying = true;
@@ -6439,7 +6821,7 @@ async function startGame() {
     showScreen('play-screen');
     generateTree();
     
-    gameState.timer = setInterval(() => {
+    gameState.timer = setInterval(function() {
         gameState.timeLeft -= 0.1;
         const pct = (gameState.timeLeft / gameState.maxTime) * 100;
         document.getElementById('time-fill').style.width = pct + '%';
@@ -6450,7 +6832,7 @@ async function startGame() {
     }, 100);
 }
 
-async function endGame(win) {
+function endGame(win) {
     gameState.isPlaying = false;
     clearInterval(gameState.timer);
     
@@ -6461,20 +6843,6 @@ async function endGame(win) {
     if (win) {
         prize = gameState.bet * 2;
         currentUser[balanceField] += prize;
-    }
-    
-    try {
-        await fetch(API_URL + '/api/game/end', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                game_id: gameState.gameId,
-                score: gameState.score,
-                win: win
-            })
-        });
-    } catch(e) {
-        console.log('Demo mode - no backend');
     }
     
     updateBalanceDisplay();
@@ -6508,26 +6876,16 @@ function updateBalanceDisplay() {
     document.getElementById('balance-rub').textContent = currentUser.balance_rub;
 }
 
-async function loadUserData() {
-    try {
-        const response = await fetch(API_URL + '/api/user/' + currentUser.id);
-        const data = await response.json();
-        currentUser.balance_ton = data.balance_ton || 0;
-        currentUser.balance_rub = data.balance_rub || 0;
-        currentUser.username = data.username || currentUser.username;
-    } catch(e) {
-        console.log('Using local data');
-    }
-    updateBalanceDisplay();
-}
-
 function generatePaymentId() {
     const id = 'SBP_' + currentUser.id + '_' + Date.now();
-    document.getElementById('payment-id-code').textContent = id;
+    const codeEl = document.getElementById('payment-id-code');
+    if (codeEl) {
+        codeEl.textContent = id;
+    }
     return id;
 }
 
-async function submitDeposit(type) {
+function submitDeposit(type) {
     if (type === 'ton') {
         const amount = parseFloat(document.getElementById('deposit-ton-amount').value);
         const from = document.getElementById('deposit-ton-from').value;
@@ -6541,51 +6899,22 @@ async function submitDeposit(type) {
             return;
         }
         
-        try {
-            await fetch(API_URL + '/api/deposit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: currentUser.id,
-                    amount: amount,
-                    currency: 'ton',
-                    from_address: from
-                })
-            });
-        } catch(e) {}
-        
         showNotification('Заявка создана! Ожидайте зачисления');
         showScreen('main-screen');
         
     } else {
         const amount = parseFloat(document.getElementById('deposit-rub-amount').value);
-        const paymentId = document.getElementById('payment-id-code').textContent;
         
         if (!amount || amount < 100) {
             showNotification('Минимум 100 ₽');
             return;
         }
         
-        try {
-            await fetch(API_URL + '/api/deposit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: currentUser.id,
-                    amount: amount,
-                    currency: 'rub',
-                    payment_id: paymentId,
-                    method: 'sbp'
-                })
-            });
-        } catch(e) {}
-        
-        tg.openTelegramLink('https://t.me/share/url?url=&text=Я+оплатил+по+СБП+ID:' + paymentId);
         showNotification('Заявка создана! После оплаты нажмите "Я оплатил"');
     }
 }
 
-async function submitWithdraw(type) {
+function submitWithdraw(type) {
     if (type === 'ton') {
         const address = document.getElementById('withdraw-ton-address').value;
         const amount = parseFloat(document.getElementById('withdraw-ton-amount').value);
@@ -6603,25 +6932,11 @@ async function submitWithdraw(type) {
             return;
         }
         
-        try {
-            await fetch(API_URL + '/api/withdraw', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: currentUser.id,
-                    amount: amount,
-                    currency: 'ton',
-                    address: address
-                })
-            });
-        } catch(e) {}
-        
         showNotification('Заявка на вывод создана!');
         showScreen('main-screen');
         
     } else {
         const phone = document.getElementById('withdraw-rub-phone').value;
-        const bank = document.getElementById('withdraw-rub-bank').value;
         const amount = parseFloat(document.getElementById('withdraw-rub-amount').value);
         
         if (!phone) {
@@ -6637,20 +6952,6 @@ async function submitWithdraw(type) {
             return;
         }
         
-        try {
-            await fetch(API_URL + '/api/withdraw', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: currentUser.id,
-                    amount: amount,
-                    currency: 'rub',
-                    phone: phone,
-                    bank: bank
-                })
-            });
-        } catch(e) {}
-        
         showNotification('Заявка на вывод создана!');
         showScreen('main-screen');
     }
@@ -6663,66 +6964,17 @@ function showHistoryTab(tab) {
     loadHistory();
 }
 
-async function loadHistory() {
+function loadHistory() {
     const list = document.getElementById('history-list');
-    list.innerHTML = '<div class="empty-state">Загрузка...</div>';
-    
-    try {
-        const response = await fetch(API_URL + '/api/history/' + currentUser.id + '?type=' + currentHistoryTab);
-        const data = await response.json();
-        
-        if (!data || data.length === 0) {
-            list.innerHTML = '<div class="empty-state">Нет записей</div>';
-            return;
-        }
-        
-        list.innerHTML = '';
-        data.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'history-item';
-            
-            let typeText = '';
-            let amountClass = '';
-            let statusClass = '';
-            
-            if (currentHistoryTab === 'games') {
-                typeText = item.win ? 'Победа' : 'Поражение';
-                amountClass = item.win ? 'positive' : 'negative';
-                div.innerHTML = `
-                    <div class="info">
-                        <div class="type">${typeText}</div>
-                        <div class="date">${new Date(item.created_at).toLocaleString()}</div>
-                    </div>
-                    <div class="amount ${amountClass}">${item.win ? '+' : '-'}${item.bet} ${item.currency.toUpperCase()}</div>
-                `;
-            } else {
-                typeText = currentHistoryTab === 'deposits' ? 'Пополнение' : 'Вывод';
-                amountClass = currentHistoryTab === 'deposits' ? 'positive' : 'negative';
-                statusClass = item.status === 'completed' ? 'completed' : (item.status === 'pending' ? 'pending' : 'failed');
-                div.innerHTML = `
-                    <div class="info">
-                        <div class="type">${typeText}</div>
-                        <div class="date">${new Date(item.created_at).toLocaleString()}</div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div class="amount ${amountClass}">${currentHistoryTab === 'deposits' ? '+' : '-'}${item.amount} ${item.currency.toUpperCase()}</div>
-                        <span class="status ${statusClass}">${item.status === 'pending' ? '⏳' : (item.status === 'completed' ? '✅' : '❌')}</span>
-                    </div>
-                `;
-            }
-            
-            list.appendChild(div);
-        });
-        
-    } catch(e) {
-        list.innerHTML = '<div class="empty-state">Ошибка загрузки</div>';
-    }
+    list.innerHTML = '<div class="empty-state">Нет записей</div>';
 }
 
 function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        showNotification('Скопировано!');
-    }).catch(() => {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(function() {
+            showNotification('Скопировано!');
+        });
+    } else {
         const input = document.createElement('input');
         input.value = text;
         document.body.appendChild(input);
@@ -6730,24 +6982,26 @@ function copyToClipboard(text) {
         document.execCommand('copy');
         document.body.removeChild(input);
         showNotification('Скопировано!');
-    });
+    }
 }
 
 function showNotification(text) {
     const notif = document.getElementById('notification');
     document.getElementById('notification-text').textContent = text;
     notif.classList.remove('hidden');
-    setTimeout(() => notif.classList.add('hidden'), 3000);
+    setTimeout(function() {
+        notif.classList.add('hidden');
+    }, 3000);
 }
 
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', function(e) {
     if (!gameState.isPlaying) return;
     if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') chop('left');
     if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') chop('right');
 });
 
 let lastTouchEnd = 0;
-document.addEventListener('touchend', (e) => {
+document.addEventListener('touchend', function(e) {
     const now = Date.now();
     if (now - lastTouchEnd <= 300) {
         e.preventDefault();
@@ -6755,7 +7009,7 @@ document.addEventListener('touchend', (e) => {
     lastTouchEnd = now;
 }, false);
 
-loadUserData();
+updateBalanceDisplay();
     </script>
 </body>
 </html>
