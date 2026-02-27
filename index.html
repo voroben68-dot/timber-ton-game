@@ -33,8 +33,6 @@
             justify-content: space-between;
             align-items: center;
             backdrop-filter: blur(10px);
-            flex-wrap: wrap;
-            gap: 10px;
         }
         
         .balance-display {
@@ -90,17 +88,6 @@
         
         .currency-btn.rub.active {
             background: linear-gradient(135deg, #28a745, #20c997);
-        }
-        
-        .admin-btn-header {
-            background: linear-gradient(135deg, #e53e3e, #c53030);
-            border: none;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
         }
         
         .game-container {
@@ -312,6 +299,7 @@
             max-width: 400px;
             text-align: center;
             border: 2px solid #4a5568;
+            position: relative;
         }
         
         .menu-title {
@@ -341,6 +329,21 @@
         .currency-badge.rub {
             color: #20c997;
             border: 1px solid #28a745;
+        }
+        
+        .admin-btn-menu {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #e53e3e, #c53030);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
         }
         
         .bet-section {
@@ -442,14 +445,11 @@
             transition: all 0.1s;
         }
         
-        .start-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 0 0 #2f855a, 0 4px 10px rgba(0,0,0,0.2);
-        }
-        
         .start-btn:disabled {
+            background: #4a5568;
             opacity: 0.5;
             cursor: not-allowed;
+            box-shadow: none;
         }
         
         .wallet-section {
@@ -1123,12 +1123,9 @@
             <div class="currency-icon" id="currencyIcon">💎</div>
             <span id="balance">0.00</span>
         </div>
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <button class="admin-btn-header" onclick="openAdminCodeInput()">🔒 АДМИН</button>
-            <div class="currency-toggle">
-                <button class="currency-btn active" id="btnTon" onclick="switchCurrency('ton')">TON</button>
-                <button class="currency-btn rub" id="btnRub" onclick="switchCurrency('rub')">₽</button>
-            </div>
+        <div class="currency-toggle">
+            <button class="currency-btn active" id="btnTon" onclick="switchCurrency('ton')">TON</button>
+            <button class="currency-btn rub" id="btnRub" onclick="switchCurrency('rub')">₽</button>
         </div>
     </div>
 
@@ -1214,6 +1211,8 @@
     <!-- Main Menu -->
     <div id="mainMenu" class="menu-overlay">
         <div class="menu-content">
+            <button class="admin-btn-menu" onclick="openAdminCodeInput()">🔒 АДМИН</button>
+            
             <div class="menu-title">🪓 TimberTON</div>
             <div class="currency-badge" id="currencyBadge">💎 TON Mode</div>
             
@@ -1411,8 +1410,8 @@
             bet: 0.5,
             targetScore: 40,
             balance: {
-                ton: 1.0,
-                rub: 1000
+                ton: 0,
+                rub: 0
             },
             limits: {
                 ton: {
@@ -1699,6 +1698,7 @@
             
             updateBet(slider.value);
             updateBalance();
+            updateStartButton();
         }
 
         function updateLimitsDisplay() {
@@ -1878,11 +1878,26 @@
             }
         }
 
+        function updateStartButton() {
+            const btn = document.getElementById('startBtn');
+            const hasBalance = gameState.balance[gameState.currency] >= gameState.bet;
+            
+            if (!hasBalance) {
+                btn.disabled = true;
+                btn.textContent = 'Недостаточно средств';
+                btn.style.background = '#4a5568';
+            } else {
+                btn.disabled = false;
+                btn.textContent = 'Начать игру';
+                btn.style.background = '';
+            }
+        }
+
         function startGame() {
             const limits = gameState.limits[gameState.currency];
             
             if (gameState.balance[gameState.currency] < gameState.bet) {
-                alert(`Недостаточно средств. Минимум: ${gameState.bet} ${gameState.currency.toUpperCase()}`);
+                tg.showPopup({title: 'Ошибка', message: `Недостаточно средств. Пополните баланс минимум на ${limits.minBet} ${gameState.currency.toUpperCase()}`});
                 return;
             }
             
@@ -1952,6 +1967,7 @@
             document.getElementById('gameOver').classList.add('hidden');
             document.getElementById('gameArea').classList.add('hidden');
             document.getElementById('mainMenu').classList.remove('hidden');
+            updateStartButton();
         }
 
         function updateBalance() {
@@ -1967,6 +1983,8 @@
                 balance: gameState.balance,
                 username: gameState.username
             });
+            
+            updateStartButton();
         }
 
         function saveScore() {
@@ -2101,6 +2119,7 @@
             gameState.balance = savedUser.balance;
         }
         updateBalance();
+        updateStartButton();
         toggleWithdrawInputs();
     </script>
 </body>
