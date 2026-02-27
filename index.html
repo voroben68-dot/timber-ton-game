@@ -90,6 +90,21 @@
             background: linear-gradient(135deg, #28a745, #20c997);
         }
         
+        .admin-badge {
+            background: linear-gradient(135deg, #e53e3e, #c53030);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 10px;
+            display: none;
+        }
+        
+        .admin-badge.visible {
+            display: inline-block;
+        }
+        
         .connect-btn {
             background: linear-gradient(135deg, #0088cc, #00a8e8);
             border: none;
@@ -476,6 +491,15 @@
             background: linear-gradient(135deg, #0088cc, #00a8e8);
         }
         
+        .wallet-btn.admin {
+            background: linear-gradient(135deg, #e53e3e, #c53030);
+            display: none;
+        }
+        
+        .wallet-btn.admin.visible {
+            display: block;
+        }
+        
         .hidden {
             display: none !important;
         }
@@ -808,6 +832,311 @@
         .copy-btn:active {
             background: rgba(255,255,255,0.2);
         }
+
+        /* ADMIN PANEL STYLES */
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            flex-direction: column;
+            z-index: 3000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .admin-panel.active {
+            display: flex;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e53e3e;
+        }
+
+        .admin-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e53e3e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-close {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(229, 62, 62, 0.1);
+            border: 1px solid #e53e3e;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e53e3e;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .admin-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .admin-section h3 {
+            margin-bottom: 15px;
+            color: #ffd700;
+            font-size: 18px;
+        }
+
+        .deposit-request {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid #48bb78;
+        }
+
+        .deposit-request.pending {
+            border-left-color: #ed8936;
+        }
+
+        .deposit-request.completed {
+            border-left-color: #48bb78;
+            opacity: 0.7;
+        }
+
+        .deposit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .user-info {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .deposit-amount {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .deposit-details {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .deposit-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-confirm {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-reject {
+            background: #e53e3e;
+            color: white;
+        }
+
+        .btn-check {
+            background: #0088cc;
+            color: white;
+        }
+
+        .admin-input-group {
+            margin-bottom: 15px;
+        }
+
+        .admin-input-group label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 5px;
+            opacity: 0.8;
+        }
+
+        .admin-input-group input, .admin-input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #4a5568;
+            border-radius: 8px;
+            background: #2d3748;
+            color: white;
+            font-size: 14px;
+        }
+
+        .admin-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #e53e3e, #c53030);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .users-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .user-balance {
+            display: flex;
+            gap: 10px;
+        }
+
+        .balance-tag {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        .balance-tag.ton {
+            background: rgba(0,136,204,0.3);
+            color: #00a8e8;
+        }
+
+        .balance-tag.rub {
+            background: rgba(40,167,69,0.3);
+            color: #20c997;
+        }
+
+        .admin-code-input {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 4000;
+            padding: 20px;
+        }
+
+        .admin-code-input.active {
+            display: flex;
+        }
+
+        .code-form {
+            background: linear-gradient(135deg, #2d3748, #1a202c);
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            border: 2px solid #e53e3e;
+        }
+
+        .code-form h3 {
+            margin-bottom: 20px;
+            color: #e53e3e;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 5px;
+            border: 2px solid #4a5568;
+            border-radius: 8px;
+            background: #1a202c;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .numpad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .numpad-btn {
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .numpad-btn:active {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .numpad-btn.wide {
+            grid-column: span 2;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            opacity: 0.5;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -815,14 +1144,97 @@
         <div class="balance-display">
             <div class="currency-icon" id="currencyIcon">💎</div>
             <span id="balance">0.00</span>
+            <span class="admin-badge" id="adminBadge">ADMIN</span>
         </div>
-        <div class="currency-toggle">
-            <button class="currency-btn active" id="btnTon" onclick="switchCurrency('ton')">TON</button>
-            <button class="currency-btn rub" id="btnRub" onclick="switchCurrency('rub')">₽</button>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button class="wallet-btn admin" id="adminBtn" onclick="openAdminCodeInput()">🔒 Админ</button>
+            <div class="currency-toggle">
+                <button class="currency-btn active" id="btnTon" onclick="switchCurrency('ton')">TON</button>
+                <button class="currency-btn rub" id="btnRub" onclick="switchCurrency('rub')">₽</button>
+            </div>
         </div>
     </div>
 
     <div id="ton-connect" class="hidden"></div>
+
+    <!-- Admin Code Input -->
+    <div id="adminCodeInput" class="admin-code-input">
+        <div class="code-form">
+            <h3>🔐 Введите код админа</h3>
+            <input type="password" class="code-input" id="codeDisplay" readonly placeholder="••••">
+            <div class="numpad">
+                <button class="numpad-btn" onclick="enterCode('1')">1</button>
+                <button class="numpad-btn" onclick="enterCode('2')">2</button>
+                <button class="numpad-btn" onclick="enterCode('3')">3</button>
+                <button class="numpad-btn" onclick="enterCode('4')">4</button>
+                <button class="numpad-btn" onclick="enterCode('5')">5</button>
+                <button class="numpad-btn" onclick="enterCode('6')">6</button>
+                <button class="numpad-btn" onclick="enterCode('7')">7</button>
+                <button class="numpad-btn" onclick="enterCode('8')">8</button>
+                <button class="numpad-btn" onclick="enterCode('9')">9</button>
+                <button class="numpad-btn wide" onclick="enterCode('0')">0</button>
+                <button class="numpad-btn" onclick="clearCode()" style="background: #e53e3e;">⌫</button>
+            </div>
+            <button class="admin-btn" onclick="checkAdminCode()">Войти</button>
+            <button class="admin-close" onclick="closeAdminCodeInput()" style="margin-top: 10px; width: 100%;">Отмена</button>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel">
+        <div class="admin-header">
+            <div class="admin-title">
+                🔴 Админ панель
+                <span style="font-size: 12px; opacity: 0.7; font-weight: normal;">TimberTON</span>
+            </div>
+            <button class="admin-close" onclick="closeAdminPanel()">✕ Закрыть</button>
+        </div>
+
+        <div class="admin-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="pendingCount">0</div>
+                <div class="stat-label">Ожидают пополнения</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalUsers">0</div>
+                <div class="stat-label">Всего пользователей</div>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h3>⏳ Заявки на пополнение</h3>
+            <div id="depositRequestsList">
+                <div class="empty-state">Нет активных заявок</div>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h3>👤 Ручное пополнение</h3>
+            <div class="admin-input-group">
+                <label>ID пользователя</label>
+                <input type="text" id="manualUserId" placeholder="Введите ID пользователя">
+            </div>
+            <div class="admin-input-group">
+                <label>Валюта</label>
+                <select id="manualCurrency">
+                    <option value="ton">TON</option>
+                    <option value="rub">Рубли</option>
+                </select>
+            </div>
+            <div class="admin-input-group">
+                <label>Сумма</label>
+                <input type="number" id="manualAmount" step="0.01" placeholder="0.00">
+            </div>
+            <button class="admin-btn" onclick="manualDeposit()">Пополнить баланс</button>
+        </div>
+
+        <div class="admin-section">
+            <h3>📊 Список пользователей</h3>
+            <div class="users-list" id="usersList">
+                <div class="empty-state">Нет данных о пользователях</div>
+            </div>
+        </div>
+    </div>
 
     <!-- Main Menu -->
     <div id="mainMenu" class="menu-overlay">
@@ -990,6 +1402,7 @@
     </div>
 
     <script>
+        // ==================== КОНФИГУРАЦИЯ ====================
         // РЕКВИЗИТЫ ВЛАДЕЛЬЦА
         const OWNER_REQUISITES = {
             ton: 'UQD-U9iJRqGCZhtJRg7GDvUUP-IwhGu1jAknZXdRmxR3pSOh',
@@ -1000,12 +1413,22 @@
             }
         };
 
+        // КОД ДЛЯ ДОСТУПА В АДМИНКУ (можно изменить)
+        const ADMIN_CODE = '1995';
+        
+        // ID админов (Telegram user IDs) - можно добавить свои
+        const ADMIN_IDS = ['demo_user']; // Замени на свои ID
+
+        // ==================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ====================
+        let isAdmin = false;
+        let currentCode = '';
+        
         // Telegram WebApp init
         const tg = window.Telegram.WebApp;
         tg.expand();
         tg.ready();
 
-        // Exchange rate (1 TON = ~200 RUB, обновляется динамически)
+        // Exchange rate
         let exchangeRate = 200;
 
         // Game state
@@ -1017,7 +1440,7 @@
             timeLeft: 100,
             maxTime: 100,
             combo: 0,
-            currency: 'ton', // 'ton' или 'rub'
+            currency: 'ton',
             bet: 0.5,
             targetScore: 40,
             balance: {
@@ -1038,12 +1461,254 @@
                     maxBet: 5000
                 }
             },
-            userId: tg.initDataUnsafe?.user?.id || 'demo_user',
+            userId: tg.initDataUnsafe?.user?.id?.toString() || 'demo_user',
             username: tg.initDataUnsafe?.user?.username || 'player'
         };
 
-        // TON Connect
-        let tonConnectUI = null;
+        // Хранилище данных (localStorage для демо, в продакшене - сервер)
+        const Storage = {
+            getUsers: () => {
+                return JSON.parse(localStorage.getItem('timber_users') || '{}');
+            },
+            saveUser: (userId, data) => {
+                const users = Storage.getUsers();
+                users[userId] = {...(users[userId] || {}), ...data, lastSeen: new Date().toISOString()};
+                localStorage.setItem('timber_users', JSON.stringify(users));
+                return users[userId];
+            },
+            getUser: (userId) => {
+                const users = Storage.getUsers();
+                return users[userId] || null;
+            },
+            getDeposits: () => {
+                return JSON.parse(localStorage.getItem('timber_deposits') || '[]');
+            },
+            addDeposit: (deposit) => {
+                const deposits = Storage.getDeposits();
+                deposits.push({
+                    id: Date.now().toString(),
+                    status: 'pending',
+                    createdAt: new Date().toISOString(),
+                    ...deposit
+                });
+                localStorage.setItem('timber_deposits', JSON.stringify(deposits));
+                return deposits[deposits.length - 1];
+            },
+            updateDeposit: (depositId, updates) => {
+                const deposits = Storage.getDeposits();
+                const idx = deposits.findIndex(d => d.id === depositId);
+                if (idx !== -1) {
+                    deposits[idx] = {...deposits[idx], ...updates, updatedAt: new Date().toISOString()};
+                    localStorage.setItem('timber_deposits', JSON.stringify(deposits));
+                    return deposits[idx];
+                }
+                return null;
+            }
+        };
+
+        // ==================== АДМИН ПАНЕЛЬ ====================
+        
+        function openAdminCodeInput() {
+            currentCode = '';
+            document.getElementById('codeDisplay').value = '';
+            document.getElementById('adminCodeInput').classList.add('active');
+        }
+
+        function closeAdminCodeInput() {
+            document.getElementById('adminCodeInput').classList.remove('active');
+            currentCode = '';
+        }
+
+        function enterCode(digit) {
+            if (currentCode.length < 4) {
+                currentCode += digit;
+                document.getElementById('codeDisplay').value = '•'.repeat(currentCode.length);
+            }
+        }
+
+        function clearCode() {
+            currentCode = currentCode.slice(0, -1);
+            document.getElementById('codeDisplay').value = '•'.repeat(currentCode.length) || '';
+        }
+
+        function checkAdminCode() {
+            // Проверка по коду или по Telegram ID
+            const userId = gameState.userId;
+            const isAdminById = ADMIN_IDS.includes(userId);
+            const isAdminByCode = currentCode === ADMIN_CODE;
+            
+            if (isAdminByCode || isAdminById) {
+                isAdmin = true;
+                closeAdminCodeInput();
+                openAdminPanel();
+                tg.showPopup({title: '✅ Успех', message: 'Добро пожаловать в админ панель!'});
+            } else {
+                tg.showPopup({title: '❌ Ошибка', message: 'Неверный код доступа'});
+                clearCode();
+            }
+        }
+
+        function openAdminPanel() {
+            document.getElementById('adminPanel').classList.add('active');
+            document.getElementById('adminBadge').classList.add('visible');
+            updateAdminStats();
+            renderDepositRequests();
+            renderUsersList();
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').classList.remove('active');
+        }
+
+        function updateAdminStats() {
+            const deposits = Storage.getDeposits();
+            const pending = deposits.filter(d => d.status === 'pending').length;
+            const users = Object.keys(Storage.getUsers()).length;
+            
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('totalUsers').textContent = users || 1;
+        }
+
+        function renderDepositRequests() {
+            const deposits = Storage.getDeposits().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            const container = document.getElementById('depositRequestsList');
+            
+            if (deposits.length === 0) {
+                container.innerHTML = '<div class="empty-state">Нет активных заявок</div>';
+                return;
+            }
+            
+            container.innerHTML = deposits.map(d => `
+                <div class="deposit-request ${d.status}">
+                    <div class="deposit-header">
+                        <span class="user-info">@${d.username || d.userId}</span>
+                        <span class="deposit-amount">${d.amount} ${d.currency.toUpperCase()}</span>
+                    </div>
+                    <div class="deposit-details">
+                        ID: ${d.userId} | ${new Date(d.createdAt).toLocaleString()}<br>
+                        Метод: ${d.method === 'ton' ? 'TON' : 'СБП'} | ${d.status === 'pending' ? '⏳ Ожидает' : '✅ Выполнено'}
+                    </div>
+                    ${d.status === 'pending' ? `
+                        <div class="deposit-actions">
+                            <button class="btn-small btn-check" onclick="checkDeposit('${d.id}')">Проверить</button>
+                            <button class="btn-small btn-confirm" onclick="confirmDeposit('${d.id}')">✓ Выполнить</button>
+                            <button class="btn-small btn-reject" onclick="rejectDeposit('${d.id}')">✕ Отклонить</button>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function renderUsersList() {
+            const users = Storage.getUsers();
+            const container = document.getElementById('usersList');
+            const userEntries = Object.entries(users);
+            
+            if (userEntries.length === 0) {
+                container.innerHTML = '<div class="empty-state">Нет данных о пользователях</div>';
+                return;
+            }
+            
+            container.innerHTML = userEntries.map(([id, data]) => `
+                <div class="user-item">
+                    <div>
+                        <div style="font-weight: bold;">@${data.username || id}</div>
+                        <div style="font-size: 11px; opacity: 0.7;">ID: ${id}</div>
+                    </div>
+                    <div class="user-balance">
+                        <span class="balance-tag ton">${(data.balance?.ton || 0).toFixed(2)} TON</span>
+                        <span class="balance-tag rub">${(data.balance?.rub || 0).toFixed(0)} ₽</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function confirmDeposit(depositId) {
+            const deposit = Storage.getDeposits().find(d => d.id === depositId);
+            if (!deposit) return;
+            
+            // Пополняем баланс пользователя
+            const user = Storage.getUser(deposit.userId) || {};
+            const currentBalance = user.balance || {ton: 0, rub: 0};
+            currentBalance[deposit.currency] = (currentBalance[deposit.currency] || 0) + deposit.amount;
+            
+            Storage.saveUser(deposit.userId, {
+                ...user,
+                balance: currentBalance,
+                username: deposit.username
+            });
+            
+            // Обновляем статус заявки
+            Storage.updateDeposit(depositId, {status: 'completed'});
+            
+            // Если это текущий пользователь, обновляем его баланс
+            if (deposit.userId === gameState.userId) {
+                gameState.balance = currentBalance;
+                updateBalance();
+            }
+            
+            tg.showPopup({
+                title: '✅ Выполнено',
+                message: `Баланс пользователя @${deposit.username} пополнен на ${deposit.amount} ${deposit.currency.toUpperCase()}`
+            });
+            
+            updateAdminStats();
+            renderDepositRequests();
+            renderUsersList();
+        }
+
+        function rejectDeposit(depositId) {
+            Storage.updateDeposit(depositId, {status: 'rejected'});
+            renderDepositRequests();
+            tg.showPopup({title: '❌ Отклонено', message: 'Заявка отклонена'});
+        }
+
+        function checkDeposit(depositId) {
+            const deposit = Storage.getDeposits().find(d => d.id === depositId);
+            if (!deposit) return;
+            
+            tg.showPopup({
+                title: '🔍 Проверка платежа',
+                message: `Пользователь: @${deposit.username}\nID: ${deposit.userId}\nСумма: ${deposit.amount} ${deposit.currency.toUpperCase()}\nМетод: ${deposit.method}\n\nПроверьте поступление средств на ваши реквизиты:\n${deposit.method === 'ton' ? OWNER_REQUISITES.ton : OWNER_REQUISITES.sbp.phone}`
+            });
+        }
+
+        function manualDeposit() {
+            const userId = document.getElementById('manualUserId').value.trim();
+            const currency = document.getElementById('manualCurrency').value;
+            const amount = parseFloat(document.getElementById('manualAmount').value);
+            
+            if (!userId || !amount || amount <= 0) {
+                tg.showPopup({title: '❌ Ошибка', message: 'Заполните все поля корректно'});
+                return;
+            }
+            
+            const user = Storage.getUser(userId) || {};
+            const currentBalance = user.balance || {ton: 0, rub: 0};
+            currentBalance[currency] = (currentBalance[currency] || 0) + amount;
+            
+            Storage.saveUser(userId, {
+                ...user,
+                balance: currentBalance
+            });
+            
+            // Если это текущий пользователь
+            if (userId === gameState.userId) {
+                gameState.balance = currentBalance;
+                updateBalance();
+            }
+            
+            tg.showPopup({
+                title: '✅ Успех',
+                message: `Баланс пользователя ${userId} пополнен на ${amount} ${currency.toUpperCase()}`
+            });
+            
+            document.getElementById('manualUserId').value = '';
+            document.getElementById('manualAmount').value = '';
+            renderUsersList();
+        }
+
+        // ==================== ОСНОВНЫЕ ФУНКЦИИ ====================
 
         function initTonConnect() {
             if (document.getElementById('ton-connect')) {
@@ -1060,7 +1725,6 @@
                     tg.showPopup({title: 'Скопировано', message: 'Реквизиты скопированы в буфер обмена'});
                 });
             } else {
-                // Fallback
                 const textarea = document.createElement('textarea');
                 textarea.value = text;
                 document.body.appendChild(textarea);
@@ -1074,7 +1738,6 @@
         function switchCurrency(curr) {
             gameState.currency = curr;
             
-            // Update UI
             document.getElementById('btnTon').classList.toggle('active', curr === 'ton');
             document.getElementById('btnRub').classList.toggle('active', curr === 'rub');
             
@@ -1086,10 +1749,8 @@
             badge.textContent = curr === 'ton' ? '💎 TON Mode' : '₽ Рубли Mode';
             badge.className = 'currency-badge ' + curr;
             
-            // Update limits display
             updateLimitsDisplay();
             
-            // Update slider
             const slider = document.getElementById('betSlider');
             const limits = gameState.limits[curr];
             slider.min = limits.minBet;
@@ -1100,7 +1761,6 @@
             updateBet(slider.value);
             updateBalance();
             
-            // Update wallet tab button color
             const walletBtn = document.querySelector('.tab-btn:nth-child(2)');
             if (curr === 'rub') {
                 walletBtn.classList.add('rub');
@@ -1151,13 +1811,11 @@
             const curr = gameState.currency.toUpperCase();
             document.getElementById('betAmount').textContent = gameState.bet + ' ' + curr;
             
-            // Calculate target based on bet
             const baseTarget = gameState.currency === 'ton' ? 30 : 30;
             const multiplier = gameState.bet / gameState.limits[gameState.currency].minBet;
             gameState.targetScore = Math.floor(baseTarget + (multiplier * 10));
             document.getElementById('targetScore').textContent = gameState.targetScore;
             
-            // Prize is 2x bet
             const prize = gameState.bet * 2;
             document.getElementById('prizeAmount').textContent = prize + ' ' + curr;
         }
@@ -1372,6 +2030,12 @@
             document.getElementById('balance').textContent = balance + ' ' + symbol;
             document.getElementById('walletBalance').textContent = balance;
             document.getElementById('walletCurrency').textContent = symbol;
+            
+            // Сохраняем баланс в хранилище
+            Storage.saveUser(gameState.userId, {
+                balance: gameState.balance,
+                username: gameState.username
+            });
         }
 
         function saveScore() {
@@ -1396,11 +2060,25 @@
                     message: `Отправьте TON на адрес:\n\n${OWNER_REQUISITES.ton}\n\nМинимум: ${limits.minDeposit} TON\n\nПосле подтверждения сети баланс будет обновлен.`,
                     buttons: [
                         {id: 'copy', type: 'default', text: 'Копировать адрес'},
+                        {id: 'confirm', type: 'default', text: 'Я отправил'},
                         {type: 'cancel'}
                     ]
                 }, (btnId) => {
                     if (btnId === 'copy') {
                         copyToClipboard(OWNER_REQUISITES.ton);
+                    } else if (btnId === 'confirm') {
+                        // Создаем заявку на пополнение
+                        Storage.addDeposit({
+                            userId: gameState.userId,
+                            username: gameState.username,
+                            amount: limits.minDeposit,
+                            currency: 'ton',
+                            method: 'ton'
+                        });
+                        tg.showPopup({
+                            title: '⏳ Заявка создана',
+                            message: 'Ваша заявка на пополнение отправлена администратору. После проверки платежа баланс будет пополнен.'
+                        });
                     }
                 });
             } else {
@@ -1409,23 +2087,28 @@
                     message: `Переведите по СБП (Озон Банк):\n\nТелефон: ${OWNER_REQUISITES.sbp.phone}\n\nВ комментарии укажите: ${gameState.userId}\n\nМинимум: ${limits.minDeposit} ₽\n\nПосле проверки баланс будет обновлен (обычно 5-15 минут).`,
                     buttons: [
                         {id: 'copy', type: 'default', text: 'Копировать номер'},
+                        {id: 'confirm', type: 'default', text: 'Я отправил'},
                         {type: 'cancel'}
                     ]
                 }, (btnId) => {
                     if (btnId === 'copy') {
                         copyToClipboard(OWNER_REQUISITES.sbp.rawPhone);
+                    } else if (btnId === 'confirm') {
+                        // Создаем заявку на пополнение
+                        Storage.addDeposit({
+                            userId: gameState.userId,
+                            username: gameState.username,
+                            amount: limits.minDeposit,
+                            currency: 'rub',
+                            method: 'sbp'
+                        });
+                        tg.showPopup({
+                            title: '⏳ Заявка создана',
+                            message: 'Ваша заявка на пополнение отправлена администратору. После проверки платежа баланс будет пополнен.'
+                        });
                     }
                 });
             }
-            
-            // Demo: auto-add for testing
-            /*
-            setTimeout(() => {
-                gameState.balance[gameState.currency] += limits.minDeposit;
-                updateBalance();
-                tg.showPopup({title: 'Демо', message: 'Баланс пополнен (тестовый режим)'});
-            }, 1000);
-            */
         }
 
         function toggleWithdrawInputs() {
@@ -1433,12 +2116,10 @@
             if (method === 'ton') {
                 document.getElementById('tonWithdraw').classList.remove('hidden');
                 document.getElementById('sbpWithdraw').classList.add('hidden');
-                // Автозаполняем адрес владельца для TON вывода
                 document.getElementById('tonAddress').value = OWNER_REQUISITES.ton;
             } else {
                 document.getElementById('tonWithdraw').classList.add('hidden');
                 document.getElementById('sbpWithdraw').classList.remove('hidden');
-                // Автозаполняем телефон владельца для СБП
                 document.getElementById('phoneNumber').value = OWNER_REQUISITES.sbp.phone;
             }
         }
@@ -1466,7 +2147,6 @@
             
             const method = document.getElementById('withdrawMethod').value;
             let details = '';
-            let adminMessage = '';
             
             if (method === 'ton') {
                 const address = document.getElementById('tonAddress').value;
@@ -1478,21 +2158,14 @@
                     return;
                 }
                 details = `Адрес: ${address}`;
-                adminMessage = `Новая заявка на вывод TON!\n\nПользователь: @${gameState.username} (ID: ${gameState.userId})\nСумма: ${amount} TON\nАдрес: ${address}`;
             } else {
-                // Для СБП используем реквизиты владельца
                 const phone = OWNER_REQUISITES.sbp.phone;
                 const bank = OWNER_REQUISITES.sbp.bank;
                 details = `Телефон: ${phone}\nБанк: ${bank}`;
-                adminMessage = `Новая заявка на вывод рублей!\n\nПользователь: @${gameState.username} (ID: ${gameState.userId})\nСумма: ${amount} ₽\nСБП: ${phone} (${bank})`;
             }
             
-            // Process withdrawal (в демо режиме просто списываем)
             gameState.balance[curr] -= amount;
             updateBalance();
-            
-            // Отправляем уведомление админу (в реальном боте через API)
-            console.log('ADMIN NOTIFICATION:', adminMessage);
             
             const processingTime = method === 'ton' ? '5-30 минут' : '10 минут - 2 часа';
             
@@ -1501,7 +2174,6 @@
                 message: `✅ Заявка на вывод ${amount} ${curr.toUpperCase()} создана!\n\n${details}\n\nОбработка: ${processingTime}\n\nВы получите уведомление когда средства будут отправлены.`
             });
             
-            // Очищаем поле суммы
             document.getElementById('withdrawAmount').value = '';
         }
 
@@ -1525,11 +2197,21 @@
         // Init
         updateLimitsDisplay();
         updateBet(gameState.limits.ton.minBet);
-        updateBalance();
-        initTonConnect();
         
-        // Инициализация полей вывода
+        // Загружаем баланс пользователя при старте
+        const savedUser = Storage.getUser(gameState.userId);
+        if (savedUser && savedUser.balance) {
+            gameState.balance = savedUser.balance;
+        }
+        updateBalance();
+        
+        initTonConnect();
         toggleWithdrawInputs();
+        
+        // Показываем кнопку админа если ID совпадает
+        if (ADMIN_IDS.includes(gameState.userId)) {
+            document.getElementById('adminBtn').classList.add('visible');
+        }
     </script>
 </body>
 </html>
